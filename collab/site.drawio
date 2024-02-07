@@ -1,0 +1,58 @@
+<mxfile host="app.diagrams.net" modified="2024-02-07T18:57:39.577Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36" etag="5I0TKVliTShxBKc8u2w1" version="23.1.2" type="device">
+  <diagram name="Sayfa -1" id="L--SBNvC3KTyexAtKTHF">
+    <mxGraphModel dx="1979" dy="1802" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="hv5tT5cdn11PUCJPotso-2" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-10" y="230" width="370" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-6" value="Bize Ulaşın" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="20" y="260" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-7" value="Text" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="-40" y="90" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-8" value="Projeler" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="140" y="260" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-9" value="Text" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="-80" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-10" value="Text" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="210" y="90" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-11" value="Forum" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="270" y="260" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-13" value="1 AI&lt;br&gt;2 Game&lt;br&gt;3 Finance&lt;br&gt;&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="585" width="260" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-12" value="Projeler" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="145" y="590" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-16" value="1 .Teknik Muhabbet&lt;br&gt;2 . Proje&lt;br&gt;3 . Genel Sohbet&lt;br&gt;4 . Geri Bildirim" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="580" width="260" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-15" value="Forum" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="540" y="585" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-18" value="AI&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="45" y="780" width="260" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-19" value="Vertical Container" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="880" width="50" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-24" value="Vertical Container" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="960" width="50" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-26" value="Vertical Container" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="810" width="50" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hv5tT5cdn11PUCJPotso-27" value="Vertical Container" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="70" y="1040" width="50" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
