@@ -1,0 +1,18 @@
+<!-- main_template.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'welcome_page' %}">Welcome Page</a></li>
+            <li><a href="{% url 'profile_page' %}">Profile Page</a></li>
+        </ul>
+    </nav>
+    {% block content %}{% endblock %}
+</body>
+</html>
