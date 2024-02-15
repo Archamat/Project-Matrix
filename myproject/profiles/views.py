@@ -3,11 +3,11 @@ from django.shortcuts import render
 from .models import UserProfile
 
 def profile_card_view(request):
-    # Fetch profile data from the database
-    profile = UserProfile.objects.first()  # Assuming you want to display the first profile
-    # Pass profile data to the template context
+    # Fetch all profiles from the database
+    profiles = UserProfile.objects.all()
+    # Pass profiles data to the template context
     context = {
-        'profile': profile
+        'profiles': profiles
     }
-    # Render the template with profile data
+    # Render the template with profiles data
     return render(request, 'profiles/profile_card.html', context)

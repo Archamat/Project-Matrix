@@ -1,6 +1,7 @@
-<!-- profile_card.html -->
-<div class="profile-card">
-    <h2>{{ profile.name }}</h2>
-    <p>Age: {{ profile.age }}</p>
-    <p>Job: {{ profile.job }}</p>
-</div>
+{% for profile in profiles %}
+    <!-- Display profile information here -->
+    <div><b>Name:</b>{{ profile.name }}</div>
+    <div><b>Age:</b>{{ profile.age }}</div>
+    <div><b>Job:</b>{{ profile.job }}</div>    
+    <!-- Add other fields as needed -->
+{% endfor %}
