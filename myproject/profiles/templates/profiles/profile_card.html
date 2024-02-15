@@ -1,7 +1,23 @@
-{% for profile in profiles %}
-    <!-- Display profile information here -->
-    <div><b>Name:</b>{{ profile.name }}</div>
-    <div><b>Age:</b>{{ profile.age }}</div>
-    <div><b>Job:</b>{{ profile.job }}</div>    
-    <!-- Add other fields as needed -->
-{% endfor %}
+{% extends 'base.html' %}
+{% block title %}
+Profiles Page
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        {% for profile in profiles %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Name: {{ profile.name }}</h5>
+                    <p class="card-text">Age: {{ profile.age }}</p>
+                    <p class="card-text">Job: {{ profile.job }}</p>
+                    <!-- Add other fields as needed -->
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
