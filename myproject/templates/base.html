@@ -15,7 +15,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto">
+        <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'welcome_page' %}">Home <span class="sr-only"></span></a>
             </li>
@@ -34,6 +34,20 @@
             <li class="nav-item">
                 <a class="nav-link" href="#">Contact</a>
             </li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item ms-auto ">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+            {% else %}
+                <li class="nav-item ms-auto">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item ms-auto">
+                    <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
