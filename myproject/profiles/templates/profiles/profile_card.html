@@ -6,6 +6,10 @@ Profiles Page
 {% block content %}
 <div class="container">
     <div class="row">
+        <form method="GET" action="">
+            {{ form.as_p }}
+            <button type="submit">Filter</button>
+        </form>
         {% for profile in profiles %}
         <div class="col-md-4 mb-3">
             <div class="card">
@@ -13,6 +17,7 @@ Profiles Page
                     <h5 class="card-title">Name: {{ profile.name }}</h5>
                     <p class="card-text">Age: {{ profile.age }}</p>
                     <p class="card-text">Job: {{ profile.job }}</p>
+                    <p class="card-text">Category: {{ profile.get_category_display }}</p>
                     <!-- Add other fields as needed -->
                 </div>
             </div>
