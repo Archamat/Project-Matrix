@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <h2>Create a New Project</h2>
+        <form method="POST" action="{{ url_for('project.create_project') }}">
+            {{ form.hidden_tag() }}
+            
+            <div class="form-group">
+                {{ form.name.label }}<br>
+                {{ form.name(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.description.label }}<br>
+                {{ form.description(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.sector.label }}<br>
+                {{ form.sector(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.people_count.label }}<br>
+                {{ form.people_count(class="form-control") }}
+                {% if form.people_count.errors %}
+                    <small class="text-danger">{{ form.people_count.errors[0] }}</small>
+                {% endif %}
+            </div>
+
+            <div class="form-group">
+                {{ form.skills.label }}<br>
+                {{ form.skills(class="form-control") }}
+            </div>
+
+            <!-- Conditionally display the Other Skill input field -->
+            <div class="form-group" id="other-skill-field" style="display: none;">
+                {{ form.other_skill.label }}<br>
+                {{ form.other_skill(class="form-control") }}
+            </div>
+
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
+        </form>
+    </div>
+
+    <!-- JavaScript to Show/Hide Other Skill Field -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const skillsSelect = document.querySelector('select[name="skills"]');
+            const otherSkillField = document.getElementById('other-skill-field');
+
+            skillsSelect.addEventListener('change', function() {
+                if ([...skillsSelect.selectedOptions].some(option => option.value === 'Other')) {
+                    otherSkillField.style.display = 'block';
+                } else {
+                    otherSkillField.style.display = 'none';
+                }
+            });
+        });
+    </script>
+{% endblock %}

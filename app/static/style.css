@@ -1,0 +1,170 @@
+/* static/style.css */
+
+/**** Navbar ****/
+
+.navbar {
+    background-color: #333; /* Primary color */
+    overflow: hidden;
+}
+
+.navbar .navbar-right .nav-link {
+    float: right;
+}
+
+.navbar .navbar-left .nav-link {
+    float: left;
+}
+
+
+.navbar .navbar-brand,
+.navbar .nav-link {
+    float: left;
+    color: #e7e7e7;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.navbar .nav-link:hover {
+    background-color: #bdca0a7c;
+    color: black;
+}
+
+/* Active link styling */
+.navbar .nav-link.active {
+    background-color: #cabd0aa6; /* Highlight color for active link */
+    color: black;
+    font:bold;
+}
+
+
+/***** Login Screen ****/
+
+/* Background for the login page */
+.login-background {
+    background-color: #f0f0f0; /* Light gray background color */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px; /* Optional padding */
+}
+
+/* Center the login form */
+.login-form {
+    background-color: white; /* Form background color */
+    padding: 20px; /* Padding inside the form */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+    width: 300px; /* Set a width for the form */
+}
+
+
+/**** Profile Screen ****/
+
+/* Profile page container */
+.profile-container {
+    display: flex;
+}
+
+/* Sidebar styles */
+.profile-container .sidebar {
+    background-color: #333;
+    position: fixed; /* Fixes the sidebar to the viewport */
+    top: 1; /* Aligns with the top of the viewport */
+    left: 0; /* Aligns with the left of the viewport */
+    width: 300px;
+    padding: 20px;
+    height: 100vh; /* Full height of the viewport */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-nav {
+    list-style-type: none;
+    padding: 0;
+}
+
+.profile-nav .nav-link {
+    display: block;
+    padding: 10px;
+    color: #e7e7e7;
+    font-size: 20px;
+    font:bold;
+    text-decoration: none;
+}
+
+.profile-nav .nav-link:hover {
+    background-color: #bdca0a7c;
+    border-radius: 4px;
+}
+
+
+/**** Projects Screen ****/
+
+
+/* Content area styles */
+.content-area {
+    flex-grow: 1;
+    margin-left: 300px;
+    padding: 20px;
+}
+
+.content-section {
+    margin-bottom: 20px;
+}
+
+
+/**** Style for projects container ****/
+.projects-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.project-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.project-card {
+    width: 250px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.project-card h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.project-card p {
+    margin: 5px 0;
+}
+
+
+
+
+/****Create Project****/
+
+
+.container {
+    max-width: 600px;
+}
+
+h2 {
+    color: #333;
+}
+
+.form-control {
+    margin-bottom: 10px;
+}
+
+.text-danger {
+    font-size: 0.9em;
+    color: red;
+}

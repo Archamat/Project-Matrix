@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="profile-container">
+    <!-- Left Sidebar -->
+    <div class="sidebar">
+        <ul class="profile-nav">
+            <li><a href="#personal-info" class="nav-link">Personal Info</a></li>
+            <li><a href="#skills" class="nav-link">Skills</a></li>
+            <li><a href="#experience" class="nav-link">Experience</a></li>
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+        </ul>
+    </div>
+
+    <!-- Right Content Area -->
+    <div class="content-area">
+        <h2>Profile Information</h2>
+        <div id="personal-info" class="content-section">
+            <h3>Personal Information</h3>
+            <!-- Add personal info content here -->
+        </div>
+        <div id="skills" class="content-section">
+            <h3>Skills</h3>
+            <!-- Add skills content here -->
+        </div>
+        <!-- More sections as needed -->
+    </div>
+</div>
+{% endblock %}

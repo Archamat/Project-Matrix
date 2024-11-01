@@ -1,0 +1,16 @@
+<nav class="navbar">
+    <!-- Navbar Brand and Toggler -->
+    <!-- Navbar Links -->
+    <div class="navbar-left">
+        <a class="nav-link {% if current_page == 'home' %}active{% endif %}" href="./">Home</a>
+        <a class="nav-link {% if current_page == 'projects' %}active{% endif %}" href="./projects">Projects</a>
+    </div>
+    <div class="navbar-right">
+        {% if current_user.is_authenticated %}
+            <a class="nav-link {% if current_page == 'profile' %}active{% endif %}" href="./profile">Profile</a> 
+            <a class="nav-link {% if current_page == 'logout' %}active{% endif %}" href="./logout">Logout</a>
+        {% else %}
+            <a class="nav-link {% if current_page == 'auth.login' %}active{% endif %}" href="./login">Login</a>
+        {% endif %}
+    </div>
+</nav>
