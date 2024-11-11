@@ -18,6 +18,6 @@ def handle_register():
         db.session.commit()
 
         flash('Registration successful!')
-        return redirect(url_for('main.login'))
+        return redirect(url_for('auth.login'))
 
     return render_template('register.html')
