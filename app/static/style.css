@@ -168,3 +168,55 @@ h2 {
     font-size: 0.9em;
     color: red;
 }
+
+
+/* Dashboard Styles */
+.dashboard-container {
+    padding: 20px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+}
+
+.navbar .navbar-brand img {
+    height: 40px;
+}
+
+.navbar .navbar-middle {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.projects-section {
+    margin-top: 20px;
+}
+
+.project-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.project-card {
+    background-color: #fff;
+    padding: 15px;
+    border: 1px solid #ddd;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    width: 250px;
+}
+
+.project-card h3 {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.project-card p {
+    margin: 5px 0;
+}
