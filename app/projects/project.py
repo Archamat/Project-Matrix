@@ -2,6 +2,7 @@ from flask import render_template, redirect, url_for, flash
 from .forms import ProjectCreationForm
 from .models import Project
 from app.extensions import db
+from flask_login import current_user
 
 def handle_project_create():
     form = ProjectCreationForm()
@@ -12,6 +13,7 @@ def handle_project_create():
         sector = form.sector.data
         people_count = form.people_count.data
         skills = form.skills.data
+        creator = current_user
 
         # Append custom skill if "Other" is selected
         if 'Other' in skills and form.other_skill.data:
@@ -20,7 +22,7 @@ def handle_project_create():
         skills_str = ', '.join(skills)  # Convert list to comma-separated string
 
         # Create and save project
-        project = Project(name=name, description=description, sector=sector, people_count=people_count, skills=skills_str)
+        project = Project(name=name, description=description, sector=sector, people_count=people_count, skills=skills_str, creator=creator)
         db.session.add(project)
         db.session.commit()
 

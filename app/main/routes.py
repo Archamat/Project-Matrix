@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template
+from app.projects.models import Project
 
 main = Blueprint('main', __name__)
 
 @main.route('/')
 def home():
-    return render_template('home.html', current_page='home')
+    projects = Project.query.order_by(Project.id.desc()).all()
+    return render_template('home.html', current_page='home', projects=projects)
 
 

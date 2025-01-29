@@ -1,16 +1,152 @@
-<nav class="navbar">
-    <!-- Navbar Brand and Toggler -->
-    <!-- Navbar Links -->
-    <div class="navbar-left">
-        <a class="nav-link {% if current_page == 'home' %}active{% endif %}" href="./">Home</a>
-        <a class="nav-link {% if current_page == 'projects' %}active{% endif %}" href="./projects">Projects</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title|default('Project Matrix') }}</title>
+    <style>
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: white;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .nav-left, .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #282828;
+            padding: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #666;
+        }
+
+        .nav-link.active {
+            color: #05CE78;
+            font-weight: 500;
+        }
+
+        /* Search Bar Styles */
+        .search-container {
+            flex: 1;
+            max-width: 400px;
+            margin: 0 2rem;
+        }
+
+        .search-form {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 8px 12px 8px 36px;
+            border: 1px solid #e8e8e8;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            color: #666;
+        }
+
+        .nav-wrapper {
+            width: 100%;
+            border-bottom: 1px solid #e8e8e8;
+            background-color: white;
+        }
+
+        .nav-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #05CE78;
+            flex: 0 0 200px;  /* Fixed width for logo section */
+        }
+
+        .search-container {
+            flex: 0 0 400px;  /* Fixed width for search */
+            margin: 0 auto;   /* Center the search container */
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 0 0 200px;  /* Fixed width for right section */
+            justify-content: flex-end;
+        }
+
+        .nav-bottom {
+            background-color: #f7f7f7;
+            padding: 0.5rem;
+            text-align: center;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-wrapper">
+        <!-- Top Row -->
+        <div class="nav-top">
+            <a href="/" class="logo">Project Matrix</a>
+            
+            <!-- Search Bar -->
+            {% include '_searchbar.html' %}
+            
+            <div class="nav-right">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('project.create_project') }}" class="create-project-btn">Create Project</a>
+                    <div class="settings-dropdown">
+                        <a class="nav-link">Settings</a>
+                        <div class="settings-content">
+                            <a href="{{ url_for('profile.show_profile') }}" class="settings-item">Profile</a>
+                            <a href="{{ url_for('auth.logout') }}" class="settings-item">Logout</a>
+                        </div>
+                    </div>
+                {% else %}
+                    <a class="nav-link {% if current_page == 'auth.login' %}active{% endif %}" href="{{ url_for('auth.login') }}">Login</a>
+                    <a class="nav-link {% if current_page == 'auth.register' %}active{% endif %}" href="{{ url_for('auth.register') }}">Register</a>
+                {% endif %}
+            </div>
+        </div>  <!-- Properly close nav-top -->
+    
+        <!-- Bottom Row - Categories -->
+        <div class="nav-bottom">
+            <div class="categories">
+                <a class="nav-link {% if current_page == 'category1' %}active{% endif %}" href="./category1">Category 1</a>
+                <a class="nav-link {% if current_page == 'category2' %}active{% endif %}" href="./category2">Category 2</a>
+            </div>
+        </div>
     </div>
-    <div class="navbar-right">
-        {% if current_user.is_authenticated %}
-            <a class="nav-link {% if current_page == 'profile' %}active{% endif %}" href="./profile">Profile</a> 
-            <a class="nav-link {% if current_page == 'logout' %}active{% endif %}" href="./logout">Logout</a>
-        {% else %}
-            <a class="nav-link {% if current_page == 'auth.login' %}active{% endif %}" href="./login">Login</a>
-        {% endif %}
-    </div>
-</nav>

@@ -4,26 +4,61 @@
 <div class="profile-container">
     <!-- Left Sidebar -->
     <div class="sidebar">
-        <ul class="profile-nav">
-            <li><a href="#personal-info" class="nav-link">Personal Info</a></li>
-            <li><a href="#skills" class="nav-link">Skills</a></li>
-            <li><a href="#experience" class="nav-link">Experience</a></li>
-            <li><a href="#projects" class="nav-link">Projects</a></li>
+        <ul class="sidebar-nav">
+            <li><a href="#personal-info" class="sidebar-link active">Personal Info</a></li>
+            <li><a href="#skills" class="sidebar-link">Skills</a></li>
+            <li><a href="#created-projects" class="sidebar-link">Created Projects</a></li>
         </ul>
     </div>
 
     <!-- Right Content Area -->
     <div class="content-area">
-        <h2>Profile Information</h2>
-        <div id="personal-info" class="content-section">
+        <div id="personal-info" class="content-section active">
             <h3>Personal Information</h3>
-            <!-- Add personal info content here -->
+            <!-- Personal info content -->
         </div>
+        
         <div id="skills" class="content-section">
             <h3>Skills</h3>
-            <!-- Add skills content here -->
+            <!-- Skills content -->
         </div>
-        <!-- More sections as needed -->
+        
+        <div id="created-projects" class="content-section">
+            <h3>Created Projects</h3>
+            <div class="projects-grid">
+                {% if user.projects %}
+                    {% for project in user.projects %}
+                        {% include 'project_card.html' %}
+                    {% endfor %}
+                {% else %}
+                    <p>No projects created yet.</p>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Remove active class from all links and sections
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            contentSections.forEach(s => s.classList.remove('active'));
+            
+            // Add active class to clicked link
+            link.classList.add('active');
+            
+            // Show corresponding section
+            const targetId = link.getAttribute('href').substring(1);
+            document.getElementById(targetId).classList.add('active');
+        });
+    });
+});
+</script>
 {% endblock %}

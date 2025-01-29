@@ -1,0 +1,11 @@
+<div class="project-card">
+    <h3 class="project-title">{{ project.name }}</h3>
+    <div class="project-meta">
+        <span class="people-count">{{ project.people_count }} people needed</span>
+        <span class="sector">{{ project.sector }}</span>
+    </div>
+    {% if project.description %}
+        <p class="project-description">{{ project.description[:100] }}...</p>
+    {% endif %}
+    <a href="{{ url_for('project.project_detail', project_id=project.id) }}" class="project-link">View Details</a>
+</div>
