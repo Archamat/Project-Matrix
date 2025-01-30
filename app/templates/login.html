@@ -1,27 +1,39 @@
-<!-- templates/login.html -->
 {% extends 'base.html' %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-    <div class="login-background"> <!-- This will be the flex container -->
-        <div class="login-container">  <!-- This is your form container -->
+    <div class="login-background">
+        <div class="login-container">
             <h2>Login</h2>
-                <form action="./login" method="POST">
-                    <div class="form-group">
-                        <label for="username">Username:</label><br>
-                        <input type="text" id="username" name="username"  placeholder="Enter your Username" class="form-control" required><br><br>
-                    </div>
-                
-                    <div class="form-group">
-                        <label for="password">Password:</label><br>
-                        <input type="password" id="password" name="password"  placeholder="Enter your Password" class="form-control" required><br><br>
-                    </div>
-                
-                    <input type="submit" value="Login" class="btn btn-primary">
-                </form>
+            <form action="./login" method="POST">
+                <div class="form-group">
+                    <label for="username">Username:</label><br>
+                    <input type="text" id="username" name="username" placeholder="Enter your Username" class="form-control" required><br><br>
+                </div>
             
-                <p>Don't have an account? <a href="./register">Register here</a></p>
+                <div class="form-group">
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="password" name="password" placeholder="Enter your Password" class="form-control" required><br><br>
+                </div>
+            
+                <input type="submit" value="Login" class="btn btn-primary">
+            </form>
+
+            <!-- Add divider -->
+            <div class="divider">
+                <span>or</span>
+            </div>
+            
+            <!-- Google login button -->
+            <div class="oauth-buttons">
+                <a href="{{ url_for('google.login') }}" class="google-btn">
+                    <img src="{{ url_for('static', filename='images/google-icon.png') }}" alt="Google Icon">
+                    Login with Google
+                </a>
+            </div>
+            
+            <p>Don't have an account? <a href="./register">Register here</a></p>
         </div>
     </div>
 {% endblock %}

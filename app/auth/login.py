@@ -15,4 +15,4 @@ def handle_login():
         else:
             flash('Login failed, please check your username and password')
 
-    return render_template('login.html' , current_page='auth.login')
+    return render_template('login.html' , current_page='google.login')

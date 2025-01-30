@@ -113,6 +113,67 @@
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
     width: 300px; /* Set a width for the form */
 }
+/* ...existing code... */
+
+/* OAuth Buttons */
+.oauth-buttons {
+    margin-top: 1rem;
+}
+
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    color: #757575;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.google-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.google-btn img {
+    width: 18px;
+    height: 18px;
+}
+
+.divider {
+    text-align: center;
+    margin: 20px 0;
+    position: relative;
+}
+
+.divider::before,
+.divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 45%;
+    height: 1px;
+    background-color: #ddd;
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+.divider span {
+    background-color: white;
+    padding: 0 10px;
+    color: #757575;
+    font-size: 14px;
+}
 
 
 /**** Profile Screen ****/

@@ -136,8 +136,8 @@
                         </div>
                     </div>
                 {% else %}
-                    <a class="nav-link {% if current_page == 'auth.login' %}active{% endif %}" href="{{ url_for('auth.login') }}">Login</a>
-                    <a class="nav-link {% if current_page == 'auth.register' %}active{% endif %}" href="{{ url_for('auth.register') }}">Register</a>
+                    <a class="nav-link {% if current_page == 'google.login' %}active{% endif %}" href="{{ url_for('google.login') }}">Login</a>
+                    <a class="nav-link {% if current_page == 'google.authorized' %}active{% endif %}" href="{{ url_for('google.authorized') }}">Register</a>
                 {% endif %}
             </div>
         </div>  <!-- Properly close nav-top -->
