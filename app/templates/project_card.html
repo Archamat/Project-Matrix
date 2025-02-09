@@ -1,11 +1,36 @@
 <div class="project-card">
-    <h3 class="project-title">{{ project.name }}</h3>
-    <div class="project-meta">
-        <span class="people-count">{{ project.people_count }} people needed</span>
-        <span class="sector">{{ project.sector }}</span>
+    <div class="category-band {{ project.sector.lower() }}">
+        {{ project.sector }}
     </div>
-    {% if project.description %}
-        <p class="project-description">{{ project.description[:100] }}...</p>
-    {% endif %}
-    <a href="{{ url_for('project.project_detail', project_id=project.id) }}" class="project-link">View Details</a>
+    <div class="card-content">
+        <div class="card-header">
+            <span class="section-label">Project Name</span>
+            <h3 class="project-title">{{ project.name }}</h3>
+        </div>
+        
+        <div class="project-meta">
+            <span class="section-label">People Needed</span>
+            <span class="people-count">
+                <i class="fas fa-users"></i>
+                {{ project.people_count }}
+            </span>
+        </div>
+        
+        {% if project.description %}
+        <div class="description-section">
+            <span class="section-label">Description</span>
+            <p class="project-description">{{ project.description[:150] }}...</p>
+        </div>
+        {% endif %}
+        
+        <div class="skills-section">
+            <span class="section-label">Required Skills</span>
+            <div class="skills-list">
+                {% for skill in project.skills.split(',') %}
+                    <span class="skill-tag">{{ skill.strip() }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        <a href="{{ url_for('project.project_detail', project_id=project.id) }}" class="project-link">View Details</a>
+    </div>
 </div>

@@ -118,13 +118,9 @@
 </head>
 <body>
     <div class="nav-wrapper">
-        <!-- Top Row -->
         <div class="nav-top">
             <a href="/" class="logo">Project Matrix</a>
-            
-            <!-- Search Bar -->
             {% include '_searchbar.html' %}
-            
             <div class="nav-right">
                 {% if current_user.is_authenticated %}
                     <a href="{{ url_for('project.create_project') }}" class="create-project-btn">Create Project</a>
@@ -140,9 +136,7 @@
                     <a class="nav-link {% if current_page == 'auth.register' %}active{% endif %}" href="{{ url_for('auth.register') }}">Register</a>
                 {% endif %}
             </div>
-        </div>  <!-- Properly close nav-top -->
-    
-        <!-- Bottom Row - Categories -->
+        </div>
         <div class="nav-bottom">
             <div class="categories">
                 <a class="nav-link {% if current_page == 'category1' %}active{% endif %}" href="./category1">Category 1</a>
@@ -150,3 +144,5 @@
             </div>
         </div>
     </div>
+</body>
+</html>
