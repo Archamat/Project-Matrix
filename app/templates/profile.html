@@ -7,7 +7,14 @@
         <ul class="sidebar-nav">
             <li><a href="#personal-info" class="sidebar-link active">Personal Info</a></li>
             <li><a href="#skills" class="sidebar-link">Skills</a></li>
-            <li><a href="#created-projects" class="sidebar-link">Created Projects</a></li>
+            <li class="has-submenu">
+                <a href="#projects" class="sidebar-link">Projects</a>
+                <ul class="submenu">
+                    <li><a href="#created-projects" class="sidebar-link submenu-link">Created Projects</a></li>
+                    <li><a href="#active-projects" class="sidebar-link submenu-link">Active Projects</a></li>
+                    <li><a href="#favorite-projects" class="sidebar-link submenu-link">Favorite Projects</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 
@@ -23,6 +30,19 @@
             <!-- Skills content -->
         </div>
         
+        <div id="projects" class="content-section">
+            <h3>Projects</h3>
+            <div class="projects-grid">
+                {% if user.projects %}
+                    {% for project in user.projects %}
+                        {% include 'project_card.html' %}
+                    {% endfor %}
+                {% else %}
+                    <p>No projects created yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
         <div id="created-projects" class="content-section">
             <h3>Created Projects</h3>
             <div class="projects-grid">
@@ -34,6 +54,16 @@
                     <p>No projects created yet.</p>
                 {% endif %}
             </div>
+        </div>
+
+        <div id="active-projects" class="content-section">
+            <h3>Active Projects</h3>
+            <p>Coming soon...</p>
+        </div>
+
+        <div id="favorite-projects" class="content-section">
+            <h3>Favorite Projects</h3>
+            <p>Coming soon...</p>
         </div>
     </div>
 </div>
