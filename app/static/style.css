@@ -234,6 +234,7 @@
     --web-gradient: linear-gradient(135deg, #3949ab, #1e88e5);
     --mobile-gradient: linear-gradient(135deg, #43a047, #00acc1);
     --ai-gradient: linear-gradient(135deg, #8e24aa, #5e35b1);
+    --embedded-gradient: linear-gradient(135deg, #f57c00, #ff6f00);
     --data-gradient: linear-gradient(135deg, #00897b, #00acc1);
     
     /* Remove duplicate neutrals and semantics */
@@ -402,7 +403,25 @@
 }
 
 .join-button:hover {
-    background: var(--success-600);
+    background: var(--primary-700);
+}
+
+/* Applicant Button */
+.applicant-button {
+    flex: 1;
+    padding: 8px 12px;
+    background: var(--warning-500);
+    color: white;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.applicant-button:hover {
+    background: var(--primary-700);
 }
 
 

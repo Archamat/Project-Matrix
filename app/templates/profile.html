@@ -29,26 +29,15 @@
             <h3>Skills</h3>
             <!-- Skills content -->
         </div>
-        
-        <div id="projects" class="content-section">
-            <h3>Projects</h3>
-            <div class="projects-grid">
-                {% if user.projects %}
-                    {% for project in user.projects %}
-                        {% include 'project_card.html' %}
-                    {% endfor %}
-                {% else %}
-                    <p>No projects created yet.</p>
-                {% endif %}
-            </div>
-        </div>
 
         <div id="created-projects" class="content-section">
             <h3>Created Projects</h3>
             <div class="projects-grid">
                 {% if user.projects %}
                     {% for project in user.projects %}
-                        {% include 'project_card.html' %}
+                        {% with is_creator=True %}
+                            {% include 'project_card.html' %}
+                        {% endwith %}
                     {% endfor %}
                 {% else %}
                     <p>No projects created yet.</p>

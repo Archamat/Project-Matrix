@@ -33,7 +33,11 @@
         </div>
         <div class="card-actions">
             <a href="{{ url_for('project.project_detail', project_id=project.id) }}" class="project-link">View Details</a>
-            <button class="join-button">Request to Join</button>
+            {% if is_creator %}
+                <button class="applicant-button">Applicant List</button>
+            {% else %}
+                <button class="join-button">Request to Join</button>
+            {% endif %}
         </div>
     </div>
 </div>

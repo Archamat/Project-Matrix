@@ -2,7 +2,9 @@
     <h2>Available Projects</h2>
     <div class="project-grid">
         {% for project in projects %}
-            {% include '/project_card.html' %}
+            {% with is_creator=(project.creator_id == current_user.id) %}
+                {% include '/project_card.html' %}
+            {% endwith %}
         {% else %}
             <p>No projects available.</p>
         {% endfor %}
