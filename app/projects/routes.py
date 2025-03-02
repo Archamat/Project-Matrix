@@ -1,9 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template
 from flask_login import login_required
-from .project import handle_project_create
+from .project import handle_project_create, handle_apply_project, handle_project_applicants
 from .models import Project
-from app.extensions import db
-
 project = Blueprint('project', __name__)
 
 @project.route('/projects')
@@ -20,3 +18,13 @@ def project_detail(project_id):
 @login_required
 def create_project():
     return handle_project_create()
+
+@project.route('/apply/<int:project_id>', methods=['GET', 'POST'])
+@login_required
+def apply_project(project_id):
+    return handle_apply_project(project_id)
+
+@project.route('/project/<int:project_id>/applicants')
+@login_required
+def project_applicants(project_id):
+    return handle_project_applicants(project_id)

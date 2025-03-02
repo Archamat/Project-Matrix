@@ -12,3 +12,13 @@ class ProjectCreationForm(FlaskForm):
     ], validators=[DataRequired()])
     other_skill = StringField('Other Skill')  # Additional field for custom skill input
     submit = SubmitField('Create Project')
+
+class ApplicationForm(FlaskForm):
+    information = TextAreaField('About Yourself', validators=[DataRequired()])
+    skills = SelectMultipleField('Skills', choices=[
+        ('C', 'C'), ('C++', 'C++'), ('C#', 'C#'), 
+        ('Python', 'Python'), ('Java', 'Java'), ('Other', 'Other')
+    ], validators=[DataRequired()])
+    other_skill = StringField('Other Skill')
+    contact_info = StringField('Contact Information (Optional)')
+    submit = SubmitField('Submit Application')
