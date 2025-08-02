@@ -5,7 +5,7 @@
     <!-- Left Sidebar -->
     <div class="sidebar">
         <ul class="sidebar-nav">
-            <li><a href="#personal-info" class="sidebar-link active">Personal Info</a></li>
+            <li><a href="#personal-info" class="sidebar-link active">Account Details</a></li>
             <li><a href="#skills" class="sidebar-link">Skills</a></li>
             <li class="has-submenu">
                 <a href="#projects" class="sidebar-link">Projects</a>
@@ -21,10 +21,37 @@
     <!-- Right Content Area -->
     <div class="content-area">
         <div id="personal-info" class="content-section active">
-            <h3>Personal Information</h3>
-            <!-- Personal info content -->
+            <h3>Account Details</h3>
+            <!-- Account details content -->
+            <div class="account-details" id="account-details">
+                <p><strong>Username:</strong> {{ user.username }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Contact Info:</strong> {{ user.contact_info or 'Not provided' }}</p>
+                <button type="button" class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
         </div>
-        
+
+        <div class="info-edit" id="info-edit" style="display: none;">
+            <form method="POST" action="{{ url_for('profile.update_profile_info') }}">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                </div>
+                <div class="form-group">
+                    <label for="contact_info">Contact Info</label>
+                    <input type="text" class="form-control" id="contact_info" name="contact_info" value="{{ user.contact_info }}">
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="btn btn-success">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
+                </div>
+                
+            </form>
+        </div>
+
         <div id="skills" class="content-section">
             <h3>Skills</h3>
             <!-- Skills content -->
@@ -79,5 +106,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Add this function to toggle between view and edit modes
+function toggleEditMode() {
+    const accountDetails = document.getElementById('account-details');
+    const infoEdit = document.getElementById('info-edit');
+    
+    if (infoEdit.style.display === 'none') {
+        accountDetails.style.display = 'none';
+        infoEdit.style.display = 'block';
+    } else {
+        accountDetails.style.display = 'block';
+        infoEdit.style.display = 'none';
+    }
+}
+
 </script>
 {% endblock %}
