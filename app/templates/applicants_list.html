@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="applicants-container">
+    <h2>Applicants for {{ project.name }}</h2>
+    
+    {% if project.applications %}
+        <div class="applicants-list">
+            {% for application in project.applications %}
+                <div class="applicant-card">
+                    <div class="applicant-header">
+                        <h3>{{ application.applicant.username }}</h3>
+                        <span class="application-date">Applied on: {{ application.created_at.strftime('%Y-%m-%d') }}</span>
+                    </div>
+                    
+                    <div class="applicant-info">
+                        <h4>About</h4>
+                        <p>{{ application.information }}</p>
+                    </div>
+                    
+                    <div class="applicant-skills">
+                        <h4>Skills</h4>
+                        <div class="skills-list">
+                            {% for skill in application.skills.split(',') %}
+                                <span class="skill-tag">{{ skill.strip() }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    {% if application.contact_info %}
+                        <div class="contact-info">
+                            <h4>Contact Information</h4>
+                            <p>{{ application.contact_info }}</p>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No applications yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

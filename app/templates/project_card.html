@@ -31,6 +31,114 @@
                 {% endfor %}
             </div>
         </div>
-        <a href="{{ url_for('project.project_detail', project_id=project.id) }}" class="project-link">View Details</a>
+        <div class="card-actions">
+            <a href="{{ url_for('project.project_detail', project_id=project.id) }}" class="project-link">View Details</a>
+            {% if is_creator %}
+                <button onclick="showApplicants('{{ project.id }}')" class="applicant-button">Applicant List</button>
+                
+                <!-- Popup Modal -->
+                <div id="applicantModal{{ project.id }}" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Applicants</h3>
+                            <span class="close-button" onclick="closeModal('{{ project.id }}')">&times;</span>
+                        </div>
+                        <div class="applicant-preview-list">
+                            {% if project.applications %}
+                                {% for application in project.applications %}
+                                <div class="applicant-preview">
+                                    <div class="applicant-name">{{ application.applicant.username }}</div>
+                                    <div class="preview-skills">
+                                        {% for skill in application.skills.split(',')[:2] %}
+                                            <span class="skill-tag">{{ skill.strip() }}</span>
+                                        {% endfor %}
+                                        {% if application.skills.split(',')|length > 2 %}
+                                            <span class="more-skills">+{{ application.skills.split(',')|length - 2 }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <a href="{{ url_for('project.project_applicants', project_id=project.id) }}" 
+                                       class="view-details-btn">View Details</a>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="no-applicants">No applicants yet</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <a href="{{ url_for('project.apply_project', project_id=project.id) }}" class="join-button">Request to Join</a>
+            {% endif %}
+        </div>
     </div>
 </div>
+
+<script>
+function showApplicants(projectId) {
+    const modal = document.getElementById(`applicantModal${projectId}`);
+    const card = modal.closest('.project-card');
+    const modalBackdrop = document.createElement('div');
+    modalBackdrop.className = 'modal-backdrop';
+    document.body.appendChild(modalBackdrop);
+    
+    // Get card position
+    const cardRect = card.getBoundingClientRect();
+    const modalRect = modal.getBoundingClientRect();
+    
+    // Position modal next to card
+    modal.style.position = 'fixed';
+    modal.style.top = `${cardRect.top}px`;
+    modal.style.left = `${cardRect.right + 20}px`;
+    modal.style.maxHeight = '40vh';
+    modal.style.overflowY = 'auto';
+    
+    // Show modal and backdrop
+    modal.style.display = "block";
+    //modalBackdrop.style.display = "block";
+    
+    // Add mouse move event listener to check buffer zone
+    function handleMouseMove(event) {
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+        
+        // Define buffer zone
+        const bufferSize = 2000; // 20px buffer
+        const isInBuffer = mouseX >= cardRect.right && 
+                          mouseX <= modalRect.left + bufferSize &&
+                          mouseY >= cardRect.top - bufferSize && 
+                          mouseY <= cardRect.bottom + bufferSize;
+                          
+        const isOverCard = mouseX >= cardRect.left && 
+                          mouseX <= cardRect.right && 
+                          mouseY >= cardRect.top && 
+                          mouseY <= cardRect.bottom;
+                          
+        const isOverModal = mouseX >= modalRect.left && 
+                           mouseX <= modalRect.right && 
+                           mouseY >= modalRect.top && 
+                           mouseY <= modalRect.bottom;
+        
+        if (!isOverCard && !isOverModal && !isInBuffer) {
+            closeModal(projectId);
+            card.style.transform = '';
+            document.removeEventListener('mousemove', handleMouseMove);
+        }
+    }
+
+    // Add listener for mouse movement
+    document.addEventListener('mousemove', handleMouseMove);
+    
+    // Prevent project card hover effect while modal is open
+    card.style.transform = 'none';
+}
+
+function closeModal(projectId) {
+    const modal = document.getElementById(`applicantModal${projectId}`);
+    const modalBackdrop = document.querySelector('.modal-backdrop');
+    
+    modal.style.display = "none";
+    if (modalBackdrop) {
+        modalBackdrop.remove();
+    }
+}
+</script>
