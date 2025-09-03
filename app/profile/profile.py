@@ -37,6 +37,7 @@ def update_profile():
             current_user.email = email
             current_user.contact_info = contact_info
             current_user.avatar_url = request.form.get("avatar_url").strip()
+            current_user.bio = (request.form.get("bio") or "").strip()
             # Commit changes to database
             db.session.commit()
             
