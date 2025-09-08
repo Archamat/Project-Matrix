@@ -8,7 +8,8 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
     contact_info = db.Column(db.String(256), nullable=True)
-
+    avatar_url = db.Column(db.String(256), nullable=True)
+    bio = db.Column(db.Text, nullable=True)
     # Method to hash the password
     def set_password(self, password):
         self.password = generate_password_hash(password)

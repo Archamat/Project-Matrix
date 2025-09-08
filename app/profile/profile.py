@@ -14,7 +14,7 @@ def update_profile():
             username = request.form.get('username')
             email = request.form.get('email')
             contact_info = request.form.get('contact_info')
-            
+            avatar_url = request.form.get('avatar_url')
             # Validate required fields
             if not username or not email:
                 flash('Username and email are required.', 'error')
@@ -36,7 +36,8 @@ def update_profile():
             current_user.username = username
             current_user.email = email
             current_user.contact_info = contact_info
-            
+            current_user.avatar_url = request.form.get("avatar_url").strip()
+            current_user.bio = (request.form.get("bio") or "").strip()
             # Commit changes to database
             db.session.commit()
             
