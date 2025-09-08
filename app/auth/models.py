@@ -1,6 +1,7 @@
 from ..extensions import db
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from app.aws.s3 import presigned_get_url
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,6 +10,11 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(256), nullable=False)
     contact_info = db.Column(db.String(256), nullable=True)
     avatar_url = db.Column(db.String(256), nullable=True)
+    @property
+    def avatar_presigned(self):
+        if not self.avatar_url:
+            return None
+        return presigned_get_url(self.avatar_url, 3600)
     bio = db.Column(db.Text, nullable=True)
     # Method to hash the password
     def set_password(self, password):
