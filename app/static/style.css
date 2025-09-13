@@ -217,20 +217,9 @@ body {
     background-color: #f0f0f0; /* Light gray background color */
     display: flex;
     justify-content: center;
-    align-items: center;
     flex-direction: column;
     padding: 20px; /* Optional padding */
 }
-
-/* Center the login form */
-.login-form {
-    background-color: white; /* Form background color */
-    padding: 20px; /* Padding inside the form */
-    border-radius: 5px; /* Rounded corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
-    width: 300px; /* Set a width for the form */
-}
-
 
 /**** Profile Screen ****/
 
@@ -264,54 +253,10 @@ body {
     margin: 0;
 }
 
-.sidebar-link {
-    display: block;
-    padding: 0.75rem 1rem;
-    color: #e7e7e7;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: all 0.2s;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.sidebar-link:hover,
-.sidebar-link.active {
-    background-color: #bdca0a7c;
-    color: white;
-}
-
-/* Add to existing sidebar styles */
-.has-submenu {
-    position: relative;
-}
-
-.submenu {
+.content-section {
     display: none;
-    list-style: none;
-    padding-left: 1.5rem;
-    margin-top: 0.5rem;
-}
-
-.has-submenu:hover .submenu {
-    display: block;
-}
-
-.submenu-link {
-    font-size: 0.9rem !important;
-    padding: 0.5rem 1rem !important;
-    color: #e7e7e7;
-    opacity: 0.8;
-}
-
-.submenu-link:hover,
-.submenu-link.active {
-    opacity: 1;
-    background-color: rgba(189, 202, 10, 0.3) !important;
-}
-
-.content-area { 
-  min-width: 0;           /* prevents overflow with long content */
+    margin-left: 270px; /* Adjust based on sidebar width */
+    padding: 20px;
 }
 
 .content-section {
@@ -666,15 +611,6 @@ body {
     --error-500: #f44336;
 }
 
-/* Project Cards Layout */
-.project-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 24px;
-    padding: 32px;
-    background: var(--gray-50);
-}
-
 /* Project Card */
 .project-card {
     background: white;
@@ -1013,8 +949,10 @@ body {
 /****Create Project****/
 
 
-.create-project.container {
-    max-width: 600px;
+.container {
+    display: flex;
+    max-width: 1440px;
+    justify-content: center;
 }
 
 h2 {
@@ -1030,10 +968,10 @@ h2 {
     color: red;
 }
 
-
 /* Dashboard Styles */
 .dashboard-container {
     max-width: 1400px;
+    width: 100%;       /* Force container to use full available width */
     margin: 0 auto;
     padding: 2rem;
 }
@@ -1056,14 +994,20 @@ h2 {
 
 /* Two Column Grid */
 .dashboard-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
+    display: flex;
     gap: 2rem;
+    align-items: flex-start; /* Align to top */
 }
 
 /* Main Column */
 .main-column {
-    min-height: 600px;
+    flex: 2; /* Takes 4 parts of available space */
+    min-width: 0; /* Important: allows flex item to shrink below content size */
+}
+
+.sidebar-column {
+    flex: 1; /* Takes 1 part of available space */
+    min-width: 300px; /* Minimum sidebar width */
 }
 
 .section-header {
@@ -1091,13 +1035,6 @@ h2 {
     background: var(--primary-50);
 }
 
-/* Dashboard Project Cards - Two Column Layout */
-.project-cards-dashboard {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-}
-
 /* Sidebar Column */
 .sidebar-column {
     display: flex;
@@ -1106,7 +1043,6 @@ h2 {
 }
 
 /* Widget Base Styles */
-.stats-widget,
 .quick-actions-widget,
 .recent-projects-widget {
     background: white;
@@ -1249,10 +1185,6 @@ h2 {
 @media (max-width: 1200px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
-    }
-    
-    .project-cards-dashboard {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
     
     .stats-grid {

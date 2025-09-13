@@ -7,7 +7,7 @@
     <!-- Welcome Header -->
     <div class="dashboard-header">
         <h1>Welcome{% if current_user.is_authenticated %}, {{ current_user.username }}{% endif %}!</h1>
-        <p class="dashboard-subtitle">Discover amazing projects and collaborate with talented developers</p>
+        <p class="dashboard-subtitle">Rabbab</p>
     </div>
     
     <!-- Two Column Layout -->
@@ -19,7 +19,7 @@
                 <a href="{{ url_for('project.projects') }}" class="view-all-btn">View All</a>
             </div>
             
-            <div class="project-cards-dashboard">
+            <div class="projects-grid">
                 {% for project in projects %}
                     {% with is_creator=(current_user.is_authenticated and project.creator_id == current_user.id) %}
                         {% include 'project_card.html' %}
@@ -35,23 +35,6 @@
         
         <!-- Right Column: Sidebar with Stats and Activity -->
         <div class="sidebar-column">
-            <!-- Quick Stats -->
-            <div class="stats-widget">
-                <h3>Quick Stats</h3>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <span class="stat-number">{{ projects|length }}</span>
-                        <span class="stat-label">Available Projects</span>
-                    </div>
-                    {% if current_user.is_authenticated %}
-                    <div class="stat-item">
-                        <span class="stat-number">{{ user_projects|length }}</span>
-                        <span class="stat-label">Your Projects</span>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-            
             <!-- Quick Actions -->
             {% if current_user.is_authenticated %}
             <div class="quick-actions-widget">
