@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<body class="theme-dark">
 <div class="profile-container">
+    
     <!-- Left Sidebar -->
+     
     <div class="sidebar">
         <ul class="sidebar-nav">
             <li><a href="#personal-info" class="sidebar-link active">Account Details</a></li>
@@ -18,7 +20,7 @@
             </li>
         </ul>
     </div>
-
+    
     <!-- Right Content Area -->
     <div class="content-area">
         <div id="personal-info" class="content-section active" >
@@ -26,23 +28,118 @@
                 Account Details: {{ user.username }}
             </h2>
             <!-- Account details content -->
-            <div class="account-details" id="account-details">
-                <div class="mb-3 text-center">
+            <div class="account-grid" id="account-details">
+                 <!-- Avatar block -->
+                <div class="avatar-block">
                     <img src="{{ user.avatar_presigned or url_for('static', filename='test_avatar.png') }}"
-                        class="rounded-circle"
-                         style="width:200px;height:200px;object-fit:cover;border:2px solid #eee;"
+                        class="avatar"
                         alt="Profile avatar">
                 </div>
                 <hr class="my-3">
-
-                <h5 class="mb-2">Profile Description</h5>
-                    <p class="text-muted" style="white-space: pre-line;">
-                    {{ user.bio or 'No description yet.' }}
-                </p>
-                <p><strong>Username:</strong> {{ user.username }}</p>
-                <p><strong>Email:</strong> {{ user.email }}</p>
-                <p><strong>Contact Info:</strong> {{ user.contact_info or 'Not provided' }}</p>
+                <div class="info-view">
+                    <h3 class="mb-2">Profile Description</h5>
+                        <p class="profile-description" style="white-space: pre-line;">
+                        {{ user.bio or 'No description yet.' }}
+                    </p>
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Contact Info:</strong> {{ user.contact_info or 'Not provided' }}</p>
+            
                 <button type="button" class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
+                <hr class="my-3">
+                </div>
+                <!-- Example Demos Section -->
+                <section id="example-demos" class="demos-section">
+                    <h2 class="section-title">Example Demos</h2>
+
+                    <div class="demo-grid">
+                        <!-- Demo 1 -->
+                        <article class="demo-card">
+                            <a class="demo-title" href="#">SUPERDUPER SONG 1</a>
+                            <div class="demo-audio">
+                                <button class="demo-play" aria-label="Play voice memo">
+                                    <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
+                                    <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
+                                    <span class="demo-time">0:00</span>
+                                </button>
+                                <div class="demo-progress"><div class="demo-progress-bar"></div></div>
+                                <audio preload="metadata" src="{{ url_for('static', filename='memos/matrix_models_intro.mp3') }}"></audio>
+                            </div>
+                            <p class="demo-desc">Short voice note explaining the goal of the demo.</p>
+                            <span class="demo-badge">Public</span>
+                        </article>
+                        <article class="demo-card">
+                            <a class="demo-title" href="#">SUPERDUPER SONG 2</a>
+                            <div class="demo-audio">
+                                <button class="demo-play" aria-label="Play voice memo">
+                                    <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
+                                    <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
+                                    <span class="demo-time">0:00</span>
+                                </button>
+                                <div class="demo-progress"><div class="demo-progress-bar"></div></div>
+                                <audio preload="metadata" src="{{ url_for('static', filename='memos/matrix_models_intro.mp3') }}"></audio>
+                            </div>
+                            <p class="demo-desc">Short voice note explaining the goal of the demo.</p>
+                            <span class="demo-badge">Public</span>
+                        </article>
+                        <article class="demo-card">
+                            <a class="demo-title" href="#">SUPERDUPER SONG 3</a>
+                            <div class="demo-audio">
+                                <button class="demo-play" aria-label="Play voice memo">
+                                    <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
+                                    <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
+                                    <span class="demo-time">0:00</span>
+                                </button>
+                                <div class="demo-progress"><div class="demo-progress-bar"></div></div>
+                                <audio preload="metadata" src="{{ url_for('static', filename='memos/matrix_models_intro.mp3') }}"></audio>
+                            </div>
+                            <p class="demo-desc">Short voice note explaining the goal of the demo.</p>
+                            <span class="demo-badge">Public</span>
+                        </article>
+                        <article class="demo-card">
+                            <a class="demo-title" href="#">SUPERDUPER SONG 4</a>
+                            <div class="demo-audio">
+                                <button class="demo-play" aria-label="Play voice memo">
+                                    <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
+                                    <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
+                                    <span class="demo-time">0:00</span>
+                                </button>
+                                <div class="demo-progress"><div class="demo-progress-bar"></div></div>
+                                <audio preload="metadata" src="{{ url_for('static', filename='memos/matrix_models_intro.mp3') }}"></audio>
+                            </div>
+                            <p class="demo-desc">Short voice note explaining the goal of the demo.</p>
+                            <span class="demo-badge">Public</span>
+                        </article>
+                        <!-- You can copy/paste more demo-card blocks here -->
+                    </div>
+                </section>
+                <section id="skills" class="skills-section">
+                    <h2 class="skills-title">Skills</h2>
+
+                    <!-- Add form -->
+                    <form id="skill-form" class="skill-form" autocomplete="off">
+                        <input type="text" id="instrument" placeholder="Instrument (e.g., Guitar)" required>
+                        <select id="level" required>
+                        <option value="" disabled selected>Experience level</option>
+                        <option>Beginner</option>
+                        <option>Intermediate</option>
+                        <option>Advanced</option>
+                        <option>Expert</option>
+                        </select>
+                        <label class="years-label">
+                        <span>Years:</span>
+                        <input type="number" id="years" min="0" max="50" step="1" value="1" required>
+                        </label>
+                        <button type="submit" class="btn-add">Add</button>
+                    </form>
+
+                    <!-- Skills list -->
+                    <ul id="skills-list" class="skills-list">
+                        <!-- items injected by JS -->
+                    </ul>
+                    </section>
+
+                </div>
             </div>
         </div>      
         <div class="info-edit" id="info-edit" style="display: none;">
@@ -81,11 +178,6 @@
                 </div>
                 
             </form>
-        </div>
-
-        <div id="skills" class="content-section">
-            <h3>Skills</h3>
-            <!-- Skills content -->
         </div>
 
         <div id="created-projects" class="content-section">
