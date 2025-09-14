@@ -216,7 +216,10 @@ body {
 .login-background {
     background-color: #f0f0f0; /* Light gray background color */
     display: flex;
+    max-width: fit-content;
+    margin: 0 auto; /* This centers the shrunk container horizontally */
     justify-content: center;
+    align-items: center;
     flex-direction: column;
     padding: 20px; /* Optional padding */
 }
@@ -949,10 +952,11 @@ body {
 /****Create Project****/
 
 
-.container {
+.create_project_container {
     display: flex;
-    max-width: 1440px;
+    max-width: 100%;
     justify-content: center;
+    flex-direction: column;
 }
 
 h2 {
@@ -1008,6 +1012,8 @@ h2 {
 .sidebar-column {
     flex: 1; /* Takes 1 part of available space */
     min-width: 300px; /* Minimum sidebar width */
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .section-header {
@@ -1033,13 +1039,6 @@ h2 {
 
 .view-all-btn:hover {
     background: var(--primary-50);
-}
-
-/* Sidebar Column */
-.sidebar-column {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
 }
 
 /* Widget Base Styles */

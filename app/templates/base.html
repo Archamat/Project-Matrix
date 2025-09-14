@@ -19,7 +19,7 @@
             {% for category, message in messages %}
                 <div class="alert alert-{{ category }}" role="alert">
                     {{ message }}
-                    <button type="button" class="alert-close" onclick="this.parentElement.style.display='none'">&times;</button>
+                    <button type="button" class="alert-close" aria-label="Close alert">&times;</button>
                 </div>
             {% endfor %}
         {% endif %}
@@ -27,7 +27,26 @@
         {% block content %}{% endblock %}
     </div>
 
-    <!-- Minimal JavaScript (jQuery removed, Bootstrap JS removed) -->
-    <!-- Add custom JS here if needed -->
+    <!-- JavaScript for alert close functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle alert close buttons with smooth animation
+            document.querySelectorAll('.alert-close').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const alert = this.parentElement;
+                    
+                    // Add smooth fade-out animation
+                    alert.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-10px)';
+                    
+                    // Remove element after animation
+                    setTimeout(() => {
+                        alert.style.display = 'none';
+                    }, 300);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
