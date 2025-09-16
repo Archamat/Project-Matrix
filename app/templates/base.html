@@ -13,7 +13,7 @@
     {% include 'navbar.html' %}
 
     <!-- Main Content -->
-    {%block layout %}
+    {% block layout %}
     <div class="container mt-4">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -27,7 +27,7 @@
     {% endwith %}
         {% block content %}{% endblock %}
     </div>
-    {%endblock %}
+    {% endblock %}
 
     <!-- JavaScript for alert close functionality -->
     <script>
