@@ -2,41 +2,73 @@
 
 {% block title %}Dashboard{% endblock %}
 
-{% block content %}
+{% block layout %}
 <div class="dashboard-container">
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="navbar-left">
-            <a class="navbar-brand" href="#">
-                <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="height: 40px;">
-            </a>
-        </div>
-        <div class="navbar-middle">
-            <form class="form-inline">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
-
-    <!-- Projects Section -->
-    <div class="projects-section">
-        <h2>Projects</h2>
-        <div class="project-cards">
-            {% for project in projects %}
-            <div class="project-card">
-                <h3>{{ project.name }}</h3>
-                <p>{{ project.description }}</p>
-                <p><strong>Sector:</strong> {{ project.sector }}</p>
-                <p><strong>People Involved:</strong> {{ project.people_count }}</p>
-                <h4>Required Skills</h4>
-                <ul>
-                    {% for skill in project.skills.split(',') %}
-                    <li>{{ skill.strip() }}</li>
-                    {% endfor %}
-                </ul>
+    <!-- Welcome Header -->
+    <div class="dashboard-header">
+        <h1>Welcome{% if current_user.is_authenticated %}, {{ current_user.username }}{% endif %}!</h1>
+        <p class="dashboard-subtitle">Rabbab</p>
+    </div>
+    
+    <!-- Two Column Layout -->
+    <div class="dashboard-grid">
+        <!-- Left Column: Available Projects -->
+        <div class="main-column">
+            <div class="section-header">
+                <h2>Latest Projects</h2>
+                <a href="{{ url_for('project.projects') }}" class="view-all-btn">View All</a>
             </div>
-            {% endfor %}
+            
+            <div class="projects-grid">
+                {% for project in projects %}
+                    {% with is_creator=(current_user.is_authenticated and project.creator_id == current_user.id) %}
+                        {% include 'project_card.html' %}
+                    {% endwith %}
+                {% else %}
+                    <div class="empty-state">
+                        <p>No projects available yet.</p>
+                        <a href="{{ url_for('project.create_project') }}" class="create-first-btn">Create the First Project</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Right Column: Sidebar with Stats and Activity -->
+        <div class="sidebar-column">
+            <!-- Quick Actions -->
+            {% if current_user.is_authenticated %}
+            <div class="quick-actions-widget">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <a href="{{ url_for('project.create_project') }}" class="action-btn primary">
+                        <i class="fas fa-plus"></i> Create Project
+                    </a>
+                    <a href="{{ url_for('profile.show_profile') }}" class="action-btn secondary">
+                        <i class="fas fa-user"></i> Edit Profile
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Your Recent Projects -->
+            {% if user_projects %}
+            <div class="recent-projects-widget">
+                <h3>Your Recent Projects</h3>
+                <div class="mini-project-list">
+                    {% for project in user_projects[:3] %}
+                    <div class="mini-project-item">
+                        <div class="mini-project-info">
+                            <span class="mini-project-name">{{ project.name }}</span>
+                            <span class="mini-project-sector">{{ project.sector }}</span>
+                        </div>
+                        <a href="{{ url_for('project.project_applicants', project_id=project.id) }}" class="mini-project-btn">
+                            {{ project.applications|length }} applicants
+                        </a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
         </div>
     </div>
 </div>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="container mt-4">
+    <div class="create_project_container mt-4">
         <h2>Create a New Project</h2>
         <form method="POST" action="{{ url_for('project.create_project') }}">
             {{ form.hidden_tag() }}

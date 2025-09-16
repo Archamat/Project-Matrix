@@ -13,23 +13,42 @@
     {% include 'navbar.html' %}
 
     <!-- Main Content -->
+    {% block layout %}
     <div class="container mt-4">
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
-                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                <div class="alert alert-{{ category }}" role="alert">
                     {{ message }}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <button type="button" class="alert-close" aria-label="Close alert">&times;</button>
                 </div>
             {% endfor %}
         {% endif %}
     {% endwith %}
         {% block content %}{% endblock %}
     </div>
+    {% endblock %}
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- JavaScript for alert close functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle alert close buttons with smooth animation
+            document.querySelectorAll('.alert-close').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const alert = this.parentElement;
+                    
+                    // Add smooth fade-out animation
+                    alert.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-10px)';
+                    
+                    // Remove element after animation
+                    setTimeout(() => {
+                        alert.style.display = 'none';
+                    }, 300);
+                });
+            });
+        });
+    </script>
 </body>
 </html>

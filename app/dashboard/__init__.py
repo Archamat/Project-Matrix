@@ -1,1 +1,1 @@
-from .routes import projects
+from .routes import dashboard
