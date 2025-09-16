@@ -236,31 +236,7 @@ body {
   align-items: start;
 }
 
-/* Sidebar Styles */
-.sidebar {
-  position: fixed;
-  top: 0;                     /* stick to top of viewport */
-  left: 0;
-  width: clamp(180px, 20vw, 260px); /* scales with viewport width */
-  height: 100vh;              /* full viewport height */
-  padding: 1rem;
-  border-right: 1px solid var(--border, #dcd6c9);
-  box-shadow: var(--shadow, 0 2px 4px rgba(0,0,0,0.05));
-  overflow-y: auto;           /* scroll if sidebar content too long */
-}
 
-
-.sidebar-nav {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.content-section {
-    display: none;
-    margin-left: 270px; /* Adjust based on sidebar width */
-    padding: 20px;
-}
 
 .content-section {
     display: none;  /* hide all sections by default */
@@ -321,7 +297,6 @@ body {
 @media (max-width: 900px) {
   .demo-grid { grid-template-columns: 1fr; }
   .profile-container { grid-template-columns: 1fr; }
-  .sidebar { position: static; top: auto; }
 }
 
 .demo-card {
