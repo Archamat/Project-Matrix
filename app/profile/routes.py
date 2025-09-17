@@ -3,6 +3,16 @@ from flask_login import login_required, current_user
 from .profile import handle_profile,update_profile
 from app.extensions import db
 from app.aws import upload_fileobj_private
+from app.profile.models import Demo
+from app.aws.s3 import presigned_get_url
+
+# Constants
+AUDIO_MIME_ALLOW = {
+    "audio/mpeg", "audio/mp3", "audio/wav", "audio/ogg", "audio/webm",
+    "audio/x-wav", "audio/wave", "audio/flac"
+}
+IMAGE_MIME_ALLOW = {"image/jpeg", "image/png", "image/webp", "image/gif"}
+
 
 profile = Blueprint('profile', __name__)
 
@@ -20,7 +30,7 @@ def upload_avatar():
         flash("Please choose an image file.", "warning")
         return redirect(url_for("profile.show_profile"))
 
-    if f.mimetype not in {"image/jpeg", "image/png", "image/webp", "image/gif"}:
+    if f.mimetype not in IMAGE_MIME_ALLOW:
         flash("Only JPG/PNG/WEBP/GIF allowed.", "danger")
         return redirect(url_for("profile.show_profile"))
 
@@ -37,3 +47,65 @@ def upload_avatar():
 @profile.route('/profile/update', methods=['POST'])
 def update_profile_info():
     return update_profile()
+
+
+@profile.post("/profile/upload_demo")
+@login_required
+def upload_demo():
+    f = request.files.get("demo_file")
+    title = (request.form.get("title") or "").strip()
+
+    if not f or f.filename == "":
+        flash("Please choose an audio file.", "warning")
+        return redirect(url_for("profile.show_profile"))
+
+    if f.mimetype not in AUDIO_MIME_ALLOW:
+        flash("Unsupported audio type.", "danger")
+        return redirect(url_for("profile.show_profile"))
+
+    try:
+        # Store under demos/{user_id}/...
+        result = upload_fileobj_private(f, prefix=f"demos/{current_user.id}/")
+        demo = Demo(
+            user_id=current_user.id,
+            key=result["key"],
+            title=title or f.filename,
+            mime=f.mimetype,
+        )
+        db.session.add(demo)
+        db.session.commit()
+        flash("Demo uploaded!", "success")
+    except Exception as e:
+        flash(f"Upload failed: {e}", "danger")
+
+    return redirect(url_for("profile.show_profile"))
+
+@profile.post("/profile/delete_demo/<int:demo_id>")
+@login_required
+def delete_demo(demo_id):
+    demo = Demo.query.filter_by(id=demo_id, user_id=current_user.id).first_or_404()
+    # Optionally, delete the object from S3 as well
+    # from app.aws.s3 import s3_client, S3_BUCKET
+    # s3_client.delete_object(Bucket=S3_BUCKET, Key=demo.key)
+    db.session.delete(demo)
+    db.session.commit()
+    flash("Demo removed.", "success")
+    return redirect(url_for("profile.show_profile"))
+
+@profile.get("/profile/demos")
+@login_required
+def list_demos():
+    demos = (Demo.query
+             .filter_by(user_id=current_user.id)
+             .order_by(Demo.updated_at.desc())
+             .all())
+
+    items = []
+    for d in demos:
+        try:
+            url = presigned_get_url(d.key, expires_in=3600)
+        except Exception:
+            url = None
+        items.append({"id": d.id, "title": d.title, "mime": d.mime, "url": url, "updated_at": d.updated_at})
+
+    return render_template("partials/_demos_list.html", items=items)
