@@ -85,7 +85,10 @@
                                     <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
                                     <span class="demo-time">0:00</span>
                                 </button>
-                                <div class="demo-progress"><div class="demo-progress-bar"></div></div>
+                                <div class="demo-progress">
+                                    <div class="demo-progress-bar"></div>
+
+                                    </div>
                                 <audio preload="metadata" src="{{ d.url }}"></audio>
                                 </div>
 
@@ -129,10 +132,11 @@
                         const time = card.querySelector(".demo-time");
                         const bar  = card.querySelector(".demo-progress-bar");
                         const audio= card.querySelector("audio");
+                        const progress = card.querySelector(".demo-progress");   // 👈 ADD THIS
 
+                        // --- existing play/pause logic ---
                         btn.addEventListener("click", async (e) => {
                         e.preventDefault();
-                        // pause any other card
                         if (currentAudio && currentAudio !== audio) {
                             currentAudio.pause();
                             if (currentCard) currentCard.classList.remove("is-playing");
@@ -167,9 +171,20 @@
                         time.textContent = `0:00 / ${fmt(audio.duration)}`;
                         if (currentAudio === audio) { currentAudio = null; currentCard = null; }
                         });
+
+                        // --- NEW: seeking by clicking progress bar ---
+                        progress.addEventListener("click", (e) => {
+                        const rect = progress.getBoundingClientRect();
+                        const clickX = e.clientX - rect.left;
+                        const pct = clickX / rect.width;
+                        if (audio.duration) {
+                            audio.currentTime = pct * audio.duration;
+                        }
+                        });
                     });
                     })();
                     </script>
+
                 <section id="skills" class="skills-section">
                     <h2 class="skills-title">Skills</h2>
 
