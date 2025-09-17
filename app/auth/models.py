@@ -10,6 +10,12 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(256), nullable=False)
     contact_info = db.Column(db.String(256), nullable=True)
     avatar_url = db.Column(db.String(256), nullable=True)
+    demos = db.relationship("Demo",                 
+        back_populates="user",
+        lazy="dynamic",
+        cascade="all, delete-orphan",
+        order_by="desc(Demo.updated_at)"  
+    )
     @property
     def avatar_presigned(self):
         if not self.avatar_url:
@@ -23,4 +29,6 @@ class User(db.Model, UserMixin):
     # Method to check the hashed password
     def check_password(self, password):
         return check_password_hash(self.password, password)
+    
+
     
