@@ -35,66 +35,141 @@
                     <h2 class="section-title">Example Demos</h2>
 
                     <div class="demo-grid">
-                        <!-- Demo 1 -->
-                        <article class="demo-card">
-                            <a class="demo-title" href="#">SUPERDUPER SONG 1</a>
-                            <div class="demo-audio">
+                        <button type="button" class="btn btn-sm btn-outline-primary mb-2" onclick="toggleDemoUpload()">
+                        + Upload new demo
+                        </button>
+
+                        <form id="demo-upload-form"
+                            method="POST"
+                            action="{{ url_for('profile.upload_demo') }}"
+                            enctype="multipart/form-data"
+                            style="display:none"
+                            class="mb-3">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                            <input type="file"
+                                    id="demo_file"
+                                    name="demo_file"
+                                    class="form-control"
+                                    accept="audio/*"
+                                    required>
+                            </div>
+                            <div class="col-md-4">
+                            <input type="text"
+                                    id="title"
+                                    name="title"
+                                    class="form-control"
+                                    placeholder="Title (optional)">
+                            </div>
+                            <div class="col-md-2 d-grid">
+                            <button type="submit" class="btn btn-primary">Upload</button>
+                            </div>
+                        </div>
+                        <small class="text-muted d-block mt-1">Allowed: MP3/WAV/OGG/WEBM · Max ~50MB</small>
+                        </form>
+
+                        <script>
+                        function toggleDemoUpload(){
+                        const f = document.getElementById('demo-upload-form');
+                        f.style.display = (f.style.display === 'none' || !f.style.display) ? 'block' : 'none';
+                        }
+                        </script> 
+                        {% if demos %}
+                            {% for d in demos[:3] %}
+                            <article class="demo-card" data-demo-id="{{ d.id }}">
+                                <a class="demo-title" href="#">{{ d.title }}</a>
+
+                                <div class="demo-audio">
                                 <button class="demo-play" aria-label="Play voice memo">
                                     <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
                                     <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
                                     <span class="demo-time">0:00</span>
                                 </button>
                                 <div class="demo-progress"><div class="demo-progress-bar"></div></div>
-                                <audio preload="metadata" src="{{ url_for('static', filename='memos/matrix_models_intro.mp3') }}"></audio>
-                            </div>
-                            <p class="demo-desc">Short voice note explaining the goal of the demo.</p>
-                            <span class="demo-badge">Public</span>
-                        </article>
-                        <article class="demo-card">
-                            <a class="demo-title" href="#">SUPERDUPER SONG 2</a>
-                            <div class="demo-audio">
-                                <button class="demo-play" aria-label="Play voice memo">
-                                    <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
-                                    <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
-                                    <span class="demo-time">0:00</span>
-                                </button>
-                                <div class="demo-progress"><div class="demo-progress-bar"></div></div>
-                                <audio preload="metadata" src="{{ url_for('static', filename='memos/matrix_models_intro.mp3') }}"></audio>
-                            </div>
-                            <p class="demo-desc">Short voice note explaining the goal of the demo.</p>
-                            <span class="demo-badge">Public</span>
-                        </article>
-                        <article class="demo-card">
-                            <a class="demo-title" href="#">SUPERDUPER SONG 3</a>
-                            <div class="demo-audio">
-                                <button class="demo-play" aria-label="Play voice memo">
-                                    <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
-                                    <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
-                                    <span class="demo-time">0:00</span>
-                                </button>
-                                <div class="demo-progress"><div class="demo-progress-bar"></div></div>
-                                <audio preload="metadata" src="{{ url_for('static', filename='memos/matrix_models_intro.mp3') }}"></audio>
-                            </div>
-                            <p class="demo-desc">Short voice note explaining the goal of the demo.</p>
-                            <span class="demo-badge">Public</span>
-                        </article>
-                        <article class="demo-card">
-                            <a class="demo-title" href="#">SUPERDUPER SONG 4</a>
-                            <div class="demo-audio">
-                                <button class="demo-play" aria-label="Play voice memo">
-                                    <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
-                                    <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
-                                    <span class="demo-time">0:00</span>
-                                </button>
-                                <div class="demo-progress"><div class="demo-progress-bar"></div></div>
-                                <audio preload="metadata" src="{{ url_for('static', filename='memos/matrix_models_intro.mp3') }}"></audio>
-                            </div>
-                            <p class="demo-desc">Short voice note explaining the goal of the demo.</p>
-                            <span class="demo-badge">Public</span>
-                        </article>
-                        <!-- You can copy/paste more demo-card blocks here -->
+                                <audio preload="metadata" src="{{ d.url }}"></audio>
+                                </div>
+
+                                <p class="demo-desc">{{ d.updated_at.strftime("%Y-%m-%d %H:%M") }}</p>
+                                <span class="demo-badge">{{ d.visibility }}</span>
+                                <form method="POST"
+                                    action="{{ url_for('profile.delete_demo', demo_id=d.id) }}"
+                                    class="demo-delete"
+                                    onsubmit="return confirm('Delete this demo?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                </form>
+                            </article>
+                            {% endfor %}
+                        {% else %}
+                            <p class="text-muted">No voice demos yet.</p>
+                        {% endif %}
                     </div>
+
+                    {% if demos|length > 3 %}
+                    <div class="mt-2">
+                        <a href="{{ url_for('profile.list_demos') }}" class="btn btn-sm btn-outline-secondary">
+                        View all demos →
+                        </a>
+                    </div>
+                    {% endif %}
+
                 </section>
+                <script>
+                    (function () {
+                    const cards = document.querySelectorAll(".demo-card");
+                    let currentAudio = null, currentCard = null;
+
+                    const fmt = s => {
+                        if (!isFinite(s)) return "0:00";
+                        const m = Math.floor(s/60), ss = Math.floor(s%60).toString().padStart(2,"0");
+                        return `${m}:${ss}`;
+                    };
+
+                    cards.forEach(card => {
+                        const btn  = card.querySelector(".demo-play");
+                        const time = card.querySelector(".demo-time");
+                        const bar  = card.querySelector(".demo-progress-bar");
+                        const audio= card.querySelector("audio");
+
+                        btn.addEventListener("click", async (e) => {
+                        e.preventDefault();
+                        // pause any other card
+                        if (currentAudio && currentAudio !== audio) {
+                            currentAudio.pause();
+                            if (currentCard) currentCard.classList.remove("is-playing");
+                        }
+                        try {
+                            if (audio.paused) {
+                            await audio.play();
+                            card.classList.add("is-playing");
+                            currentAudio = audio; currentCard = card;
+                            } else {
+                            audio.pause();
+                            card.classList.remove("is-playing");
+                            currentAudio = null; currentCard = null;
+                            }
+                        } catch (err) {
+                            console.error("Playback failed:", err);
+                        }
+                        });
+
+                        audio.addEventListener("loadedmetadata", () => {
+                        time.textContent = `0:00 / ${fmt(audio.duration)}`;
+                        });
+                        audio.addEventListener("timeupdate", () => {
+                        if (!audio.duration) return;
+                        const pct = (audio.currentTime / audio.duration) * 100;
+                        bar.style.width = pct + "%";
+                        time.textContent = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
+                        });
+                        audio.addEventListener("ended", () => {
+                        card.classList.remove("is-playing");
+                        bar.style.width = "0%";
+                        time.textContent = `0:00 / ${fmt(audio.duration)}`;
+                        if (currentAudio === audio) { currentAudio = null; currentCard = null; }
+                        });
+                    });
+                    })();
+                    </script>
                 <section id="skills" class="skills-section">
                     <h2 class="skills-title">Skills</h2>
 
