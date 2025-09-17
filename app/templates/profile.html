@@ -132,9 +132,7 @@
                         const time = card.querySelector(".demo-time");
                         const bar  = card.querySelector(".demo-progress-bar");
                         const audio= card.querySelector("audio");
-                        const progress = card.querySelector(".demo-progress");   // 👈 ADD THIS
-
-                        // --- existing play/pause logic ---
+                        const progress = card.querySelector(".demo-progress");   
                         btn.addEventListener("click", async (e) => {
                         e.preventDefault();
                         if (currentAudio && currentAudio !== audio) {
@@ -172,7 +170,6 @@
                         if (currentAudio === audio) { currentAudio = null; currentCard = null; }
                         });
 
-                        // --- NEW: seeking by clicking progress bar ---
                         progress.addEventListener("click", (e) => {
                         const rect = progress.getBoundingClientRect();
                         const clickX = e.clientX - rect.left;
@@ -189,25 +186,59 @@
                     <h2 class="skills-title">Skills</h2>
 
                     <!-- Add form -->
-                    <form id="skill-form" class="skill-form" autocomplete="off">
-                        <input type="text" id="instrument" placeholder="Instrument (e.g., Guitar)" required>
-                        <select id="level" required>
-                        <option value="" disabled selected>Experience level</option>
-                        <option>Beginner</option>
-                        <option>Intermediate</option>
-                        <option>Advanced</option>
-                        <option>Expert</option>
+                    <form id="skill-form"
+                        class="skill-form"
+                        method="POST"
+                        action="{{ url_for('profile.add_skill') }}"
+                        autocomplete="off">
+                       <select name="instrument" required>
+                            <option value="" disabled selected>Choose instrument</option>
+                            <option value="Guitar">Guitar</option>
+                            <option value="Piano">Piano</option>
+                            <option value="Drums">Drums</option>
+                            <option value="Bass">Bass</option>
+                            <option value="Violin">Violin</option>
+                            <option value="Cello">Cello</option>
+                            <option value="Flute">Flute</option>
+                            <option value="Saxophone">Saxophone</option>
+                            <option value="Trumpet">Trumpet</option>
+                            <option value="Ukulele">Ukulele</option>
+                            <option value="Voice">Voice</option>
+                        </select>
+                        <select name="level" required>
+                            <option value="" disabled selected>Experience level</option>
+                            <option>Beginner</option>
+                            <option>Intermediate</option>
+                            <option>Advanced</option>
+                            <option>Expert</option>
                         </select>
                         <label class="years-label">
-                        <span>Years:</span>
-                        <input type="number" id="years" min="0" max="50" step="1" value="1" required>
+                            <span>Years:</span>
+                            <input type="number" name="years" min="0" max="50" step="1" value="1" required>
                         </label>
                         <button type="submit" class="btn-add">Add</button>
                     </form>
 
+
                     <!-- Skills list -->
                     <ul id="skills-list" class="skills-list">
-                        <!-- items injected by JS -->
+                        <ul id="skills-list" class="skills-list">
+                            {% for us in user.skills %}
+                            <li class="skill-item">
+                                <div class="skill-row">
+                                <span class="skill-name">{{ us.skill.name }}</span>
+                                <form method="POST" action="{{ url_for('profile.delete_skill', user_skill_id=us.id) }}">
+                                    <button type="submit" class="skill-remove">×</button>
+                                </form>
+                                </div>
+                                <div class="skill-meta">{{ us.level }} • {{ us.years }} years</div>
+                                <div class="skill-bar"><span style="--w: {% if us.level == 'Beginner' %}25%{% elif us.level == 'Intermediate' %}50%{% elif us.level == 'Advanced' %}75%{% else %}100%{% endif %}"></span></div>
+                            </li>
+                            {% else %}
+                            <p class="text-muted">No skills added yet.</p>
+                            {% endfor %}
+                        </ul>
+
                     </ul>
                     </section>
 

@@ -5,10 +5,29 @@ class Demo(db.Model):
     __tablename__ = "demos"
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), index=True, nullable=False)
-    key = db.Column(db.String(512), nullable=False)   # S3 object key
+    key = db.Column(db.String(512), nullable=False)   
     title = db.Column(db.String(200))
     mime = db.Column(db.String(120))
     duration_seconds = db.Column(db.Integer)
     visibility = db.Column(db.String(16), default="private")
     updated_at = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
     user = db.relationship("User", back_populates="demos")
+
+class Skill(db.Model):
+    __tablename__ = "skills"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), unique=True, nullable=False)
+    user_skills = db.relationship("UserSkill", back_populates="skill")
+
+class UserSkill(db.Model):
+    __tablename__ = "user_skills"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False, index = True)
+    skill_id = db.Column(db.Integer, db.ForeignKey("skills.id"), nullable=False, index = True)
+    level = db.Column(db.String(50))  # e.g., Beginner, Intermediate, Expert
+    years = db.Column(db.Integer)  # Years of experience
+    user = db.relationship("User", back_populates="skills")
+    skill = db.relationship("Skill", back_populates="user_skills")
+
+    __table_args__ = (db.UniqueConstraint('user_id', 'skill_id', name='uq_user_skill'),)
+    

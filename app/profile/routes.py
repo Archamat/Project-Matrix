@@ -3,8 +3,8 @@ from flask_login import login_required, current_user
 from .profile import handle_profile,update_profile
 from app.extensions import db
 from app.aws import upload_fileobj_private
-from app.profile.models import Demo
-from app.aws.s3 import presigned_get_url
+from app.profile.models import Demo, Skill, UserSkill
+from app.aws.s3 import presigned_get_url, s3_client, S3_BUCKET
 
 # Constants
 AUDIO_MIME_ALLOW = {
@@ -22,6 +22,7 @@ profile = Blueprint('profile', __name__)
 def show_profile():
     return handle_profile()
 
+###Avatar Upload###
 @profile.route('/profile/upload_avatar', methods=['POST'])
 @login_required
 def upload_avatar():
@@ -48,7 +49,7 @@ def upload_avatar():
 def update_profile_info():
     return update_profile()
 
-
+###Demos###
 @profile.post("/profile/upload_demo")
 @login_required
 def upload_demo():
@@ -84,9 +85,7 @@ def upload_demo():
 @login_required
 def delete_demo(demo_id):
     demo = Demo.query.filter_by(id=demo_id, user_id=current_user.id).first_or_404()
-    # Optionally, delete the object from S3 as well
-    # from app.aws.s3 import s3_client, S3_BUCKET
-    # s3_client.delete_object(Bucket=S3_BUCKET, Key=demo.key)
+    s3_client.delete_object(Bucket=S3_BUCKET, Key=demo.key)
     db.session.delete(demo)
     db.session.commit()
     flash("Demo removed.", "success")
@@ -109,3 +108,41 @@ def list_demos():
         items.append({"id": d.id, "title": d.title, "mime": d.mime, "url": url, "updated_at": d.updated_at})
 
     return render_template("partials/_demos_list.html", items=items)
+
+###Skills###
+
+@profile.post("/profile/skills/add")
+@login_required
+def add_skill():
+    name = request.form.get("instrument", "").strip()
+    level = request.form.get("level")
+    years = request.form.get("years", 0, type=int)
+
+    if not name or not level:
+        flash("Skill name and level are required.", "danger")
+        return redirect(url_for("profile.show_profile"))
+
+    # Get or create the Skill catalog entry
+    skill = Skill.query.filter_by(name=name).first()
+    if not skill:
+        skill = Skill(name=name)
+        db.session.add(skill)
+        db.session.flush()  # so it gets an id
+
+    # Attach to user
+    user_skill = UserSkill(user_id=current_user.id, skill=skill, level=level, years=years)
+    db.session.add(user_skill)
+    db.session.commit()
+
+    flash(f"Added skill {name} ({level}, {years} yrs).", "success")
+    return redirect(url_for("profile.show_profile"))
+
+
+@profile.post("/profile/skills/delete/<int:user_skill_id>")
+@login_required
+def delete_skill(user_skill_id):
+    us = UserSkill.query.filter_by(id=user_skill_id, user_id=current_user.id).first_or_404()
+    db.session.delete(us)
+    db.session.commit()
+    flash("Skill removed.", "success")
+    return redirect(url_for("profile.show_profile"))

@@ -16,6 +16,7 @@ class User(db.Model, UserMixin):
         cascade="all, delete-orphan",
         order_by="desc(Demo.updated_at)"  
     )
+    skills = db.relationship("UserSkill", back_populates="user", cascade="all, delete-orphan")
     @property
     def avatar_presigned(self):
         if not self.avatar_url:
@@ -29,6 +30,7 @@ class User(db.Model, UserMixin):
     # Method to check the hashed password
     def check_password(self, password):
         return check_password_hash(self.password, password)
-    
+
+
 
     
