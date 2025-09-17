@@ -2,9 +2,22 @@ from flask import render_template, request, flash, redirect, url_for
 from flask_login import current_user,login_required
 from app import db
 from app.auth import User
+from app.aws.s3 import presigned_get_url
+from app.profile.models import Demo
 
 def handle_profile():
-    return render_template('profile.html', user=current_user, current_page='profile')
+    demos = []
+    for d in current_user.demos.order_by(Demo.updated_at.desc()).all():
+        url = presigned_get_url(d.key, 3600)
+        demos.append({
+            "id": d.id,
+            "title": d.title or "Untitled",
+            "mime": d.mime,
+            "url": url,
+            "visibility": d.visibility or "Private",
+            "updated_at": d.updated_at,
+        })
+    return render_template('profile.html', user=current_user, demos=demos, current_page='profile')
 
 @login_required
 def update_profile():
