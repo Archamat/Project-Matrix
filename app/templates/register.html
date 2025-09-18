@@ -1,25 +1,138 @@
-<!-- templates/login.html -->
 {% extends 'base.html' %}
-
-{% block title %}Login{% endblock %}
+{% block title %}Sign Up - Project Matrix{% endblock %}
 
 {% block content %}
-    <h2>Register</h2>
-    <form action="./register" method="POST">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" required><br><br>
+<body class="theme-dark">
+<div class="register-container">
+  <div class="register-card">
+    <h2>Sign up to collaborate and turn ideas into reality.</h2>
+    <p class="subhead">Find teammates, start projects, and build together.</p>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+    <form id="registerForm" action="{{ url_for('auth.register') }}" method="POST" novalidate>
+      <!-- Username -->
+      <div class="form-group">
+        <label class="visually-hidden" for="username">Username</label>
+        <input type="text" id="username" name="username" placeholder="Username" required minlength="3" autocomplete="username">
+      </div>
 
-        <label for="password">Password:</label><br>
-        <input type="password" id="password" name="password" required><br><br>
+      <!-- Email -->
+      <div class="form-group">
+        <label class="visually-hidden" for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Email" required autocomplete="email">
+      </div>
 
-        <label for="confirm_password">Confirm Password:</label><br>
-        <input type="password" id="confirm_password" name="confirm_password" required><br><br>
+      <!-- Password -->
+      <div class="form-group" style="position:relative">
+        <label class="visually-hidden" for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required autocomplete="new-password">
+        <button type="button" id="togglePass" class="password-toggle" aria-label="Show password">⊙</button>
+      </div>
 
-        <input type="submit" value="Register">
+      <!-- Strength segments -->
+      <div class="strength-segs" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <small class="small-hint">Min 8 chars, 1 uppercase, 1 number</small>
+
+      <!-- Confirm -->
+      <div class="form-group" style="position:relative">
+        <label class="visually-hidden" for="confirm_password">Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required autocomplete="new-password">
+        <button type="button" id="toggleConfirm" class="password-toggle" aria-label="Show confirm password">⊙</button>
+      </div>
+      <small id="pwMatch" class="small-hint"></small>
+
+      <!-- Submit -->
+      <button id="submitBtn" type="submit" disabled>Sign Up</button>
     </form>
 
-    <p>Already have an account? <a href="./login">Login here</a></p>
+    <p><a href="{{ url_for('auth.login') }}">Already have an account?</a></p>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Elements
+  const form  = document.getElementById('registerForm');
+  const user  = document.getElementById('username');
+  const email = document.getElementById('email');
+  const pw    = document.getElementById('password');
+  const pw2   = document.getElementById('confirm_password');
+  const matchOut = document.getElementById('pwMatch');
+  const submit= document.getElementById('submitBtn');
+  const segs  = document.querySelectorAll('.strength-segs span');
+
+  // Helpers
+  function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+  function score(v){
+    let s=0;
+    if(v.length>=8) s++;
+    if(/[A-Z]/.test(v)) s++;
+    if(/[0-9]/.test(v)) s++;
+    if(/[^A-Za-z0-9]/.test(v)) s++;
+    return s; // 0..4
+  }
+  function paintStrength(sc){
+    segs.forEach((el,i)=>{ el.className=''; if(sc>=i+1) el.classList.add(`on-${i+1}`); });
+  }
+  function checkMatch(){
+    if(!pw.value && !pw2.value){ matchOut.textContent=''; return; }
+    if(pw.value === pw2.value){
+      matchOut.textContent='Passwords match';
+      matchOut.style.color='#16a34a';
+    }else{
+      matchOut.textContent='Passwords do not match';
+      matchOut.style.color='#e11d48';
+    }
+  }
+  function formOk(){
+    return user.value.trim().length>=3 &&
+           isEmail(email.value.trim()) &&
+           pw.value.length>=8 &&
+           pw.value===pw2.value;
+  }
+  function updateSubmit(){ submit.disabled = !formOk(); }
+
+  // Show/Hide toggles
+  function attachToggle(inputId, btnId){
+    const input = document.getElementById(inputId);
+    const btn   = document.getElementById(btnId);
+    if(!input||!btn) return;
+    btn.addEventListener('click', ()=>{
+      const show = input.type==='password';
+      input.type = show ? 'text' : 'password';
+      btn.textContent = show ? '⊙' : '⊙';
+      btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+    });
+  }
+  attachToggle('password','togglePass');
+  attachToggle('confirm_password','toggleConfirm');
+
+  // Listeners
+  if(pw){
+    pw.addEventListener('input', ()=>{
+      paintStrength(score(pw.value));
+      checkMatch(); updateSubmit();
+    });
+  }
+  if(pw2){ pw2.addEventListener('input', ()=>{ checkMatch(); updateSubmit(); }); }
+  [user,email].forEach(el=>{
+    if(el) el.addEventListener('input', updateSubmit);
+    if(el) el.addEventListener('blur',  updateSubmit);
+  });
+
+  // Submit: lock while sending
+  if(form){
+    form.addEventListener('submit', ()=>{
+      submit.disabled = true;
+      submit.textContent = 'Signing up…';
+    });
+  }
+
+  // Initial paint
+  paintStrength(0); updateSubmit();
+});
+</script>
 {% endblock %}
