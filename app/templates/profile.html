@@ -26,18 +26,21 @@
                     <p><strong>Username:</strong> {{ user.username }}</p>
                     <p><strong>Email:</strong> {{ user.email }}</p>
                     <p><strong>Contact Info:</strong> {{ user.contact_info or 'Not provided' }}</p>
-            
-                <button type="button" class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
-                <hr class="my-3">
+                    {% if is_owner %}
+                        <button type="button" class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
+                    {% endif %}
+                    <hr class="my-3">
                 </div>
                 <!-- Example Demos Section -->
                 <section id="example-demos" class="demos-section">
                     <h2 class="section-title">Example Demos</h2>
 
                     <div class="demo-grid">
-                        <button type="button" class="btn btn-sm btn-outline-primary mb-2" onclick="toggleDemoUpload()">
-                        + Upload new demo
-                        </button>
+                        {%if is_owner %}
+                            <button type="button" class="btn btn-sm btn-outline-primary mb-2" onclick="toggleDemoUpload()">
+                            + Upload new demo
+                            </button>
+                        {% endif %}
 
                         <form id="demo-upload-form"
                             method="POST"
@@ -80,11 +83,11 @@
                                 <a class="demo-title" href="#">{{ d.title }}</a>
 
                                 <div class="demo-audio">
-                                <button class="demo-play" aria-label="Play voice memo">
-                                    <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
-                                    <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
-                                    <span class="demo-time">0:00</span>
-                                </button>
+                                    <button class="demo-play" aria-label="Play voice memo">
+                                        <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
+                                        <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
+                                        <span class="demo-time">0:00</span>
+                                    </button>
                                 <div class="demo-progress">
                                     <div class="demo-progress-bar"></div>
 
@@ -98,7 +101,9 @@
                                     action="{{ url_for('profile.delete_demo', demo_id=d.id) }}"
                                     class="demo-delete"
                                     onsubmit="return confirm('Delete this demo?');">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    {% if is_owner %}
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                    {% endif %}
                                 </form>
                             </article>
                             {% endfor %}
@@ -186,6 +191,7 @@
                     <h2 class="skills-title">Skills</h2>
 
                     <!-- Add form -->
+                    {% if is_owner %}
                     <form id="skill-form"
                         class="skill-form"
                         method="POST"
@@ -216,9 +222,9 @@
                             <span>Years:</span>
                             <input type="number" name="years" min="0" max="50" step="1" value="1" required>
                         </label>
-                        <button type="submit" class="btn-add">Add</button>
+                            <button type="submit" class="btn-add">Add</button>
                     </form>
-
+                    {% endif %}
 
                     <!-- Skills list -->
                     <ul id="skills-list" class="skills-list">
@@ -228,8 +234,10 @@
                                 <div class="skill-row">
                                 <span class="skill-name">{{ us.skill.name }}</span>
                                 <form method="POST" action="{{ url_for('profile.delete_skill', user_skill_id=us.id) }}">
-                                    <button type="submit" class="skill-remove">×</button>
-                                </form>
+                                    {% if is_owner %}
+                                        <button type="submit" class="skill-remove">×</button>
+                                    {% endif %}
+                                    </form>
                                 </div>
                                 <div class="skill-meta">{{ us.level }} • {{ us.years }} years</div>
                                 <div class="skill-bar"><span style="--w: {% if us.level == 'Beginner' %}25%{% elif us.level == 'Intermediate' %}50%{% elif us.level == 'Advanced' %}75%{% else %}100%{% endif %}"></span></div>
