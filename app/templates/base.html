@@ -16,8 +16,10 @@
     {% include 'navbar.html' %}
 
     <!-- Main Content -->
-    {% block layout %}
-    <div class="container mt-4">
+{% block layout %}
+<div class="container mt-4">
+
+    {% block flashes %}
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -28,9 +30,12 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-        {% block content %}{% endblock %}
-    </div>
     {% endblock %}
+
+    {% block content %}{% endblock %}
+</div>
+{% endblock %}
+
 
     <!-- JavaScript for alert close functionality -->
     <script>
