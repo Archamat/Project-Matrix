@@ -5,9 +5,22 @@ from app.auth import User
 from app.aws.s3 import presigned_get_url
 from app.profile.models import Demo
 
-def handle_profile():
+def handle_profile(username: str | None = None):
+    """
+    Render a profile. If username is None, show the current user's profile.
+    Used by:
+      - /profile                -> handle_profile()
+      - /u/<username> (public)  -> handle_profile(username)
+    """
+    #pick a target user
+    if username and username != current_user.username:
+        user = User.query.filter_by(username=username).first_or_404()
+        is_owner = False
+    else:
+        user = current_user
+        is_owner = True 
     demos = []
-    for d in current_user.demos.order_by(Demo.updated_at.desc()).all():
+    for d in (Demo.query.filter_by(user_id=user.id).order_by(Demo.updated_at.desc()).all()):
         url = presigned_get_url(d.key, 3600)
         demos.append({
             "id": d.id,
@@ -17,7 +30,7 @@ def handle_profile():
             "visibility": d.visibility or "Private",
             "updated_at": d.updated_at,
         })
-    return render_template('profile.html', user=current_user, demos=demos, current_page='profile')
+    return render_template('profile.html', user=user, demos=demos, is_owner=is_owner, current_page='profile')
 
 @login_required
 def update_profile():

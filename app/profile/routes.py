@@ -22,6 +22,12 @@ profile = Blueprint('profile', __name__)
 def show_profile():
     return handle_profile()
 
+@profile.get("/u/<string:username>")
+@login_required
+def view_profile(username):
+    # someone else's profile (or yours if URL matches)
+    return handle_profile(username)
+
 ###Avatar Upload###
 @profile.route('/profile/upload_avatar', methods=['POST'])
 @login_required
