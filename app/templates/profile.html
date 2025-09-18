@@ -1,337 +1,332 @@
 {% extends 'base.html' %}
-
+{% block flashes %}{% endblock %}
 {% block content %}
-<body class="theme-dark">
 <div class="profile-container">
-    <!-- Right Content Area -->
-    <div class="content-area">
-        <div id="personal-info" class="content-section active" >
-            <h2 class=" fw-bold mb-4" style="font-size: 2rem; text-align: left;">
-                Account Details: {{ user.username }}
-            </h2>
-            <!-- Account details content -->
-            <div class="account-grid" id="account-details">
-                 <!-- Avatar block -->
-                <div class="avatar-block">
-                    <img src="{{ user.avatar_presigned or url_for('static', filename='test_avatar.png') }}"
-                        class="avatar"
-                        alt="Profile avatar">
+  <div class="content-area">
+    <!-- ===== Header ===================================================== -->
+    <div id="personal-info" class="content-section active">
+      <h2 class="fw-bold mb-4" style="font-size:2rem; text-align:left;">
+        Account Details: {{ user.username }}
+      </h2>
+
+      <!-- ===== Grid: Left (Avatar + Info) | Right (Skills) ============== -->
+      <div class="account-grid" id="account-details">
+        <!-- Avatar -->
+        <div class="avatar-block">
+          <img
+            src="{{ user.avatar_presigned or url_for('static', filename='test_avatar.png') }}"
+            class="avatar"
+            alt="Profile avatar">
+        </div>
+
+        <!-- Info card -->
+        <div class="info-view">
+          <h3 class="mb-2">Profile Description</h3>
+          <p class="profile-description" style="white-space:pre-line;">
+            {{ user.bio or 'No description yet.' }}
+          </p>
+
+          <p><strong>Username:</strong> {{ user.username }}</p>
+          <p><strong>Email:</strong> {{ user.email }}</p>
+          <p><strong>Contact Info:</strong> {{ user.contact_info or 'Not provided' }}</p>
+
+          {% if is_owner %}
+            <button type="button" class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
+          {% endif %}
+
+          <hr class="my-3">
+        </div>
+
+        <!-- ===== Example Demos ========================================== -->
+        <section id="example-demos" class="demos-section">
+          <h2 class="section-title">Example Demos</h2>
+
+          <div class="demo-grid">
+            {% if is_owner %}
+              <button type="button" class="btn btn-sm btn-outline-primary mb-2" onclick="toggleDemoUpload()">
+                + Upload new demo
+              </button>
+            {% endif %}
+
+            <!-- Hidden upload form -->
+            <form id="demo-upload-form"
+                  method="POST"
+                  action="{{ url_for('profile.upload_demo') }}"
+                  enctype="multipart/form-data"
+                  style="display:none"
+                  class="mb-3">
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <input type="file" id="demo_file" name="demo_file" class="form-control" accept="audio/*" required>
                 </div>
-                <hr class="my-3">
-                <div class="info-view">
-                    <h3 class="mb-2">Profile Description</h5>
-                        <p class="profile-description" style="white-space: pre-line;">
-                        {{ user.bio or 'No description yet.' }}
-                    </p>
-                    <p><strong>Username:</strong> {{ user.username }}</p>
-                    <p><strong>Email:</strong> {{ user.email }}</p>
-                    <p><strong>Contact Info:</strong> {{ user.contact_info or 'Not provided' }}</p>
-                    {% if is_owner %}
-                        <button type="button" class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
-                    {% endif %}
-                    <hr class="my-3">
+                <div class="col-md-4">
+                  <input type="text" id="title" name="title" class="form-control" placeholder="Title (optional)">
                 </div>
-                <!-- Example Demos Section -->
-                <section id="example-demos" class="demos-section">
-                    <h2 class="section-title">Example Demos</h2>
-
-                    <div class="demo-grid">
-                        {%if is_owner %}
-                            <button type="button" class="btn btn-sm btn-outline-primary mb-2" onclick="toggleDemoUpload()">
-                            + Upload new demo
-                            </button>
-                        {% endif %}
-
-                        <form id="demo-upload-form"
-                            method="POST"
-                            action="{{ url_for('profile.upload_demo') }}"
-                            enctype="multipart/form-data"
-                            style="display:none"
-                            class="mb-3">
-                        <div class="row g-2">
-                            <div class="col-md-6">
-                            <input type="file"
-                                    id="demo_file"
-                                    name="demo_file"
-                                    class="form-control"
-                                    accept="audio/*"
-                                    required>
-                            </div>
-                            <div class="col-md-4">
-                            <input type="text"
-                                    id="title"
-                                    name="title"
-                                    class="form-control"
-                                    placeholder="Title (optional)">
-                            </div>
-                            <div class="col-md-2 d-grid">
-                            <button type="submit" class="btn btn-primary">Upload</button>
-                            </div>
-                        </div>
-                        <small class="text-muted d-block mt-1">Allowed: MP3/WAV/OGG/WEBM · Max ~50MB</small>
-                        </form>
-
-                        <script>
-                        function toggleDemoUpload(){
-                        const f = document.getElementById('demo-upload-form');
-                        f.style.display = (f.style.display === 'none' || !f.style.display) ? 'block' : 'none';
-                        }
-                        </script> 
-                        {% if demos %}
-                            {% for d in demos[:3] %}
-                            <article class="demo-card" data-demo-id="{{ d.id }}">
-                                <a class="demo-title" href="#">{{ d.title }}</a>
-
-                                <div class="demo-audio">
-                                    <button class="demo-play" aria-label="Play voice memo">
-                                        <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"></path></svg>
-                                        <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"></path></svg>
-                                        <span class="demo-time">0:00</span>
-                                    </button>
-                                <div class="demo-progress">
-                                    <div class="demo-progress-bar"></div>
-
-                                    </div>
-                                <audio preload="metadata" src="{{ d.url }}"></audio>
-                                </div>
-
-                                <p class="demo-desc">{{ d.updated_at.strftime("%Y-%m-%d %H:%M") }}</p>
-                                <span class="demo-badge">{{ d.visibility }}</span>
-                                <form method="POST"
-                                    action="{{ url_for('profile.delete_demo', demo_id=d.id) }}"
-                                    class="demo-delete"
-                                    onsubmit="return confirm('Delete this demo?');">
-                                    {% if is_owner %}
-                                        <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                                    {% endif %}
-                                </form>
-                            </article>
-                            {% endfor %}
-                        {% else %}
-                            <p class="text-muted">No voice demos yet.</p>
-                        {% endif %}
-                    </div>
-
-                    {% if demos|length > 3 %}
-                    <div class="mt-2">
-                        <a href="{{ url_for('profile.list_demos') }}" class="btn btn-sm btn-outline-secondary">
-                        View all demos →
-                        </a>
-                    </div>
-                    {% endif %}
-
-                </section>
-                <script>
-                    (function () {
-                    const cards = document.querySelectorAll(".demo-card");
-                    let currentAudio = null, currentCard = null;
-
-                    const fmt = s => {
-                        if (!isFinite(s)) return "0:00";
-                        const m = Math.floor(s/60), ss = Math.floor(s%60).toString().padStart(2,"0");
-                        return `${m}:${ss}`;
-                    };
-
-                    cards.forEach(card => {
-                        const btn  = card.querySelector(".demo-play");
-                        const time = card.querySelector(".demo-time");
-                        const bar  = card.querySelector(".demo-progress-bar");
-                        const audio= card.querySelector("audio");
-                        const progress = card.querySelector(".demo-progress");   
-                        btn.addEventListener("click", async (e) => {
-                        e.preventDefault();
-                        if (currentAudio && currentAudio !== audio) {
-                            currentAudio.pause();
-                            if (currentCard) currentCard.classList.remove("is-playing");
-                        }
-                        try {
-                            if (audio.paused) {
-                            await audio.play();
-                            card.classList.add("is-playing");
-                            currentAudio = audio; currentCard = card;
-                            } else {
-                            audio.pause();
-                            card.classList.remove("is-playing");
-                            currentAudio = null; currentCard = null;
-                            }
-                        } catch (err) {
-                            console.error("Playback failed:", err);
-                        }
-                        });
-
-                        audio.addEventListener("loadedmetadata", () => {
-                        time.textContent = `0:00 / ${fmt(audio.duration)}`;
-                        });
-                        audio.addEventListener("timeupdate", () => {
-                        if (!audio.duration) return;
-                        const pct = (audio.currentTime / audio.duration) * 100;
-                        bar.style.width = pct + "%";
-                        time.textContent = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
-                        });
-                        audio.addEventListener("ended", () => {
-                        card.classList.remove("is-playing");
-                        bar.style.width = "0%";
-                        time.textContent = `0:00 / ${fmt(audio.duration)}`;
-                        if (currentAudio === audio) { currentAudio = null; currentCard = null; }
-                        });
-
-                        progress.addEventListener("click", (e) => {
-                        const rect = progress.getBoundingClientRect();
-                        const clickX = e.clientX - rect.left;
-                        const pct = clickX / rect.width;
-                        if (audio.duration) {
-                            audio.currentTime = pct * audio.duration;
-                        }
-                        });
-                    });
-                    })();
-                    </script>
-
-                <section id="skills" class="skills-section">
-                    <h2 class="skills-title">Skills</h2>
-
-                    <!-- Add form -->
-                    {% if is_owner %}
-                    <form id="skill-form"
-                        class="skill-form"
-                        method="POST"
-                        action="{{ url_for('profile.add_skill') }}"
-                        autocomplete="off">
-                       <select name="instrument" required>
-                            <option value="" disabled selected>Choose instrument</option>
-                            <option value="Guitar">Guitar</option>
-                            <option value="Piano">Piano</option>
-                            <option value="Drums">Drums</option>
-                            <option value="Bass">Bass</option>
-                            <option value="Violin">Violin</option>
-                            <option value="Cello">Cello</option>
-                            <option value="Flute">Flute</option>
-                            <option value="Saxophone">Saxophone</option>
-                            <option value="Trumpet">Trumpet</option>
-                            <option value="Ukulele">Ukulele</option>
-                            <option value="Voice">Voice</option>
-                        </select>
-                        <select name="level" required>
-                            <option value="" disabled selected>Experience level</option>
-                            <option>Beginner</option>
-                            <option>Intermediate</option>
-                            <option>Advanced</option>
-                            <option>Expert</option>
-                        </select>
-                        <label class="years-label">
-                            <span>Years:</span>
-                            <input type="number" name="years" min="0" max="50" step="1" value="1" required>
-                        </label>
-                            <button type="submit" class="btn-add">Add</button>
-                    </form>
-                    {% endif %}
-
-                    <!-- Skills list -->
-                    <ul id="skills-list" class="skills-list">
-                        <ul id="skills-list" class="skills-list">
-                            {% for us in user.skills %}
-                            <li class="skill-item">
-                                <div class="skill-row">
-                                <span class="skill-name">{{ us.skill.name }}</span>
-                                <form method="POST" action="{{ url_for('profile.delete_skill', user_skill_id=us.id) }}">
-                                    {% if is_owner %}
-                                        <button type="submit" class="skill-remove">×</button>
-                                    {% endif %}
-                                    </form>
-                                </div>
-                                <div class="skill-meta">{{ us.level }} • {{ us.years }} years</div>
-                                <div class="skill-bar"><span style="--w: {% if us.level == 'Beginner' %}25%{% elif us.level == 'Intermediate' %}50%{% elif us.level == 'Advanced' %}75%{% else %}100%{% endif %}"></span></div>
-                            </li>
-                            {% else %}
-                            <p class="text-muted">No skills added yet.</p>
-                            {% endfor %}
-                        </ul>
-
-                    </ul>
-                    </section>
-
+                <div class="col-md-2 d-grid">
+                  <button type="submit" class="btn btn-primary">Upload</button>
                 </div>
-            </div>
-        </div>      
-        <div class="info-edit" id="info-edit" style="display: none;">
-            
-                <form method="POST"
-                        action="{{ url_for('profile.upload_avatar') }}"
-                        enctype="multipart/form-data"
-                        class="mt-3">
-                <div class="form-group">
-                    <label for="avatar_file">Upload avatar image</label>
-                    <input type="file" id="avatar_file" name="avatar_file" class="form-control" accept="image/*">
-                </div>
-                    <button type="submit" class="btn btn-primary mt-2">Upload to S3</button>
-                </form>
-
-                <div class="form-group">
-                    <label for="username">Username</label>
-                    <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
-                </div>
-                <div class="form-group">
-                    <label for="contact_info">Contact Info</label>
-                    <input type="text" class="form-control" id="contact_info" name="contact_info" value="{{ user.contact_info }}">
-                </div>
-                <div class="form-group">
-                    <label for="bio">Profile Description</label>
-                    <textarea class="form-control" id="bio" name="bio" rows="4"
-                                placeholder="Tell others about yourself...">{{ user.bio or '' }}</textarea>
-                </div>
-                <div class="form-buttons">
-                    <button type="submit" class="btn btn-success">Save Changes</button>
-                    <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
-                </div>
-                
+              </div>
+              <small class="text-muted d-block mt-1">Allowed: MP3/WAV/OGG/WEBM · Max ~50MB</small>
             </form>
-        </div>
 
-        <div id="created-projects" class="content-section">
-            <h3>Created Projects</h3>
-            <div class="projects-grid">
-                {% if user.projects %}
-                    {% for project in user.projects %}
-                        {% with is_creator=True %}
-                            {% include 'project_card.html' %}
-                        {% endwith %}
-                    {% endfor %}
-                {% else %}
-                    <p>No projects created yet.</p>
-                {% endif %}
+            {% if demos %}
+              {% for d in demos[:3] %}
+                <article class="demo-card" data-demo-id="{{ d.id }}">
+                  <a class="demo-title" href="#">{{ d.title }}</a>
+
+                  <div class="demo-audio">
+                    <button class="demo-play" aria-label="Play voice memo">
+                      <svg class="icon-play" viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z"/></svg>
+                      <svg class="icon-pause" viewBox="0 0 24 24" width="22" height="22"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+                      <span class="demo-time">0:00</span>
+                    </button>
+
+                    <div class="demo-progress">
+                      <div class="demo-progress-bar"></div>
+                    </div>
+
+                    <audio preload="metadata" src="{{ d.url }}"></audio>
+                  </div>
+
+                  <p class="demo-desc">{{ d.updated_at.strftime("%Y-%m-%d %H:%M") }}</p>
+                  <span class="demo-badge">{{ d.visibility }}</span>
+
+                  {% if is_owner %}
+                  <form method="POST"
+                        action="{{ url_for('profile.delete_demo', demo_id=d.id) }}"
+                        class="demo-delete"
+                        onsubmit="return confirm('Delete this demo?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                  </form>
+                  {% endif %}
+                </article>
+              {% endfor %}
+            {% else %}
+              <p class="text-muted">No voice demos yet.</p>
+            {% endif %}
+          </div>
+
+          {% if demos|length > 3 %}
+            <div class="mt-2">
+              <a href="{{ url_for('profile.list_demos') }}" class="btn btn-sm btn-outline-secondary">View all demos →</a>
             </div>
-        </div>
+          {% endif %}
+        </section>
 
-        <div id="active-projects" class="content-section">
-            <h3>Active Projects</h3>
-            <p>Coming soon...</p>
-        </div>
+        <!-- ===== Skills ================================================== -->
+        <section id="skills" class="skills-section">
+          <h2 class="skills-title">Skills</h2>
 
-        <div id="favorite-projects" class="content-section">
-            <h3>Favorite Projects</h3>
-            <p>Coming soon...</p>
-        </div>
+          {% if is_owner %}
+          <form id="skill-form"
+                class="skill-form"
+                method="POST"
+                action="{{ url_for('profile.add_skill') }}"
+                autocomplete="off">
+            <select name="instrument" required>
+              <option value="" disabled selected>Choose instrument</option>
+              <option value="Guitar">Guitar</option>
+              <option value="Piano">Piano</option>
+              <option value="Drums">Drums</option>
+              <option value="Bass">Bass</option>
+              <option value="Violin">Violin</option>
+              <option value="Cello">Cello</option>
+              <option value="Flute">Flute</option>
+              <option value="Saxophone">Saxophone</option>
+              <option value="Trumpet">Trumpet</option>
+              <option value="Ukulele">Ukulele</option>
+              <option value="Voice">Voice</option>
+            </select>
+
+            <select name="level" required>
+              <option value="" disabled selected>Experience level</option>
+              <option>Beginner</option>
+              <option>Intermediate</option>
+              <option>Advanced</option>
+              <option>Expert</option>
+            </select>
+
+            <label class="years-label">
+              <span>Years:</span>
+              <input type="number" name="years" min="0" max="50" step="1" value="1" required>
+            </label>
+
+            <button type="submit" class="btn-add">Add</button>
+          </form>
+          {% endif %}
+
+          <ul id="skills-list" class="skills-list">
+            {% for us in user.skills %}
+              <li class="skill-item">
+                <div class="skill-row">
+                  <span class="skill-name">{{ us.skill.name }}</span>
+                  {% if is_owner %}
+                  <form method="POST" action="{{ url_for('profile.delete_skill', user_skill_id=us.id) }}">
+                    <button type="submit" class="skill-remove">×</button>
+                  </form>
+                  {% endif %}
+                </div>
+                <div class="skill-meta">{{ us.level }} • {{ us.years }} years</div>
+                <div class="skill-bar">
+                  <span style="--w:{% if us.level == 'Beginner' %}25%{% elif us.level == 'Intermediate' %}50%{% elif us.level == 'Advanced' %}75%{% else %}100%{% endif %}"></span>
+                </div>
+              </li>
+            {% else %}
+              <p class="text-muted">No skills added yet.</p>
+            {% endfor %}
+          </ul>
+        </section>
+      </div>
     </div>
+
+    <!-- ===== Edit Mode (hidden) ======================================== -->
+    <div class="info-edit" id="info-edit" style="display:none;">
+      <!-- Avatar upload -->
+      <form method="POST"
+            action="{{ url_for('profile.upload_avatar') }}"
+            enctype="multipart/form-data"
+            class="mt-3">
+        <div class="form-group">
+          <label for="avatar_file">Upload avatar image</label>
+          <input type="file" id="avatar_file" name="avatar_file" class="form-control" accept="image/*">
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Upload to S3</button>
+      </form>
+
+      <!-- Profile update -->
+      <form method="POST" action="{{ url_for('profile.update_profile_info') }}" class="mt-4">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+        </div>
+        <div class="form-group">
+          <label for="contact_info">Contact Info</label>
+          <input type="text" class="form-control" id="contact_info" name="contact_info" value="{{ user.contact_info }}">
+        </div>
+        <div class="form-group">
+          <label for="bio">Profile Description</label>
+          <textarea class="form-control" id="bio" name="bio" rows="4" placeholder="Tell others about yourself...">{{ user.bio or '' }}</textarea>
+        </div>
+
+        <div class="form-buttons" style="display:flex; gap:.5rem;">
+          <button type="submit" class="btn btn-success">Save Changes</button>
+          <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Created / Active / Favorite projects (değiştirilmedi) -->
+    <div id="created-projects" class="content-section">
+      <h3>Created Projects</h3>
+      <div class="projects-grid">
+        {% if user.projects %}
+          {% for project in user.projects %}
+            {% with is_creator=True %}
+              {% include 'project_card.html' %}
+            {% endwith %}
+          {% endfor %}
+        {% else %}
+          <p>No projects created yet.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <div id="active-projects" class="content-section">
+      <h3>Active Projects</h3>
+      <p>Coming soon...</p>
+    </div>
+
+    <div id="favorite-projects" class="content-section">
+      <h3>Favorite Projects</h3>
+      <p>Coming soon...</p>
+    </div>
+  </div>
 </div>
 
+<!-- ===== Scripts ======================================================= -->
 <script>
-// Add this function to toggle between view and edit modes
-function toggleEditMode() {
-    const accountDetails = document.getElementById('account-details');
-    const infoEdit = document.getElementById('info-edit');
-    
-    if (infoEdit.style.display === 'none') {
-        accountDetails.style.display = 'none';
-        infoEdit.style.display = 'block';
-    } else {
-        accountDetails.style.display = 'block';
-        infoEdit.style.display = 'none';
-    }
+function toggleDemoUpload(){
+  const f = document.getElementById('demo-upload-form');
+  f.style.display = (f.style.display === 'none' || !f.style.display) ? 'block' : 'none';
 }
 
+(function () {
+  const cards = document.querySelectorAll(".demo-card");
+  let currentAudio = null, currentCard = null;
+
+  const fmt = s => {
+    if (!isFinite(s)) return "0:00";
+    const m = Math.floor(s/60), ss = Math.floor(s%60).toString().padStart(2,"0");
+    return `${m}:${ss}`;
+  };
+
+  cards.forEach(card => {
+    const btn  = card.querySelector(".demo-play");
+    const time = card.querySelector(".demo-time");
+    const bar  = card.querySelector(".demo-progress-bar");
+    const audio= card.querySelector("audio");
+    const progress = card.querySelector(".demo-progress");
+
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (currentAudio && currentAudio !== audio) {
+        currentAudio.pause();
+        if (currentCard) currentCard.classList.remove("is-playing");
+      }
+      try {
+        if (audio.paused) {
+          await audio.play();
+          card.classList.add("is-playing");
+          currentAudio = audio; currentCard = card;
+        } else {
+          audio.pause();
+          card.classList.remove("is-playing");
+          currentAudio = null; currentCard = null;
+        }
+      } catch (err) {
+        console.error("Playback failed:", err);
+      }
+    });
+
+    audio.addEventListener("loadedmetadata", () => {
+      time.textContent = `0:00 / ${fmt(audio.duration)}`;
+    });
+    audio.addEventListener("timeupdate", () => {
+      if (!audio.duration) return;
+      const pct = (audio.currentTime / audio.duration) * 100;
+      bar.style.width = pct + "%";
+      time.textContent = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
+    });
+    audio.addEventListener("ended", () => {
+      card.classList.remove("is-playing");
+      bar.style.width = "0%";
+      time.textContent = `0:00 / ${fmt(audio.duration)}`;
+      if (currentAudio === audio) { currentAudio = null; currentCard = null; }
+    });
+
+    progress.addEventListener("click", (e) => {
+      const rect = progress.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const pct = clickX / rect.width;
+      if (audio.duration) audio.currentTime = pct * audio.duration;
+    });
+  });
+})();
+
+function toggleEditMode() {
+  const accountDetails = document.getElementById('account-details');
+  const infoEdit = document.getElementById('info-edit');
+  if (infoEdit.style.display === 'none') {
+    accountDetails.style.display = 'none';
+    infoEdit.style.display = 'block';
+  } else {
+    accountDetails.style.display = 'block';
+    infoEdit.style.display = 'none';
+  }
+}
 </script>
 {% endblock %}
