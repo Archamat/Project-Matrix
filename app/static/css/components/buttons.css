@@ -1,0 +1,198 @@
+/* Buttons (generic) */
+.btn-primary {
+  background: var(--brand);
+  border-color: var(--brand-600);
+  color: white;
+}
+.btn-primary:hover { filter: brightness(.95); }
+
+/* Navbar Button */
+.create-project-btn {
+    background-color: var(--brand);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.create-project-btn:hover { background-color: var(--brand-600); }
+
+/* Profile Page Buttons */
+.skill-form .btn-add {
+  background: var(--brand-soft, rgba(88,166,255,.15));
+  color: var(--text, #c9d1d9);
+  border: 1px solid var(--border, #30363d);
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+.skill-form .btn-add:hover {
+  border-color: #3b82f6;
+}
+
+/* remove button */
+.skill-remove {
+  background: transparent;
+  border: 1px solid var(--border, #30363d);
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: inherit;
+  cursor: pointer;
+}
+.skill-remove:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Project Card Buttons */
+/* Join Button - Updated */
+.join-button {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 18px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.join-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+    background: linear-gradient(135deg, #5a67d8 0%, #667eea 50%, #764ba2 100%);
+}
+
+/* Applicant Button */
+.applicant-button {
+    flex: 1;
+    padding: 8px 12px;
+    background: var(--warning-500);
+    color: white;
+    font-weight: 500;
+    font-size: 0.9rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+.applicant-button:hover {
+    background: var(--primary-700);
+}
+
+/* Modal Buttons */
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 24px;
+    color: #666;
+}
+
+.close-button:hover {
+    color: #555;
+}
+
+.view-details-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+
+.view-details-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Dashboard Buttons */
+.view-all-btn {
+    color: var(--primary-600);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.view-all-btn:hover {
+    background: var(--primary-50);
+}
+
+/* Quick Actions */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.action-btn {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.action-btn.primary {
+    background: var(--primary-600);
+    color: white;
+}
+
+.action-btn.primary:hover {
+    background: var(--primary-700);
+    color: white;
+}
+
+.action-btn.secondary {
+    background: var(--gray-100);
+    color: var(--gray-800);
+}
+
+.action-btn.secondary:hover {
+    background: var(--gray-200);
+    color: var(--gray-800);
+}
+
+.create-first-btn {
+    background: var(--primary-600);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 1rem;
+    display: inline-block;
+}
+
+/* Submit button */
+.register-card button[type="submit"]{
+  width:100%; padding:12px 14px; margin-top:12px; border:0; border-radius:10px;
+  background:linear-gradient(180deg,#2979ff,#1f6aff); color:#fff;
+  font-weight:600; font-size:16px; cursor:pointer;
+  transition:transform .05s ease, box-shadow .15s ease, filter .15s ease;
+  box-shadow:0 6px 18px rgba(41,121,255,.28);
+}
+.register-card button[type="submit"]:hover{ filter:brightness(1.02); box-shadow:0 10px 24px rgba(41,121,255,.32); }
+.register-card button[type="submit"]:active{ transform:translateY(1px); }
+.register-card button[type="submit"]:focus{ outline:none; box-shadow:0 0 0 4px rgba(37,99,235,.25), 0 6px 18px rgba(41,121,255,.20); }
+.register-card button[disabled]{ opacity:.6; cursor:not-allowed; box-shadow:none; }

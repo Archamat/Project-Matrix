@@ -1,0 +1,96 @@
+/* ===== NAVBAR COMPONENT STYLES ================================ */
+
+.navbar {
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar .navbar-right .nav-link {
+    float: right;
+}
+
+.navbar .navbar-left .nav-link {
+    float: left;
+}
+
+
+.navbar .navbar-brand,
+.navbar .nav-link {
+    float: left;
+    color: var(--text);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.navbar .nav-link:hover {
+    background-color: var(--panel-2);
+    color: var(--brand);
+}
+
+    /* Active link styling */
+.navbar .nav-link.active {
+    background-color: #cabd0aa6; /* Highlight color for active link */
+    color: black;
+    font:bold;
+}
+
+    /* Settings Dropdown Styles */
+.settings-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.settings-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: var(--panel);
+    min-width: 160px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    z-index: 1;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.settings-dropdown:hover .settings-content {
+    display: block;
+}
+
+.settings-item {
+    color: var(--text);
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.2s;
+}
+
+.settings-item:hover {
+    background-color: var(--panel-2);
+}
+
+.create-project-btn {
+    background-color: #05CE78;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.create-project-btn:hover {
+    background-color: #04b76b;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}

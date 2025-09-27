@@ -1,0 +1,190 @@
+.theme-dark {
+  --bg: hsl(220 18% 10%);
+  --panel: hsl(220 16% 14%);
+  --panel-2: hsl(220 16% 12%);
+
+  --text: hsl(210 20% 92%);
+  --muted: hsl(215 12% 70%);
+
+  --border: hsl(220 14% 26%);
+  --shadow: 0 0 0 1px var(--border), 0 12px 30px hsl(220 20% 2% / .55);
+
+  --brand: hsl(var(--brand-h) 90% 65%);
+  --brand-600: hsl(var(--brand-h) 90% 58%);
+  --brand-200: hsl(var(--brand-h) 95% 85% / .18);
+}
+
+/* Navbar */
+.theme-dark .navbar{
+  background: var(--panel) !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+.theme-dark .navbar .navbar-brand,
+.theme-dark .navbar .nav-link{ color: var(--text) !important; }
+.theme-dark .navbar .nav-link:hover{
+  background: var(--panel-2) !important;
+  color: var(--brand) !important;
+}
+.theme-dark .navbar .nav-link.active{
+  background: var(--panel-2) !important;
+  color: var(--text) !important;
+}
+
+/* Register/Auth Cards */
+.theme-dark .register-container {
+  background: var(--bg);   /* açık gri yerine koyu arka plan */
+}
+
+.theme-dark .register-card {
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: var(--shadow);
+}
+
+.theme-dark .register-container,
+.theme-dark .auth-container { background: var(--bg); }
+.theme-dark .register-card,
+.theme-dark .auth-card { background: var(--panel); color: var(--text); box-shadow: var(--shadow); }
+.theme-dark .register-card h2,
+.theme-dark .auth-card h2 { color: var(--text); }
+.theme-dark .register-card .subhead,
+.theme-dark .auth-card .subhead { color: var(--muted); }
+.theme-dark .register-card input[type="text"],
+.theme-dark .register-card input[type="email"],
+.theme-dark .register-card input[type="password"],
+.theme-dark .auth-card input[type="text"],
+.theme-dark .auth-card input[type="email"],
+.theme-dark .auth-card input[type="password"]{
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.theme-dark .register-card input:focus,
+.theme-dark .auth-card input:focus{
+  background: var(--panel);
+  border-color: var(--brand);
+  box-shadow: 0 0 0 4px var(--brand-200);
+}
+
+/* General Elements */
+.theme-dark .login-background { background: var(--bg); }
+.theme-dark .content-section { background: transparent; }
+.theme-dark .section-title { color: var(--text); }
+
+/* Cards and Panels */
+.theme-dark .info-view,
+.theme-dark .demo-card,
+.theme-dark .skills-section,
+.theme-dark .applicant-card,
+.theme-dark .quick-actions-widget,
+.theme-dark .recent-projects-widget{
+  background: var(--panel) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+.theme-dark .demo-card,
+.theme-dark .skills-section { border-width: 1px; }
+
+/* Text Elements */
+.theme-dark .demo-desc,
+.theme-dark .dashboard-subtitle,
+.theme-dark .small-hint { color: var(--muted) !important; }
+
+/* Borders and Dividers */
+.theme-dark hr,
+.theme-dark .border,
+.theme-dark .applicant-preview { border-color: var(--border) !important; }
+
+/* Badges and Tags */
+.theme-dark .demo-badge,
+.theme-dark .skill-tag{
+  background: var(--panel-2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* Forms */
+.theme-dark input[type="text"],
+.theme-dark input[type="email"],
+.theme-dark input[type="password"],
+.theme-dark .form-control,
+.theme-dark select, 
+.theme-dark textarea{
+  background: var(--panel-2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+}
+.theme-dark input:focus,
+.theme-dark select:focus,
+.theme-dark textarea:focus{
+  background: var(--panel) !important;
+  border-color: var(--brand) !important;
+  box-shadow: 0 0 0 4px var(--brand-200) !important;
+}
+.theme-dark input::placeholder,
+.theme-dark textarea::placeholder{ color: var(--muted) !important; }
+
+/* Buttons */
+.theme-dark .btn-primary,
+.theme-dark .project-card .project-link{
+  background: var(--brand) !important;
+  border-color: var(--brand-600) !important;
+  color:#fff !important;
+}
+.theme-dark .btn-primary:hover,
+.theme-dark .project-card .project-link:hover{ filter: brightness(.95); }
+
+.theme-dark .btn-success,
+.theme-dark .join-button{
+  background:#15803d !important; border-color:#166534 !important; color:#fff !important;
+}
+.theme-dark .btn-success:hover,
+.theme-dark .join-button:hover{ background:#16a34a !important; }
+
+/* Projects */
+.theme-dark .projects-grid{ background: transparent; }
+.theme-dark .project-card{
+  background: var(--panel) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+.theme-dark .project-title{ color: var(--text) !important; }
+.theme-dark .project-description{ color: var(--text) !important; }
+.theme-dark .project-meta{
+  background: var(--panel-2) !important;
+  color: var(--muted) !important;
+  border: 1px solid var(--border) !important;
+}
+.theme-dark .category-band{ color:#fff; }
+
+/* Modals */
+.theme-dark .modal{ background: var(--panel) !important; color: var(--text) !important; }
+.theme-dark .modal-content{ background: var(--panel) !important; color: var(--text) !important; }
+.theme-dark .modal-backdrop{ background: rgba(0,0,0,.5) !important; }
+
+/* Profile/Skills */
+.theme-dark .skill-form input,
+.theme-dark .skill-form select{
+  background: var(--panel-2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+}
+.theme-dark .skill-item{
+  background: var(--panel) !important;
+  border: 1px solid var(--border) !important;
+}
+.theme-dark .skill-bar{ background: var(--panel-2) !important; border-color: var(--border) !important; }
+.theme-dark .skill-remove{ border-color: var(--border) !important; color: var(--text) !important; }
+.theme-dark .skill-remove:hover{ border-color:#ef4444 !important; color:#ef4444 !important; }
+
+/* Example Projects */
+.theme-dark .example-projects{
+  background: var(--panel) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.theme-dark .logo { color: #2979ff; }
