@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <title>{% block title %}Dashboard{% endblock %}</title>
 </head>
-<body class="theme-dark">
+<body>
     <!-- Include Navbar -->
     {% include 'navbar.html' %}
 
@@ -37,26 +37,48 @@
 {% endblock %}
 
 
-    <!-- JavaScript for alert close functionality -->
+    <!-- JavaScript for alert close functionality and theme toggle -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle alert close buttons with smooth animation
-            document.querySelectorAll('.alert-close').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    const alert = this.parentElement;
-                    
-                    // Add smooth fade-out animation
-                    alert.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    alert.style.opacity = '0';
-                    alert.style.transform = 'translateY(-10px)';
-                    
-                    // Remove element after animation
-                    setTimeout(() => {
-                        alert.style.display = 'none';
-                    }, 300);
+        (function() {
+            function applyTheme(theme) {
+                document.body.classList.toggle('theme-dark', theme === 'dark');
+                const btn = document.getElementById('themeToggle');
+                if (btn) {
+                    btn.textContent = theme === 'dark' ? '🌞' : '🌙';
+                    btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+                    btn.title = theme === 'dark' ? 'Switch to light' : 'Switch to dark';
+                }
+            }
+
+            const stored = localStorage.getItem('pm-theme');
+            const preferredDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const initialTheme = stored || (preferredDark ? 'dark' : 'light');
+            applyTheme(initialTheme);
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Alerts
+                document.querySelectorAll('.alert-close').forEach(function(button) {
+                    button.addEventListener('click', function() {
+                        const alert = this.parentElement;
+                        alert.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                        alert.style.opacity = '0';
+                        alert.style.transform = 'translateY(-10px)';
+                        setTimeout(() => { alert.style.display = 'none'; }, 300);
+                    });
                 });
+
+                // Theme toggle
+                const toggle = document.getElementById('themeToggle');
+                if (toggle) {
+                    toggle.addEventListener('click', function() {
+                        const isDark = document.body.classList.contains('theme-dark');
+                        const next = isDark ? 'light' : 'dark';
+                        localStorage.setItem('pm-theme', next);
+                        applyTheme(next);
+                    });
+                }
             });
-        });
+        })();
     </script>
  {% block scripts %}{% endblock %}
 </body>
