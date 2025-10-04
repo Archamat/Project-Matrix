@@ -35,6 +35,8 @@
         
         <!-- Right Column: Sidebar with Stats and Activity -->
         <div class="sidebar-column">
+            <!-- Filter Component -->
+            {% include 'filter.html' with context %}
             <!-- Quick Actions -->
             {% if current_user.is_authenticated %}
             <div class="quick-actions-widget">

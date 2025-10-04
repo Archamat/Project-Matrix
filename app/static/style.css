@@ -8,6 +8,7 @@
 @import url('./css/components/buttons.css');
 @import url('./css/components/cards.css');
 @import url('./css/components/forms.css');
+@import url('./css/components/filter.css');
 
 /* Page-specific styles */
 @import url('./css/pages/auth.css');
