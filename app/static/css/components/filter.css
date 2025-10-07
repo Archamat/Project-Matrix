@@ -1,0 +1,77 @@
+/* Filter Form Styles */
+
+/* =================================
+   MAIN CONTAINER
+   ================================= */
+.filter-container {
+    background-color: hsl(220 16% 14%);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    max-width: 300px;
+    min-width: 250px;
+}
+
+/* =================================
+   HEADER SECTION
+   ================================= */
+.filter-header {
+    margin-bottom: 15px;
+}
+
+.filter-toggle {
+    float: right;
+    transition: transform 0.3s ease;
+}
+
+/* =================================
+   CONTENT & FORM
+   ================================= */
+.filter-content {
+    max-height: 700px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.filter-form {
+    /* Add form styles here */
+}
+
+.filter-group {
+    margin-bottom: 15px;
+}
+
+/* =================================
+   CHECKBOX SECTIONS
+   ================================= */
+.sector-checkboxes {
+    margin-bottom: 10px;
+}
+
+.num_of_people_filter {
+    margin-bottom: 10px;
+}
+
+.skills_filter {
+    margin-bottom: 10px;
+}
+
+/* All checkbox labels */
+.sector-checkboxes label,
+.skills_filter label,
+.num_of_people_filter label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* =================================
+   COLLAPSED STATE
+   ================================= */
+.filter-container.collapsed .filter-content {
+    max-height: 0;
+}
+
+.filter-container.collapsed .filter-toggle {
+    transform: rotate(-90deg);
+}

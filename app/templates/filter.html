@@ -1,0 +1,79 @@
+<!-- Filter Component - No DOCTYPE needed for includes -->
+<div class="filter-container">
+    <div class="filter-header">
+        <h4><i class="fas fa-filter"></i> Filter Projects
+            <span class = "filter-toggle">▼</span>
+        </h4>
+    </div>
+    <div class="filter-content">
+        <form method="GET" class="filter-form">
+            <div class="filter-group">
+                <div class="sector-checkboxes">
+                    <h5>Sectors:</h5>
+                    <label>
+                        <input type="checkbox" name="sectors" value="all" {% if not current_sectors or 'all' in current_sectors %}checked{% endif %}>
+                        All Sectors
+                    </label>
+                    {% if filter_data and filter_data.sectors %}
+                        {% for sector in filter_data.sectors %}
+                            <label>
+                                <input type="checkbox" name="sectors" value="{{ sector }}" {% if current_sectors and sector in current_sectors %}checked{% endif %}>
+                                {{ sector }}
+                            </label>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="num_of_people_filter">
+                    <h5>Team Size:</h5>
+                    <label>
+                        <input type="checkbox" name="people_counts" value="all" {% if not current_people_counts or 'all' in current_people_counts %}checked{% endif %}>
+                        Any Size
+                    </label>
+                    <!-- Handcrafted team size options -->
+                    <label>
+                        <input type="checkbox" name="people_counts" value="2-3" {% if current_people_counts and '2-3' in current_people_counts %}checked{% endif %}>
+                        Small Team (2-3 people)
+                    </label>
+                    <label>
+                        <input type="checkbox" name="people_counts" value="4-6" {% if current_people_counts and '4-6' in current_people_counts %}checked{% endif %}>
+                        Medium Team (4-6 people)
+                    </label>
+                    <label>
+                        <input type="checkbox" name="people_counts" value="7+" {% if current_people_counts and '7+' in current_people_counts %}checked{% endif %}>
+                        Large Team (7+ people)
+                    </label>
+                </div>
+                <div class="skills_filter">
+                    <h5>Skills:</h5>
+                    <label>
+                        <input type="checkbox" name="skills" value="all" {% if not current_skills or 'all' in current_skills %}checked{% endif %}>
+                        All Skills
+                    </label>
+                    {% if filter_data and filter_data.skills %}
+                        {% for skill in filter_data.skills %}
+                            <label>
+                                <input type="checkbox" name="skills" value="{{ skill }}" {% if current_skills and skill in current_skills %}checked{% endif %}>
+                                {{ skill }}
+                            </label>
+                        {% endfor %}
+                    {% endif %}            
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                Apply Filter
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('.filter-header');
+    const container = document.querySelector('.filter-container');
+    
+    header.addEventListener('click', function() {
+        container.classList.toggle('collapsed');
+    });
+});
+</script>
