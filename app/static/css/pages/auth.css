@@ -15,16 +15,33 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
+    padding: clamp(20px, 4vw, 48px);
 }
 
 .auth-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    padding: 40px;
+    background: var(--panel);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: clamp(22px, 4vw, 38px);
     width: 100%;
-    max-width: 400px;
+    max-width: clamp(320px, 42vw, 520px);
+}
+
+/* Responsive proportions by viewport width */
+@media (max-width: 480px) {
+  .auth-card { max-width: 94vw; padding: 20px; }
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .auth-card { max-width: clamp(380px, 52vw, 560px); }
+}
+@media (min-width: 1440px) {
+  .auth-card { max-width: clamp(420px, 34vw, 600px); padding: clamp(28px, 2.6vw, 44px); }
+}
+
+/* Short viewport height adjustments (e.g., small laptops) */
+@media (max-height: 700px) {
+  .auth-container { align-items: flex-start; }
+  .auth-card { margin-top: 40px; }
 }
 
 .auth-header {

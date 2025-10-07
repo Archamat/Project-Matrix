@@ -302,22 +302,39 @@
 /* Auth Cards */
 .register-container, .auth-container {
   display:flex; justify-content:center; align-items:center;
-  min-height:100vh; padding:32px 16px; background:#f0f3f7;
+  min-height:100vh; padding:clamp(20px, 4vw, 48px) clamp(12px, 3vw, 32px);
+  background: var(--bg);
 }
 .register-card, .auth-card {
-  width:380px; max-width:92vw; padding:36px 28px; text-align:center;
-  background:#fff; border-radius:16px;
-  box-shadow:0 10px 24px rgba(20,30,50,.12);
+  width: clamp(320px, 40vw, 520px);
+  max-width: 92vw;
+  padding: clamp(22px, 3.5vw, 38px) clamp(18px, 3.5vw, 30px);
+  text-align: center;
+  background: var(--panel);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
 }
 
 /* Headings */
-.register-card h2, .auth-card h2 { margin:0 0 12px; font-size:22px; line-height:1.35; color:#1f2937; }
-.register-card .subhead, .auth-card .subhead { margin:-4px 0 16px; font-size:13.5px; color:#6b7280; }
+.register-card h2, .auth-card h2 {
+  margin: 0 0 12px;
+  font-size: clamp(20px, 2.1vw, 26px);
+  line-height: 1.35;
+  color: var(--text);
+}
+.register-card .subhead, .auth-card .subhead {
+  margin: -4px 0 16px;
+  font-size: clamp(13px, 1.3vw, 15px);
+  color: var(--muted);
+}
 
 /* Footer link */
-.register-card p{ margin-top:14px; font-size:13.5px; color:#6b7280; }
-.register-card p a{ color:#1f6aff; text-decoration:none; }
-.register-card p a:hover{ text-decoration:underline; }
+.register-card p,
+.auth-card p{ margin-top:14px; font-size:13.5px; color: var(--muted); }
+.register-card p a,
+.auth-card p a{ color:#1f6aff; text-decoration:none; }
+.register-card p a:hover,
+.auth-card p a:hover{ text-decoration:underline; }
 
 /* A11y hidden label helper */
 .visually-hidden{
