@@ -90,12 +90,3 @@ def filter_projects(options):
         return []
 
     return query.order_by(Project.id.desc()).all()
-
-
-# Let's add a simple helper function for single sector filtering
-def get_projects_by_sector(sector_name):
-    """Simple function to get projects by single sector (for learning)"""
-    if sector_name and sector_name.lower() != 'all':
-        return filter_projects({'sector': sector_name})
-    else:
-        return Project.query.order_by(Project.id.desc()).all()
