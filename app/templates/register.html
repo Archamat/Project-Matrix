@@ -2,8 +2,10 @@
 {% block title %}Sign Up - Project Matrix{% endblock %}
 {% block flashes %}{% endblock %}
 {% block content %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 <div class="register-container">
   <div class="register-card">
+    <div id="message-container"></div>
     <h2>Sign up to collaborate and turn ideas into reality.</h2>
     <p class="subhead">Find teammates, start projects, and build together.</p>
 
