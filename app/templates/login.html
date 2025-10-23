@@ -3,8 +3,10 @@
 {% block title %}Log In - Project Matrix{% endblock %}
 {% block flashes %}{% endblock %}
 {% block content %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
 <div class="auth-container">
   <div class="auth-card">
+    <div id="message-container"></div>
     <h2>Welcome back!</h2>
     <p class="subhead">Access your projects and move forward with confidence.</p>
 
@@ -26,7 +28,7 @@
       </div>
 
       <!-- Submit -->
-      <button id="loginSubmit" type="submit" disabled>Log In</button>
+      <button id="loginSubmit" type="submit" >Log In</button>
     </form>
         {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
@@ -44,32 +46,4 @@
     <p><a href="{{ url_for('auth.register') }}">Don't have an account?</a></p>
   </div>
 </div>
-{% endblock %}
-
-{% block scripts %}
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const u = document.getElementById('username');
-  const p = document.getElementById('password');
-  const b = document.getElementById('loginSubmit');
-
-  function ok() { return u.value.trim().length > 0 && p.value.trim().length > 0; }
-  function update() { b.disabled = !ok(); }
-  u.addEventListener('input', update);
-  p.addEventListener('input', update);
-  update();
-
-  const t = document.getElementById('toggleLoginPass');
-  t.addEventListener('click', () => {
-    const show = p.type === 'password';
-    p.type = show ? 'text' : 'password';
-    t.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
-  });
-
-  document.getElementById('loginForm').addEventListener('submit', () => {
-    b.disabled = true;
-    b.textContent = 'Logging in…';
-  });
-});
-</script>
 {% endblock %}
