@@ -28,28 +28,7 @@ body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, 
   --err: hsl(0 75% 55%);
 }
 
-/* ===== Dark Theme ============================================== */
-.theme-dark {
-  --bg: hsl(220 18% 10%);
-  --panel: hsl(220 16% 14%);
-  --panel-2: hsl(220 16% 12%);
 
-  --text: hsl(210 20% 92%);
-  --muted: hsl(215 12% 70%);
-
-  --border: hsl(220 14% 26%);
-  --shadow: 0 0 0 1px var(--border), 0 12px 30px hsl(220 20% 2% / .55);
-
-  --brand: hsl(var(--brand-h) 90% 65%);
-  --brand-600: hsl(var(--brand-h) 90% 58%);
-  --brand-200: hsl(var(--brand-h) 95% 85% / .18);
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  margin: 0;
-}
 
 /* Flash mesaj kapsayıcı */
 .flash-messages {
@@ -156,11 +135,4 @@ body {
     --success-500: #4caf50;
     --warning-500: #ff9800;
     --error-500: #f44336;
-}
-
-/* Flash Messages */
-.flash-messages {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
 }

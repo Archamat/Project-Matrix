@@ -14,6 +14,12 @@
   --brand-200: hsl(var(--brand-h) 95% 85% / .18);
 }
 
+body {
+  background: var(--bg);
+  color: var(--text);
+  margin: 0;
+}
+
 /* Navbar */
 .theme-dark .navbar{
   background: var(--panel) !important;
@@ -188,3 +194,5 @@
 }
 
 .theme-dark .logo { color: #2979ff; }
+
+
