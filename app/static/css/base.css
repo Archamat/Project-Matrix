@@ -136,3 +136,39 @@ body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, 
     --warning-500: #ff9800;
     --error-500: #f44336;
 }
+
+/* ===== UTILITY CLASSES =========================================== */
+
+/* Display utilities */
+.hidden { display: none !important; }
+.block { display: block !important; }
+.flex { display: flex !important; }
+.inline-flex { display: inline-flex !important; }
+
+/* Position utilities */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+
+/* Text utilities */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.whitespace-pre-line { white-space: pre-line; }
+
+/* Color utilities for password match feedback */
+.text-success { color: #16a34a; }
+.text-error { color: #e11d48; }
+
+/* Alert transition utilities */
+.alert-fade-out {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Form group with relative positioning */
+.form-group-relative { position: relative; }
+
+/* Flex utilities */
+.flex-gap-sm { display: flex; gap: 0.5rem; }

@@ -76,3 +76,12 @@ input.is-invalid{ border-color:#e11d48; box-shadow:0 0 0 4px rgba(225,29,72,.12)
 .strength-segs span.on-2{ background:#f59e0b; } /* amber*/
 .strength-segs span.on-3{ background:#3b82f6; } /* blue */
 .strength-segs span.on-4{ background:#16a34a; } /* green*/
+
+/* Hidden field utility */
+.other-skill-field.hidden {
+  display: none;
+}
+
+.other-skill-field:not(.hidden) {
+  display: block;
+}

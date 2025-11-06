@@ -5,7 +5,7 @@
   <div class="content-area">
     <!-- ===== Header ===================================================== -->
     <div id="personal-info" class="content-section active">
-      <h2 class="fw-bold mb-4" style="font-size:2rem; text-align:left;">
+      <h2 class="fw-bold mb-4">
         Account Details: {{ user.username }}
       </h2>
 
@@ -22,7 +22,7 @@
         <!-- Info card -->
         <div class="info-view">
           <h3 class="mb-2">Profile Description</h3>
-          <p class="profile-description" style="white-space:pre-line;">
+          <p class="profile-description">
             {{ user.bio or 'No description yet.' }}
           </p>
 
@@ -53,8 +53,7 @@
                   method="POST"
                   action="{{ url_for('profile.upload_demo') }}"
                   enctype="multipart/form-data"
-                  style="display:none"
-                  class="mb-3">
+                  class="hidden mb-3">
               <div class="row g-2">
                 <div class="col-md-6">
                   <input type="file" id="demo_file" name="demo_file" class="form-control" accept="audio/*" required>
@@ -167,8 +166,8 @@
                   {% endif %}
                 </div>
                 <div class="skill-meta">{{ us.level }} • {{ us.years }} years</div>
-                <div class="skill-bar">
-                  <span style="--w:{% if us.level == 'Beginner' %}25%{% elif us.level == 'Intermediate' %}50%{% elif us.level == 'Advanced' %}75%{% else %}100%{% endif %}"></span>
+                  <div class="skill-bar">
+                  <span style="--w:{% if us.level == 'Beginner' %}25%{% elif us.level == 'Intermediate' %}50%{% elif us.level == 'Advanced' %}75%{% else %}100%{% endif %};"></span>
                 </div>
               </li>
             {% else %}
@@ -180,7 +179,7 @@
     </div>
 
     <!-- ===== Edit Mode (hidden) ======================================== -->
-    <div class="info-edit" id="info-edit" style="display:none;">
+    <div class="info-edit hidden" id="info-edit">
       <!-- Avatar upload -->
       <form method="POST"
             action="{{ url_for('profile.upload_avatar') }}"
@@ -212,7 +211,7 @@
           <textarea class="form-control" id="bio" name="bio" rows="4" placeholder="Tell others about yourself...">{{ user.bio or '' }}</textarea>
         </div>
 
-        <div class="form-buttons" style="display:flex; gap:.5rem;">
+        <div class="form-buttons">
           <button type="submit" class="btn btn-success">Save Changes</button>
           <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
         </div>
@@ -251,7 +250,7 @@
 <script>
 function toggleDemoUpload(){
   const f = document.getElementById('demo-upload-form');
-  f.style.display = (f.style.display === 'none' || !f.style.display) ? 'block' : 'none';
+  f.classList.toggle('hidden');
 }
 
 (function () {
@@ -298,12 +297,12 @@ function toggleDemoUpload(){
     audio.addEventListener("timeupdate", () => {
       if (!audio.duration) return;
       const pct = (audio.currentTime / audio.duration) * 100;
-      bar.style.width = pct + "%";
+      bar.style.width = pct + "%"; /* Keep inline for dynamic width */
       time.textContent = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
     });
     audio.addEventListener("ended", () => {
       card.classList.remove("is-playing");
-      bar.style.width = "0%";
+      bar.style.width = "0%"; /* Keep inline for dynamic width */
       time.textContent = `0:00 / ${fmt(audio.duration)}`;
       if (currentAudio === audio) { currentAudio = null; currentCard = null; }
     });
@@ -320,12 +319,12 @@ function toggleDemoUpload(){
 function toggleEditMode() {
   const accountDetails = document.getElementById('account-details');
   const infoEdit = document.getElementById('info-edit');
-  if (infoEdit.style.display === 'none') {
-    accountDetails.style.display = 'none';
-    infoEdit.style.display = 'block';
+  if (infoEdit.classList.contains('hidden')) {
+    accountDetails.classList.add('hidden');
+    infoEdit.classList.remove('hidden');
   } else {
-    accountDetails.style.display = 'block';
-    infoEdit.style.display = 'none';
+    accountDetails.classList.remove('hidden');
+    infoEdit.classList.add('hidden');
   }
 }
 </script>

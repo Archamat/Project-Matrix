@@ -431,3 +431,34 @@
   object-fit: cover;  /* resim çerçeveye tam otursun */
   margin: 0 auto;     /* ortalansın */
 }
+
+/* Profile page inline style replacements */
+.profile-container h2.fw-bold {
+  font-size: 2rem;
+  text-align: left;
+}
+
+.profile-description {
+  white-space: pre-line;
+}
+
+/* Edit mode visibility */
+#info-edit.hidden {
+  display: none;
+}
+
+/* Demo upload form visibility */
+#demo-upload-form.hidden {
+  display: none;
+}
+
+/* Form buttons flex layout */
+.form-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Skill bar width utility */
+.skill-bar > span {
+  width: var(--w, 0%);
+}

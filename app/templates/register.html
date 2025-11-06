@@ -21,7 +21,7 @@
       </div>
 
       <!-- Password -->
-      <div class="form-group" style="position:relative">
+      <div class="form-group form-group-relative">
         <label class="visually-hidden" for="password">Password</label>
         <input type="password" id="password" name="password" placeholder="Password" required autocomplete="new-password">
         <button type="button" id="togglePass" class="password-toggle" aria-label="Show password">⊙</button>
@@ -34,7 +34,7 @@
       <small class="small-hint">Min 8 chars, 1 uppercase, 1 number</small>
 
       <!-- Confirm -->
-      <div class="form-group" style="position:relative">
+      <div class="form-group form-group-relative">
         <label class="visually-hidden" for="confirm_password">Confirm Password</label>
         <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required autocomplete="new-password">
         <button type="button" id="toggleConfirm" class="password-toggle" aria-label="Show confirm password">⊙</button>
@@ -77,13 +77,13 @@ document.addEventListener('DOMContentLoaded', function () {
     segs.forEach((el,i)=>{ el.className=''; if(sc>=i+1) el.classList.add(`on-${i+1}`); });
   }
   function checkMatch(){
-    if(!pw.value && !pw2.value){ matchOut.textContent=''; return; }
+    if(!pw.value && !pw2.value){ matchOut.textContent=''; matchOut.className='small-hint'; return; }
     if(pw.value === pw2.value){
       matchOut.textContent='Passwords match';
-      matchOut.style.color='#16a34a';
+      matchOut.className='small-hint password-match';
     }else{
       matchOut.textContent='Passwords do not match';
-      matchOut.style.color='#e11d48';
+      matchOut.className='small-hint password-mismatch';
     }
   }
   function formOk(){
