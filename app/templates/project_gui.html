@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.name }} • Chat{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <h1 class="project-title">{{ project.name }}: Project Workspace</h1>
+  
+  </header>
+<div class="work-grid">
+   <aside class="left-rail">
+    <!-- Notes -->
+    <section class="card notes-card" aria-labelledby="notes-head">
+      <header class="card-head">
+        <h1 id="notes-head">Notes</h1>
+      </header>
+      <div class="card-body">
+        <form id="notes-form" method="POST" action="{{ url_for('project.project_gui', project_id=project.id) }}">
+          <input type="hidden" name="action" value="save_note">
+          {{ csrf_token() if csrf_token is defined }}  {# Flask-WTF, safe if present #}
+            <textarea
+              class="notes-area"
+              name="content"
+              placeholder="Write quick notes here…"
+              data-project-id="{{ project.id }}"
+            >{{ note_content }}
+          </textarea>
+        </form>
+          <div class="notes-status" aria-live="polite">
+          </div>
+      </div>
+    </section>
+
+    <!-- Related Links -->
+    <section class="card links-card" aria-labelledby="links-head">
+      <header class="card-head">
+        <h1 id="links-head">Related Links</h1>
+      </header>
+      <div class="card-body">
+        <ul class="links-list">
+          {% for link in project.links %}
+            <li>
+              <a href="{{ link.url }}" target="_blank" rel="noopener">
+                {{ link.label }}
+              </a>
+              <form method="POST"
+                  action="{{ url_for('project.project_gui', project_id=project.id) }}"
+                  style="display:inline;">
+                  <input type="hidden" name="action" value="delete_link">
+                  <input type="hidden" name="link_id" value="{{ link.id }}">
+                  {{ csrf_token() if csrf_token is defined }}
+                  <button type="submit" class="gui-btn small danger" title="Remove link">✕</button>
+              </form>
+            </li>
+          {% else %}
+            <li><em>No links yet.</em></li>
+          {% endfor %}
+        </ul>
+
+        <!-- Add link -->
+        <form class="link-adder" method="POST" action="{{ url_for('project.project_gui', project_id=project.id) }}">
+          <input type="hidden" name="action" value="add_link">
+          {{ csrf_token() if csrf_token is defined }}
+          <input
+            type="text"
+            name="label"
+            placeholder="Label (e.g., GitHub, Docs)"
+            aria-label="Link label"
+            required
+          />
+          <input
+            type="url"
+            name="url"
+            placeholder="https://add-a-link…"
+            aria-label="Link URL"
+            required
+          />
+          <button class="gui-btn small" type="submit">Add</button>
+        </form>
+      </div>
+    </section>
+  </aside>
+
+  <!-- LEFT: Progress + Chat stacked -->
+  <div class="work-main">
+    <!-- Progress (your existing block) -->
+    <section class="progress-card">
+      <div class="progress-label">Progress</div>
+      <div class="progress-track"
+           role="progressbar"
+           aria-valuemin="0" aria-valuemax="100"
+           aria-valuenow="{{ progress|int }}">
+        <div class="progress-fill" style="width: {{ progress|int }}%"></div>
+      </div>
+      <div class="progress-text">{{ progress|int }}%</div>
+    </section>
+
+    <!-- Chat (your existing chat box) -->
+    <section class="chat-box">
+      <header class="chat-header">
+        <h1>{{ project.name }} Chat</h1>
+        <a class="gui-btn small" href="{{ url_for('project.projects') }}">Back</a>
+      </header>
+
+      <div id="chat-stream" class="chat-stream">
+        {% for m in project.messages|sort(attribute="created_at") %}
+          <div class="chat-msg">
+             <p>
+                <strong class="chat-author">{{ m.author.username or ('User #' ~ m.author_id) }}</strong>
+                <span class="chat-time">· {{ m.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                {{ m.body }}
+              </p>
+          </div>
+        {% else %}
+          <p class="muted">No messages yet.</p>
+        {% endfor %}
+      </div>
+
+      <form class="chat-input" method="post" action="{{ url_for('project.project_gui', project_id=project.id) }}">
+        <input type="hidden" name="action" value="add_message">
+        <textarea name="body" placeholder="Type a message…" required></textarea>
+        <button class="gui-btn" type="submit">Send</button>
+      </form>
+    </section>
+  </div>
+
+  <!-- RIGHT: To-Do list -->
+  <aside class="todo-box">
+    <header class="todo-head">
+      <h1>Functionalities</h1>
+    </header>
+
+    <ul class="task-list">
+      {% for t in project.tasks %}
+        <li class="task-item {% if t.is_done %}done{% endif %}">
+          <form method="post" action="{{ url_for('project.project_gui', project_id=project.id) }}">
+            <input type="hidden" name="action" value="toggle_task">
+            <input type="hidden" name="task_id" value="{{ t.id }}">
+            <button class="checkbox {% if t.is_done %}checked{% endif %}" type="submit" aria-label="toggle"></button>
+            <span class="task-title">{{ t.title }}</span>
+          </form>
+           <form method="POST"
+            action="{{ url_for('project.project_gui', project_id=project.id) }}"
+            style="display:inline;">
+            <input type="hidden" name="action" value="delete_task">
+            <input type="hidden" name="task_id" value="{{ t.id }}">
+            {{ csrf_token() if csrf_token is defined }}
+            <button type="submit" class="gui-btn small danger" title="Delete task">✕</button>
+          </form>
+        </li>
+      {% else %}
+        <li class="muted">No tasks yet.</li>
+      {% endfor %}
+    </ul>
+
+    <form class="add-task" method="post" action="{{ url_for('project.project_gui', project_id=project.id) }}">
+      <input type="hidden" name="action" value="add_task">
+      <input type="text" name="title" placeholder="New task…" required>
+      <button class="gui-btn" type="submit">Add</button>
+    </form>
+  </aside>
+
+</div>
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  const s = document.getElementById('chat-stream');
+  if (s) s.scrollTop = s.scrollHeight;
+</script>
+{% endblock %}

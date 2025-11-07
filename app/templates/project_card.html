@@ -33,6 +33,9 @@
         </div>
         <div class="card-actions">
             <a href="{{ url_for('project.project_detail', project_id=project.id) }}" class="project-link">View Details</a>
+            <button class="gui-button" 
+            onclick="window.location.href='{{ url_for('project.project_gui', project_id=project.id) }}'">Open GUI
+            </button>
             {% if is_creator %}
                 <button onclick="showApplicants('{{ project.id }}')" class="applicant-button">Applicant List</button>
                 

@@ -201,3 +201,34 @@
 .auth-card button[type="submit"]:focus{ outline:none; box-shadow:0 0 0 4px rgba(37,99,235,.25), 0 6px 18px rgba(41,121,255,.20); }
 .register-card button[disabled],
 .auth-card button[disabled]{ opacity:.6; cursor:not-allowed; box-shadow:none; }
+
+
+/* Project-GUI Buttons */
+
+.gui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  border-radius: calc(var(--radius) - 4px);
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  color: var(--text);
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.04s ease,
+              background 0.15s ease,
+              border-color 0.15s ease;
+}
+
+.gui-btn:hover { background: var(--panel-2); }
+.gui-btn:active { transform: scale(0.97); }
+
+.chat-header .gui-btn.small {
+  background: rgba(255,255,255,.2);
+  border: 1px solid rgba(255,255,255,.35);
+  color: #fff;
+}
+.chat-header .btn.small:hover { background: rgba(255,255,255,.28); }
+
