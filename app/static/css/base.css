@@ -164,3 +164,6 @@ body {
   justify-content: center;
   margin-top: 20px;
 }
+.container {
+  max-width: 90% !important;
+}
