@@ -1,75 +1,63 @@
-from flask import render_template, redirect, url_for, flash
-from .forms import ProjectCreationForm
-from .models import Project
 from app.extensions import db
 from flask_login import current_user
 from flask import request, jsonify
 from .forms import ApplicationForm
 from .models import Application, Task, ChatMessage, ProjectLink, ProjectNote
 
+from .project_database_manager import ProjectDatabaseManager
 
-def handle_project_create():
-    form = ProjectCreationForm()
-    if form.validate_on_submit():
-        # Get form data
-        name = form.name.data
-        description = form.description.data
-        sector = form.sector.data
-        people_count = form.people_count.data
-        skills = form.skills.data
-        creator = current_user
+
+def handle_project_create(name=None, description=None, sector=None, 
+                          people_count=None, skills=None, other_skill=None,
+                          creator_id=None):
+    try:
+        if not name or len(name.strip()) < 3:
+            raise ValueError("Project name must be at least 3 characters long")
 
         # Append custom skill if "Other" is selected
-        if 'Other' in skills and form.other_skill.data:
-            skills.append(form.other_skill.data)
-
-        skills_str = ', '.join(skills)  # Convert list to comma-separated string
+        if isinstance(skills, list):
+            if 'Other' in skills and other_skill:
+                skills.append(other_skill)
+            skills_str = ', '.join(skills)
+        else:
+            skills_str = skills or ''
 
         # Create and save project
-        project = Project(name=name, description=description, sector=sector, people_count=people_count, skills=skills_str, creator=creator)
-        db.session.add(project)
-        db.session.commit()
+        database_manager = ProjectDatabaseManager()
+        database_manager.create_project(
+            name=name.strip(),
+            description=description,
+            sector=sector,
+            people_count=people_count,
+            skills=skills_str,
+            creator_id=creator_id
+        )
 
-        flash('Project created successfully!', 'success')
-        return redirect(url_for('main.home'))  # Update to your desired redirect page
+    except Exception as e:
+        db.session.rollback()
+        raise ValueError(f"Failed to create project: {str(e)}")
 
-    return render_template('create_project.html', form=form)
 
-def handle_apply_project(project_id):
-    project = Project.query.get_or_404(project_id)
-    form = ApplicationForm()
-    
-    if form.validate_on_submit():
-        skills = form.skills.data
-        if 'Other' in skills and form.other_skill.data:
-            skills.append(form.other_skill.data)
-        
+def handle_apply_project(project_id, form, creator_id):
+
+    try:
+        skills = form["skills"]
+        if 'Other' in skills and form["other_skill"]:
+            skills.append(form["other_skill"])
         skills_str = ', '.join(skills)
-        
         application = Application(
             project_id=project_id,
             applicant_id=current_user.id,
-            information=form.information.data,
+            information=form["information"],
             skills=skills_str,
-            contact_info=form.contact_info.data
+            contact_info=form["contact_info"]
         )
-        
-        db.session.add(application)
-        db.session.commit()
-        
-        flash('Application submitted successfully!', 'success')
-        return redirect(url_for('main.home'))
-    
-    return render_template('apply_project.html', form=form, project=project)
-
-
-def handle_project_applicants(project_id):
-    project = Project.query.get_or_404(project_id)
-    # Check if current user is the project creator
-    if project.creator_id != current_user.id:
-        flash('You are not authorized to view this page', 'error')
-        return redirect(url_for('project.projects'))
-    return render_template('applicants_list.html', project=project)
+        database_manager = ProjectDatabaseManager()
+        database_manager.apply_to_project(project_id, creator_id,
+                                          application)
+    except Exception:
+        db.session.rollback()
+        raise ValueError("Failed to apply to project")
 
 
 def handle_project_gui(project_id):
@@ -170,3 +158,27 @@ def handle_project_gui(project_id):
         progress=progress,
         note_content=note_content
     )
+def get_project_applicants(project_id, creator_id):
+    # Check if current user is the project creator
+    project = get_project_by_id(project_id)
+
+    if not project:
+        raise ValueError(f"Project {project_id} not found")
+
+    # Check authorization
+    if project.creator_id != creator_id:
+        raise PermissionError("You don't have "
+                              "permission to view these applicants")
+
+    # Return the applicants (empty list if none)
+    return project.applications
+
+
+def get_project_by_id(project_id):
+    database_manager = ProjectDatabaseManager()
+    return database_manager.get_project_by_id(project_id)
+
+
+def get_all_projects():
+    database_manager = ProjectDatabaseManager()
+    return database_manager.get_all_projects()
