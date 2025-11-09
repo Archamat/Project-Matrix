@@ -38,7 +38,7 @@ async function handleLoginSubmit(event) {
     const password = document.getElementById('password').value;
     
     try {
-        const response = await fetch('/login', {
+        const response = await fetch('/api/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password })
@@ -73,10 +73,10 @@ async function handleRegisterSubmit(event) {
 
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-    const email = document.getElementById('email').value
+    const email = document.getElementById('email').value;
 
     try {
-        const response = await fetch('/register', {
+        const response = await fetch('/api/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username, password, email })

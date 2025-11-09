@@ -1,27 +1,29 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script src="{{ url_for('static', filename='js/project.js') }}"></script>
     <div class="create_project_container mt-4">
         <h2>Create a New Project</h2>
-        <form method="POST" action="{{ url_for('project.create_project') }}">
+        <div id="message-container"></div>
+        <form id="createProjectForm" method="POST" action="{{ url_for('project.create_project') }}">
             {{ form.hidden_tag() }}
             
-            <div class="form-group">
+            <div class="form-group" id="name">
                 {{ form.name.label }}<br>
                 {{ form.name(class="form-control") }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="description">
                 {{ form.description.label }}<br>
                 {{ form.description(class="form-control") }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="sector">
                 {{ form.sector.label }}<br>
                 {{ form.sector(class="form-control") }}
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="people_count">
                 {{ form.people_count.label }}<br>
                 {{ form.people_count(class="form-control") }}
                 {% if form.people_count.errors %}
@@ -29,7 +31,7 @@
                 {% endif %}
             </div>
 
-            <div class="form-group">
+            <div class="form-group" id="skills">
                 {{ form.skills.label }}<br>
                 {{ form.skills(class="form-control") }}
             </div>

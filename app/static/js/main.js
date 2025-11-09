@@ -31,7 +31,7 @@ async function handleLogoutSubmit(event) {
 
     try {
         console.log('Logging out user');
-        const response = await fetch('/logout', {
+        const response = await fetch('/api/logout', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -57,6 +57,24 @@ async function handleLogoutSubmit(event) {
  */
 
 /**
+ * Escape HTML to prevent XSS attacks
+ * @param {string} str - String to escape
+ * @returns {string} Escaped HTML string
+ */
+function escapeHTML(str) {
+    return str.replace(/[&<>"']/g, function (m) {
+        switch (m) {
+            case '&': return '&amp;';
+            case '<': return '&lt;';
+            case '>': return '&gt;';
+            case '"': return '&quot;';
+            case "'": return '&#39;';
+            default: return m;
+        }
+    });
+}
+
+/**
  * Display a message to the user
  * @param {string} text - Message to display
  * @param {string} type - Message type: 'success', 'danger', 'info'
@@ -66,11 +84,17 @@ function showMessage(text, type) {
     
     // Create message element
     const messageDiv = document.createElement('div');
-    messageDiv.className = `alert-custom ${type}`;
     messageDiv.innerHTML = `
-        <span class="alert-text">${text}</span>
-        <button class="alert-close" onclick="this.parentElement.remove();">&times;</button>
+        <span class="alert-text">${escapeHTML(text)}</span>
+        <button class="alert-close" type="button">&times;</button>
     `;
+
+    const closeBtn = messageDiv.querySelector('.alert-close');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            messageDiv.remove();
+        });
+    }
     
     // Clear previous messages
     container.innerHTML = '';

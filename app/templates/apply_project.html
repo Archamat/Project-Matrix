@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+<script src="{{ url_for('static', filename='js/project.js') }}"></script>
 <div class="container mt-4">
     <div class="application-form-container">
         <h2>Apply for {{ project.name }}</h2>
+        <div id="message-container"></div>
         <div class="project-summary">
             <h4>Project Details:</h4>
             <p><strong>Sector:</strong> {{ project.sector }}</p>
@@ -11,7 +13,7 @@
             <p><strong>People Needed:</strong> {{ project.people_count }}</p>
         </div>
         
-        <form method="POST">
+        <form id="apply_project_form" method="POST" data-project-id="{{ project.id }}">
             {{ form.hidden_tag() }}
             <div class="form-group">
                 {{ form.information.label }}<br>
