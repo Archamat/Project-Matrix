@@ -128,14 +128,22 @@ def handle_project_gui(project_id):
                 db.session.commit()
             return redirect(url_for('project.project_gui', project_id=project.id))
         
-        elif action == "delete_link":
-            link_id = int(request.form["link_id"])
-            link = ProjectLink.query.get_or_404(link_id)
-            # Only allow deletion if link belongs to this project
-            if link.project_id == project.id:
-                db.session.delete(link)
-                db.session.commit()
-            return redirect(url_for('project.project_gui', project_id=project.id))
+        elif action == "delete_task":
+            try:
+                task_id = int(request.form.get("task_id", "").strip())
+            except (ValueError, AttributeError):
+                flash("Invalid task ID.", "danger")
+                return redirect(url_for("project.project_gui", project_id=project.id))
+
+            task = Task.query.get(task_id)
+            if not task or task.project_id != project.id:
+                flash("Task not found.", "warning")
+                return redirect(url_for("project.project_gui", project_id=project.id))
+
+            db.session.delete(task)
+            db.session.commit()
+            flash("Task deleted successfully.", "success")
+            return redirect(url_for("project.project_gui", project_id=project.id))
                
         elif action == "save_note":
             content = (request.form.get("content") or "").strip()
