@@ -230,5 +230,5 @@
   border: 1px solid rgba(255,255,255,.35);
   color: #fff;
 }
-.chat-header .btn.small:hover { background: rgba(255,255,255,.28); }
+.chat-header .gui-btn.small:hover { background: rgba(255,255,255,.28); }
 
