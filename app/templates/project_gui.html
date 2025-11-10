@@ -12,7 +12,7 @@
     <!-- Notes -->
     <section class="card notes-card" aria-labelledby="notes-head">
       <header class="card-head">
-        <h1 id="notes-head">Notes</h1>
+        <h2 id="notes-head">Notes</h2>
       </header>
       <div class="card-body">
         <form id="notes-form" method="POST" action="{{ url_for('project.project_gui', project_id=project.id) }}">
@@ -34,7 +34,7 @@
     <!-- Related Links -->
     <section class="card links-card" aria-labelledby="links-head">
       <header class="card-head">
-        <h1 id="links-head">Related Links</h1>
+        <h1 id="links-head"> Related Links</h1>
       </header>
       <div class="card-body">
         <ul class="links-list">
@@ -81,8 +81,8 @@
     </section>
   </aside>
 
-  <!-- LEFT: Progress + Chat stacked -->
-  <div class="work-main">
+  <!-- MIDDLE: Progress + Chat stacked -->
+  <div class="center-rail">
     <!-- Progress (your existing block) -->
     <section class="progress-card">
       <div class="progress-label">Progress</div>
@@ -119,6 +119,7 @@
       <form class="chat-input" method="post" action="{{ url_for('project.project_gui', project_id=project.id) }}">
         <input type="hidden" name="action" value="add_message">
         <textarea name="body" placeholder="Type a message…" required></textarea>
+         {{ csrf_token() if csrf_token is defined }} 
         <button class="gui-btn" type="submit">Send</button>
       </form>
     </section>

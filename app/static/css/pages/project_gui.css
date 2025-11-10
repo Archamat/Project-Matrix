@@ -1,5 +1,5 @@
 /* ==========================================================
-   CSS for Project Gui.
+   CSS for Project GUI.
    ========================================================== */
 :root {
   --card-border-w: 1px;
@@ -72,10 +72,11 @@
 }
 
 
-:is(.notes-card, .links-card) .card-head h2 {
+:is(.notes-card, .links-card) .card-head-h1 {
   margin: 0;
   font-size: 1.05rem;
   font-weight: 700;
+  color: var(--text)
 }
 
 
@@ -90,7 +91,6 @@
   resize: vertical;
   border-radius: var(--radius-inner);
   padding: 0.65rem 0.8rem;
-  padding: .65rem .8rem;
   background: var(--card-bg);
   color: var(--text);
 }
