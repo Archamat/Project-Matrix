@@ -90,7 +90,6 @@
   resize: vertical;
   border-radius: var(--radius-inner);
   padding: 0.65rem 0.8rem;
-  padding: .65rem .8rem;
   background: var(--card-bg);
   color: var(--text);
 }
