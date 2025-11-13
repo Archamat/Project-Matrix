@@ -37,7 +37,7 @@
                 <button onclick="showApplicants('{{ project.id }}')" class="applicant-button">Applicant List</button>
                 
                 <!-- Popup Modal -->
-                <div id="applicantModal{{ project.id }}" class="modal">
+                <div id="applicantModal{{ project.id }}" class="modal hidden">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h3>Applicants</h3>
@@ -93,7 +93,7 @@ function showApplicants(projectId) {
     modal.style.overflowY = 'auto';
     
     // Show modal and backdrop
-    modal.style.display = "block";
+    modal.classList.remove('hidden');
     //modalBackdrop.style.display = "block";
     
     // Add mouse move event listener to check buffer zone
@@ -136,7 +136,7 @@ function closeModal(projectId) {
     const modal = document.getElementById(`applicantModal${projectId}`);
     const modalBackdrop = document.querySelector('.modal-backdrop');
     
-    modal.style.display = "none";
+    modal.classList.add('hidden');
     if (modalBackdrop) {
         modalBackdrop.remove();
     }

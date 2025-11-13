@@ -103,3 +103,37 @@
 .auth-link:hover {
     text-decoration: underline;
 }
+
+/* Register-specific styles */
+.register-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(20px, 4vw, 48px);
+}
+
+.register-card {
+    background: var(--panel);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: clamp(22px, 4vw, 38px);
+    width: 100%;
+    max-width: clamp(320px, 42vw, 520px);
+}
+
+.register-card h2 {
+    text-align: center;
+    margin-bottom: 8px;
+    color: var(--text);
+}
+
+.register-card .subhead {
+    text-align: center;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+
+/* Password strength feedback colors */
+.password-match { color: #16a34a; }
+.password-mismatch { color: #e11d48; }
