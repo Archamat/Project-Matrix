@@ -60,10 +60,8 @@
                 document.querySelectorAll('.alert-close').forEach(function(button) {
                     button.addEventListener('click', function() {
                         const alert = this.parentElement;
-                        alert.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                        alert.style.opacity = '0';
-                        alert.style.transform = 'translateY(-10px)';
-                        setTimeout(() => { alert.style.display = 'none'; }, 300);
+                        alert.classList.add('alert-fade-out');
+                        setTimeout(() => { alert.classList.add('hidden'); }, 300);
                     });
                 });
 

@@ -28,28 +28,7 @@ body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, 
   --err: hsl(0 75% 55%);
 }
 
-/* ===== Dark Theme ============================================== */
-.theme-dark {
-  --bg: hsl(220 18% 10%);
-  --panel: hsl(220 16% 14%);
-  --panel-2: hsl(220 16% 12%);
 
-  --text: hsl(210 20% 92%);
-  --muted: hsl(215 12% 70%);
-
-  --border: hsl(220 14% 26%);
-  --shadow: 0 0 0 1px var(--border), 0 12px 30px hsl(220 20% 2% / .55);
-
-  --brand: hsl(var(--brand-h) 90% 65%);
-  --brand-600: hsl(var(--brand-h) 90% 58%);
-  --brand-200: hsl(var(--brand-h) 95% 85% / .18);
-}
-
-body {
-  background: var(--bg);
-  color: var(--text);
-  margin: 0;
-}
 
 /* Flash mesaj kapsayıcı */
 .flash-messages {
@@ -167,3 +146,38 @@ body {
 .container {
   max-width: 90% !important;
 }
+/* ===== UTILITY CLASSES =========================================== */
+
+/* Display utilities */
+.hidden { display: none !important; }
+.block { display: block !important; }
+.flex { display: flex !important; }
+.inline-flex { display: inline-flex !important; }
+
+/* Position utilities */
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+
+/* Text utilities */
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.whitespace-pre-line { white-space: pre-line; }
+
+/* Color utilities for password match feedback */
+.text-success { color: #16a34a; }
+.text-error { color: #e11d48; }
+
+/* Alert transition utilities */
+.alert-fade-out {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+/* Form group with relative positioning */
+.form-group-relative { position: relative; }
+
+/* Flex utilities */
+.flex-gap-sm { display: flex; gap: 0.5rem; }

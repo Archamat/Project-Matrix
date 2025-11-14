@@ -45,7 +45,7 @@
   }
 
   /* ---- LINKS ---- */
-  .nav-right{ display:flex; align-items:center; gap:1rem; flex:0 0 200px; justify-content:flex-end; }
+  .nav-right{ display:flex; align-items:center; gap:1rem; flex:0 0 200px; justify-content:flex-end; white-space:nowrap; }
   .nav-left{ display:flex; align-items:center; gap:1rem; }
 
   .nav-link{
@@ -54,8 +54,21 @@
     padding:.5rem;
     transition:color .2s, background .2s;
     border-radius:6px;
+    white-space:nowrap;
+  }
+  /* Make button version of nav-link look like a link, not a white button */
+  button.nav-link{
+    background:transparent;
+    border:0;
+    color:var(--text);
+    padding:.5rem;
+    border-radius:6px;
+    cursor:pointer;
+    appearance:none;
+    -webkit-appearance:none;
   }
   .nav-link:hover{ color:var(--brand); background:var(--panel-2); }
+  button.nav-link:hover{ color:var(--brand); background:var(--panel-2); }
   .nav-link.active{ color:var(--brand); font-weight:600; }
 
   /* ---- BOTTOM STRIP / CATEGORIES ---- */

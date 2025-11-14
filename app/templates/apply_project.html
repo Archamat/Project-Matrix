@@ -29,7 +29,7 @@
                 {% endif %}
             </div>
             
-            <div class="form-group" id="other-skill-field" style="display: none;">
+            <div class="form-group other-skill-field hidden" id="other-skill-field">
                 {{ form.other_skill.label }}<br>
                 {{ form.other_skill(class="form-control") }}
             </div>
@@ -52,9 +52,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     skillsSelect.addEventListener('change', function() {
         if ([...skillsSelect.selectedOptions].some(option => option.value === 'Other')) {
-            otherSkillField.style.display = 'block';
+            otherSkillField.classList.remove('hidden');
         } else {
-            otherSkillField.style.display = 'none';
+            otherSkillField.classList.add('hidden');
         }
     });
 });
