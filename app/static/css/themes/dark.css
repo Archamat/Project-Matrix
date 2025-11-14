@@ -195,4 +195,25 @@ body {
 
 .theme-dark .logo { color: #2979ff; }
 
+.theme-dark .page-header {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  color: var(--text);
+}
+
+.theme-dark .work-grid {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  color: var(--text);
+}
+
+.theme-dark .todo-box,
+.theme-dark .left-rail,
+.theme-dark .center-rail {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
 
