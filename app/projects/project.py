@@ -62,7 +62,7 @@ def handle_apply_project(project_id, form, creator_id):
 
 def handle_project_gui(project_id):
     """Full interactive project GUI (tasks, chat, progress bar, links)"""
-    project = Project.query.get_or_404(project_id)
+    project = ProjectDatabaseManager.get_project_by_id(project_id)
 
     note = ProjectNote.query.filter_by(
         project_id=project.id,
@@ -73,23 +73,18 @@ def handle_project_gui(project_id):
 
     # Handle form actions (optional combined logic)
     action = request.form.get('action')
-    if request.method == "POST":
-        
+    if request.method == "POST":  
         if action == "add_task":
             title = (request.form.get("title") or "").strip()
             if title:
                 task = Task(project_id=project.id, title=title)
-                db.session.add(task)
-                db.session.commit()
-            return redirect(url_for('project.project_gui', project_id=project.id))
+                ProjectDatabaseManager.add_element_to_project(project.id, task)
 
         elif action == "delete_task":
             task_id = int(request.form["task_id"])
             task = Task.query.get_or_404(task_id)
             if task.project_id == project.id:
-                db.session.delete(task)
-                db.session.commit()
-            return redirect(url_for('project.project_gui', project_id=project.id))
+                ProjectDatabaseManager.delete_element_from_project(task)
             
         elif action == "toggle_task":
             task_id = int(request.form["task_id"])
@@ -97,7 +92,6 @@ def handle_project_gui(project_id):
             if task.project_id == project.id:
                 task.is_done = not task.is_done
                 db.session.commit()
-            return redirect(url_for('project.project_gui', project_id=project.id))
 
         elif action == "add_message":
             body = (request.form.get("body") or "").strip()
@@ -105,33 +99,24 @@ def handle_project_gui(project_id):
                 msg = ChatMessage(project_id=project.id, author_id=current_user.id, body=body)
                 db.session.add(msg)
                 db.session.commit()
-            return redirect(url_for('project.project_gui', project_id=project.id))
 
         elif action == "add_link":
             label = (request.form.get("label") or "").strip()
             url = (request.form.get("url") or "").strip()
             if label and url:
                 link = ProjectLink(project_id=project.id, label=label, url=url)
-                db.session.add(link)
-                db.session.commit()
-            return redirect(url_for('project.project_gui', project_id=project.id))
+                ProjectDatabaseManager.add_element_to_project(project.id, link)
         
         elif action == "delete_task":
             try:
                 task_id = int(request.form.get("task_id", "").strip())
             except (ValueError, AttributeError):
-                flash("Invalid task ID.", "danger")
-                return redirect(url_for("project.project_gui", project_id=project.id))
-
+                raise ValueError("Invalid task ID")
             task = Task.query.get(task_id)
             if not task or task.project_id != project.id:
-                flash("Task not found.", "warning")
-                return redirect(url_for("project.project_gui", project_id=project.id))
+                raise ValueError("Task not found.")
 
-            db.session.delete(task)
-            db.session.commit()
-            flash("Task deleted successfully.", "success")
-            return redirect(url_for("project.project_gui", project_id=project.id))
+            ProjectDatabaseManager.delete_element_from_project(task)
                
         elif action == "save_note":
             content = (request.form.get("content") or "").strip()
@@ -146,18 +131,22 @@ def handle_project_gui(project_id):
             else:
                 note.content = content
             db.session.commit()
-        
+
             # Compute progress
     total = len(project.tasks)
     done = sum(1 for t in project.tasks if t.is_done)
     progress = int((done / total) * 100) if total > 0 else 0
 
-    return render_template(
-        'project_gui.html',
-        project=project,
-        progress=progress,
-        note_content=note_content
-    )
+    return {
+        "project": project,
+        "tasks": project.tasks,
+        "messages": project.messages,
+        "links": project.links,
+        "note_content": note_content,
+        "progress": progress
+    }
+
+
 def get_project_applicants(project_id, creator_id):
     # Check if current user is the project creator
     project = get_project_by_id(project_id)

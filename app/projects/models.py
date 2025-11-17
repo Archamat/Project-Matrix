@@ -39,8 +39,8 @@ class Project(db.Model):
 class Application(db.Model):
     __tablename__ = 'applications'
     id = db.Column(db.Integer, primary_key=True)
-    project_id = db.Column(db.Integer, db.ForeignKey('projects.id')
-                           , nullable=False)
+    project_id = db.Column(db.Integer, db.ForeignKey('projects.id'),
+                           nullable=False)
     applicant_id = db.Column(db.Integer, db.ForeignKey('user.id'), 
                              nullable=False)
     information = db.Column(db.Text, nullable=False)
@@ -66,7 +66,7 @@ class ProjectLink(db.Model):
     __tablename__ = "project_links"
     id = db.Column(db.Integer, primary_key=True)
     project_id = db.Column(db.Integer, db.ForeignKey('projects.id'), nullable=False)
-    label = db.Column(db.String(100), nullable=False)      # e.g. "GitHub", "Jira"
+    label = db.Column(db.String(100), nullable=False)
     url = db.Column(db.String(300), nullable=False)
 
     project = db.relationship('Project', backref=db.backref('links', lazy=True, cascade="all, delete-orphan"))

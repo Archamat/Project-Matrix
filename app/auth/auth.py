@@ -27,6 +27,8 @@ def handle_register(data):
         email = data.get('email')
         if not username or not password or not email:
             raise ValueError('Username, password, and email are required')
+        if AuthDatabaseManager.get_user_by_username(username):
+            raise ValueError('Username already exists')
         user = AuthDatabaseManager.create_user(username, email, password)
         if not user:
             raise ValueError('An error occurred during registration')

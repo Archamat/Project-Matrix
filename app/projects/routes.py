@@ -1,8 +1,6 @@
-from flask import Blueprint, jsonify, render_template, request
+from flask import Blueprint, render_template
 from flask_login import login_required
 from .project import (
-    handle_project_create, 
-    handle_apply_project, 
     get_project_by_id,
     handle_project_gui,
     get_all_projects
@@ -51,4 +49,10 @@ def project_applicants(project_id):
 @project.route('/project/<int:project_id>/gui', methods=['GET', 'POST'])
 @login_required
 def project_gui(project_id):
-    return handle_project_gui(project_id)
+    project_gui = handle_project_gui(project_id)
+    return render_template(
+         'project_gui.html',
+         project=project_gui["project"],
+         progress=project_gui["progress"],
+         note_content=project_gui["note_content"]
+     )

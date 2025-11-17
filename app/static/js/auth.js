@@ -94,4 +94,4 @@ async function handleRegisterSubmit(event) {
         console.error('Registration error:', error);
         showMessage('An error occurred. Please try again.', 'danger');
     }
-};
+}

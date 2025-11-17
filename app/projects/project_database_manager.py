@@ -44,3 +44,18 @@ class ProjectDatabaseManager:
         db.session.add(application)
         db.session.commit()
         return application
+
+    @staticmethod
+    def add_element_to_project(project_id, element):
+        project = Project.query.get(project_id)
+        if not project:
+            raise ValueError("Project not found")
+
+        db.session.add(element)
+        db.session.commit()
+        return element
+    
+    @staticmethod
+    def delete_element_from_project(element):
+        db.session.delete(element)
+        db.session.commit()
