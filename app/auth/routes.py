@@ -1,23 +1,12 @@
 from flask import Blueprint, render_template
-from .login import handle_login
-from .register import handle_register
-from .logout import handle_logout
+from . import auth
 
-auth = Blueprint('auth',__name__)
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/login', methods=['GET'])
 def login():
-    # Login logic here...
-    return handle_login()
+    return render_template('login.html')
 
-@auth.route('/register', methods=['GET', 'POST'])
+
+@auth.route('/register', methods=['GET'])
 def register():
-    # Registration logic here...
-    return handle_register()
-
-@auth.route('/logout', methods=['GET', 'POST'])
-def logout():
-    # Login logic here...
-    return handle_logout()
-
-
+    return render_template('register.html')
