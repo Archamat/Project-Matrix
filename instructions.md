@@ -28,4 +28,3 @@ flask db upgrade
 ```console
 sudo -u postgres psql -d project_db -c "GRANT ALL ON SCHEMA public TO project_app;"
 ```
-

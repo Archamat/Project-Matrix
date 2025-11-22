@@ -8,26 +8,35 @@ from app.aws.s3 import presigned_get_url
 
 # Constants
 AUDIO_MIME_ALLOW = {
-    "audio/mpeg", "audio/mp3", "audio/wav", "audio/ogg", "audio/webm",
-    "audio/x-wav", "audio/wave", "audio/flac"
+    "audio/mpeg",
+    "audio/mp3",
+    "audio/wav",
+    "audio/ogg",
+    "audio/webm",
+    "audio/x-wav",
+    "audio/wave",
+    "audio/flac",
 }
 IMAGE_MIME_ALLOW = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 
 
-profile = Blueprint('profile', __name__)
+profile = Blueprint("profile", __name__)
 
 # ==================== VIEW ROUTES (Render Templates) ====================
 
-@profile.route('/profile')
+
+@profile.route("/profile")
 @login_required
 def show_profile():
     """Show current user's profile"""
     profile_data = handle_profile(current_user)
-    return render_template('profile.html',
-                          user=profile_data['user'],
-                          demos=profile_data['demos'],
-                          is_owner=True,
-                          current_page='profile')
+    return render_template(
+        "profile.html",
+        user=profile_data["user"],
+        demos=profile_data["demos"],
+        is_owner=True,
+        current_page="profile",
+    )
 
 
 @profile.get("/u/<string:username>")
@@ -35,19 +44,22 @@ def show_profile():
 def view_profile(username):
     """View another user's public profile"""
     user = User.query.filter_by(username=username).first_or_404()
-    is_owner = (user.id == current_user.id)
-    
+    is_owner = user.id == current_user.id
+
     profile_data = handle_profile(user)
-    return render_template('profile.html',
-                          user=profile_data['user'],
-                          demos=profile_data['demos'],
-                          is_owner=is_owner,
-                          current_page='profile')
+    return render_template(
+        "profile.html",
+        user=profile_data["user"],
+        demos=profile_data["demos"],
+        is_owner=is_owner,
+        current_page="profile",
+    )
 
 
 # ==================== TRADITIONAL FORM HANDLERS (for backward compatibility) ====================
 
-@profile.route('/profile/upload_avatar', methods=['POST'])
+
+@profile.route("/profile/upload_avatar", methods=["POST"])
 @login_required
 def upload_avatar():
     """Traditional form handler for avatar upload"""
@@ -65,6 +77,7 @@ def upload_avatar():
         result = upload_fileobj_private(file, prefix=f"avatars/{current_user.id}/")
         current_user.avatar_url = result["key"]
         from app.extensions import db
+
         db.session.commit()
         flash("Avatar updated!", "success")
     except Exception as e:
@@ -73,7 +86,7 @@ def upload_avatar():
     return redirect(url_for("profile.show_profile"))
 
 
-@profile.route('/profile/update', methods=['POST'])
+@profile.route("/profile/update", methods=["POST"])
 @login_required
 def update_profile_info():
     """Traditional form handler for profile update"""
@@ -82,13 +95,13 @@ def update_profile_info():
     try:
         data = request.form.to_dict()
         handle_update_profile(current_user, data)
-        flash('Profile updated successfully!', 'success')
+        flash("Profile updated successfully!", "success")
     except ValueError as e:
-        flash(str(e), 'error')
+        flash(str(e), "error")
     except Exception:
-        flash('An error occurred while updating your profile.', 'error')
+        flash("An error occurred while updating your profile.", "error")
 
-    return redirect(url_for('profile.show_profile'))
+    return redirect(url_for("profile.show_profile"))
 
 
 @profile.post("/profile/upload_demo")
@@ -110,7 +123,9 @@ def upload_demo():
 
     try:
         result = upload_fileobj_private(file, prefix=f"demos/{current_user.id}/")
-        handle_demo_upload(current_user, result["key"], title or file.filename, file.mimetype)
+        handle_demo_upload(
+            current_user, result["key"], title or file.filename, file.mimetype
+        )
         flash("Demo uploaded!", "success")
     except Exception as e:
         flash(f"Upload failed: {e}", "danger")
@@ -147,13 +162,15 @@ def list_demos():
             url = presigned_get_url(d.key, expires_in=3600)
         except Exception:
             url = None
-        items.append({
-            "id": d.id,
-            "title": d.title,
-            "mime": d.mime,
-            "url": url,
-            "updated_at": d.updated_at
-        })
+        items.append(
+            {
+                "id": d.id,
+                "title": d.title,
+                "mime": d.mime,
+                "url": url,
+                "updated_at": d.updated_at,
+            }
+        )
 
     return render_template("partials/_demos_list.html", items=items)
 

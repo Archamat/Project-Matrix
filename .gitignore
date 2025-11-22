@@ -51,6 +51,11 @@ coverage.xml
 .pytest_cache/
 cover/
 
+# Linting
+.ruff_cache/
+.mypy_cache/
+.pylint.d/
+
 # Translations
 *.mo
 *.pot
@@ -141,8 +146,7 @@ migrations/
 # mkdocs documentation
 /site
 
-# mypy
-.mypy_cache/
+# mypy (moved to Linting section above)
 .dmypy.json
 dmypy.json
 
@@ -161,5 +165,19 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Project-specific
 help/project_structure
 app/templates/navbar.html.bak
+
+# Temporary files
+*.tmp
+*.bak
+.~*

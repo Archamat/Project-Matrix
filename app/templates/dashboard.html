@@ -9,7 +9,7 @@
         <h1>Welcome{% if current_user.is_authenticated %}, {{ current_user.username }}{% endif %}!</h1>
         <p class="dashboard-subtitle">Rabbab</p>
     </div>
-    
+
     <!-- Two Column Layout -->
     <div class="dashboard-grid">
         <!-- Left Column: Available Projects -->
@@ -18,7 +18,7 @@
                 <h2>Latest Projects</h2>
                 <a href="{{ url_for('project.projects') }}" class="view-all-btn">View All</a>
             </div>
-            
+
             <div class="projects-grid">
                 {% for project in projects %}
                     {% with is_creator=(current_user.is_authenticated and project.creator_id == current_user.id) %}
@@ -32,7 +32,7 @@
                 {% endfor %}
             </div>
         </div>
-        
+
         <!-- Right Column: Sidebar with Stats and Activity -->
         <div class="sidebar-column">
             <!-- Filter Component -->
@@ -50,7 +50,7 @@
                     </a>
                 </div>
             </div>
-            
+
             <!-- Your Recent Projects -->
             {% if user_projects %}
             <div class="recent-projects-widget">

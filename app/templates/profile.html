@@ -4,7 +4,7 @@
 <div class="profile-container">
   <!-- Message container for JavaScript feedback -->
   <div id="message-container"></div>
-  
+
   <div class="content-area">
     <!-- ===== Header ===================================================== -->
     <div id="personal-info" class="content-section active">
@@ -94,8 +94,8 @@
 
                   {% if is_owner %}
                   <div class="demo-delete">
-                    <button type="button" 
-                            class="btn btn-sm btn-outline-danger" 
+                    <button type="button"
+                            class="btn btn-sm btn-outline-danger"
                             data-demo-delete="{{ d.id }}">Delete</button>
                   </div>
                   {% endif %}
@@ -160,8 +160,8 @@
                 <div class="skill-row">
                   <span class="skill-name">{{ us.skill.name }}</span>
                   {% if is_owner %}
-                  <button type="button" 
-                          class="skill-remove" 
+                  <button type="button"
+                          class="skill-remove"
                           data-skill-delete="{{ us.id }}">×</button>
                   {% endif %}
                 </div>

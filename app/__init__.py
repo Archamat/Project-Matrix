@@ -10,7 +10,6 @@ from app.profile.routes import profile
 from app.profile.api import profile_api
 from app.projects.routes import project
 from app.projects.api import project_api
-from flask_migrate import Migrate
 from app.search import bp as search_bp
 
 
@@ -38,8 +37,6 @@ def create_app():
     # Shell context processor
     @app.shell_context_processor
     def make_shell_context():
-        return {'db': db, 'User': User}  # Expose db and User model
-    migrate = Migrate(app, db)
+        return {"db": db, "User": User}  # Expose db and User model
+
     return app
-
-

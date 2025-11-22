@@ -31,26 +31,26 @@ document.addEventListener('DOMContentLoaded', function() {
  */
 async function handleCreateProjectSubmit(event) {
     event.preventDefault();
-    const form = event.target; 
+    const form = event.target;
     // Read values using the name attribute
     const name = form.querySelector('[name="name"]').value;
     const description = form.querySelector('[name="description"]').value;
     const sector = form.querySelector('[name="sector"]').value;
     const people_count = form.querySelector('[name="people_count"]').value;
-    
+
     // For multi-select, get all selected values
     const skillsSelect = form.querySelector('[name="skills"]');
     const skills = Array.from(skillsSelect.selectedOptions).map(opt => opt.value);
-    
+
     const other_skill = form.querySelector('[name="other_skill"]')?.value || '';
     try {
         const response = await fetch('/api/create_project', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                name, 
-                description, 
-                sector, 
+            body: JSON.stringify({
+                name,
+                description,
+                sector,
                 people_count: parseInt(people_count),
                 skills,
                 other_skill
@@ -91,9 +91,9 @@ async function handleApplyProjectSubmit(event) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ information, skills, other_skill, contact_info })
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
             showMessage('Application submitted successfully!', 'success');
             setTimeout(() => window.location.href = '/', 1000);
@@ -124,9 +124,9 @@ async function handleViewApplicants(event) {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
-        
+
         const result = await response.json();
-        
+
         if (result.success) {
             // Render applicants list
             const applicantsList = document.getElementById('applicantsList');

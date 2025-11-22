@@ -115,7 +115,7 @@ body {
 .theme-dark input[type="email"],
 .theme-dark input[type="password"],
 .theme-dark .form-control,
-.theme-dark select, 
+.theme-dark select,
 .theme-dark textarea{
   background: var(--panel-2) !important;
   color: var(--text) !important;
@@ -216,4 +216,3 @@ body {
   border: 1px solid var(--border);
   color: var(--text);
 }
-

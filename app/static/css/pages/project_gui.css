@@ -196,7 +196,7 @@
   line-height: 1;
   white-space: pre-wrap;      /* preserve user newlines within the message */
   overflow-wrap: anywhere;    /* break long URLs/words */
-  word-break: break-word;   
+  word-break: break-word;
 }
 
 
@@ -325,4 +325,3 @@
   background: var(--card-bg);
   color: var(--text);
 }
-

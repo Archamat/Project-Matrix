@@ -5,8 +5,7 @@ from app.extensions import db
 
 class ProjectDatabaseManager:
     @staticmethod
-    def create_project(name, description, sector, people_count, skills,
-                       creator_id):
+    def create_project(name, description, sector, people_count, skills, creator_id):
         creator = User.query.get(creator_id)
         if not creator:
             raise ValueError("Invalid creator ID")
@@ -17,7 +16,7 @@ class ProjectDatabaseManager:
             sector=sector,
             people_count=people_count,
             skills=skills,
-            creator=creator
+            creator=creator,
         )
         db.session.add(project)
         db.session.commit()
@@ -54,7 +53,7 @@ class ProjectDatabaseManager:
         db.session.add(element)
         db.session.commit()
         return element
-    
+
     @staticmethod
     def delete_element_from_project(element):
         db.session.delete(element)
