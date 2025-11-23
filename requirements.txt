@@ -21,3 +21,8 @@ boto3==1.40.30
 
 # Development tools
 pre-commit==3.6.0
+pytest==8.3.4
+pytest-cov==6.0.0
+pylint==3.3.3
+pylint-flask==0.6
+pylint-flask-sqlalchemy==0.2.3
