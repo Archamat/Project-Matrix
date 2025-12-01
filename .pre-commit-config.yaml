@@ -13,8 +13,14 @@ repos:
     rev: v0.3.0
     hooks:
       - id: ruff
-        args: [--fix]  # Auto-fix linting issues
-      - id: ruff-format  # Auto-format code
+        args: [
+          --fix,
+          --line-length=79,
+        ]
+      - id: ruff-format
+        args: [
+          --line-length=79
+        ]
 
 exclude: |
   (?x)^(

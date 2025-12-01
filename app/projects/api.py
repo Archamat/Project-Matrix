@@ -42,7 +42,7 @@ def create_project():
             creator_id=current_user.id,
         )
         return jsonify(
-            {"success": True, "message": "Project created " "successfully"}
+            {"success": True, "message": "Project created successfully"}
         ), 201
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
@@ -56,7 +56,7 @@ def apply_project(project_id):
     try:
         handle_apply_project(project_id, form, current_user.id)
         return jsonify(
-            {"success": True, "message": "Application " "submitted successfully"}
+            {"success": True, "message": "Application submitted successfully"}
         ), 201
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
@@ -71,8 +71,9 @@ def project_applicants(project_id):
     try:
         applicants = get_project_applicants(project_id, current_user.id)
 
-        return jsonify({"applicants": [app.to_dict() for app in applicants]}), 200
-
+        return jsonify(
+            {"applicants": [app.to_dict() for app in applicants]}
+        ), 200
     except ValueError as e:
         # Project not found
         return jsonify({"error": str(e)}), 404

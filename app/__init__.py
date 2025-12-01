@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_migrate import Migrate
 from .extensions import db, login_manager
 from .config import Config
 from app.auth.models import User
@@ -39,4 +40,5 @@ def create_app():
     def make_shell_context():
         return {"db": db, "User": User}  # Expose db and User model
 
+    _migrate = Migrate(app, db)
     return app

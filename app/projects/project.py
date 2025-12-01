@@ -159,7 +159,9 @@ def get_project_applicants(project_id, creator_id):
 
     # Check authorization
     if project.creator_id != creator_id:
-        raise PermissionError("You don't have " "permission to view these applicants")
+        raise PermissionError(
+            "You don't have permission to view these applicants"
+        )
 
     # Return the applicants (empty list if none)
     return project.applications

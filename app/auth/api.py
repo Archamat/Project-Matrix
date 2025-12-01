@@ -22,7 +22,9 @@ def register():
     data = request.get_json()
     try:
         handle_register(data)
-        return jsonify({"success": True, "message": "" "Registration successful"}), 201
+        return jsonify(
+            {"success": True, "message": "Registration " "successful"}
+        ), 201
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
     except Exception:

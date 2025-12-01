@@ -19,7 +19,9 @@ class ProfileDatabaseManager:
         try:
             # Check if username is taken by another user
             if "username" in data and data["username"] != user.username:
-                existing = User.query.filter_by(username=data["username"]).first()
+                existing = User.query.filter_by(
+                    username=data["username"]
+                ).first()
                 if existing:
                     raise ValueError("Username already exists")
 
@@ -30,7 +32,13 @@ class ProfileDatabaseManager:
                     raise ValueError("Email already exists")
 
             # Update fields
-            for field in ["username", "email", "contact_info", "bio", "avatar_url"]:
+            for field in [
+                "username",
+                "email",
+                "contact_info",
+                "bio",
+                "avatar_url",
+            ]:
                 if field in data:
                     setattr(user, field, data[field])
 
@@ -59,7 +67,9 @@ class ProfileDatabaseManager:
     def create_demo(user_id, s3_key, title, mime_type):
         """Create a new demo entry"""
         try:
-            demo = Demo(user_id=user_id, key=s3_key, title=title, mime=mime_type)
+            demo = Demo(
+                user_id=user_id, key=s3_key, title=title, mime=mime_type
+            )
             db.session.add(demo)
             db.session.commit()
             return demo
@@ -70,7 +80,9 @@ class ProfileDatabaseManager:
     @staticmethod
     def get_user_demos(user_id, limit=None):
         """Get all demos for a user"""
-        query = Demo.query.filter_by(user_id=user_id).order_by(Demo.updated_at.desc())
+        query = Demo.query.filter_by(user_id=user_id).order_by(
+            Demo.updated_at.desc()
+        )
         if limit:
             query = query.limit(limit)
         return query.all()
@@ -116,8 +128,9 @@ class ProfileDatabaseManager:
             ).first()
 
             if existing:
-                raise ValueError
-            (f"You already have {skill_name} in your skills")
+                raise ValueError(
+                    f"You " f"already have {skill_name} in your skills"
+                )
 
             user_skill = UserSkill(
                 user_id=user_id, skill_id=skill.id, level=level, years=years
@@ -127,7 +140,8 @@ class ProfileDatabaseManager:
             return user_skill
         except IntegrityError:
             db.session.rollback()
-            raise ValueError("Skill already exists")
+            raise ValueError
+            ("Skill already exists")
         except Exception as e:
             db.session.rollback()
             raise e
@@ -135,7 +149,9 @@ class ProfileDatabaseManager:
     @staticmethod
     def get_user_skill(user_skill_id, user_id):
         """Get a specific user skill"""
-        return UserSkill.query.filter_by(id=user_skill_id, user_id=user_id).first()
+        return UserSkill.query.filter_by(
+            id=user_skill_id, user_id=user_id
+        ).first()
 
     @staticmethod
     def delete_user_skill(user_skill):
