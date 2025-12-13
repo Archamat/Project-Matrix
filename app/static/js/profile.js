@@ -19,19 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (avatarForm) {
         avatarForm.addEventListener('submit', handleAvatarUpload);
     }
-
-    // ==================== DEMO UPLOAD ====================
-    const demoForm = document.getElementById('demo-upload-form');
-    if (demoForm) {
-        demoForm.addEventListener('submit', handleDemoUpload);
-    }
-
-    // ==================== DEMO DELETE ====================
-    const deleteButtons = document.querySelectorAll('[data-demo-delete]');
-    deleteButtons.forEach(btn => {
-        btn.addEventListener('click', handleDemoDelete);
-    });
-
+    
     // ==================== SKILLS ====================
     const skillForm = document.getElementById('skill-form');
     if (skillForm) {
@@ -138,88 +126,6 @@ async function handleAvatarUpload(event) {
     } catch (error) {
         console.error('Avatar upload error:', error);
         showMessage('An error occurred while uploading avatar.', 'danger');
-    }
-}
-
-
-/**
- * ============================================
- * DEMO UPLOAD HANDLER
- * ============================================
- */
-async function handleDemoUpload(event) {
-    event.preventDefault();
-    const form = event.target;
-    const fileInput = form.querySelector('[name="demo_file"]');
-    const titleInput = form.querySelector('[name="title"]');
-    const file = fileInput.files[0];
-
-    if (!file) {
-        showMessage('Please select an audio file', 'warning');
-        return;
-    }
-
-    try {
-        const formData = new FormData();
-        formData.append('demo_file', file);
-        formData.append('title', titleInput.value.trim() || file.name);
-
-        const response = await fetch('/api/profile/demo', {
-            method: 'POST',
-            body: formData
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-            showMessage('Demo uploaded successfully! Refreshing...', 'success');
-            setTimeout(() => window.location.reload(), 1500);
-        } else {
-            showMessage(result.message || 'Failed to upload demo', 'danger');
-        }
-    } catch (error) {
-        console.error('Demo upload error:', error);
-        showMessage('An error occurred while uploading demo.', 'danger');
-    }
-}
-
-
-/**
- * ============================================
- * DEMO DELETE HANDLER
- * ============================================
- */
-async function handleDemoDelete(event) {
-    event.preventDefault();
-    const button = event.currentTarget;
-    const demoId = button.dataset.demoDelete;
-
-    if (!confirm('Are you sure you want to delete this demo?')) {
-        return;
-    }
-
-    try {
-        const response = await fetch(`/api/profile/demo/${demoId}`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' }
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-            showMessage('Demo deleted successfully', 'success');
-
-            // Remove demo card from DOM
-            const demoCard = button.closest('.demo-card');
-            if (demoCard) {
-                demoCard.remove();
-            }
-        } else {
-            showMessage(result.message || 'Failed to delete demo', 'danger');
-        }
-    } catch (error) {
-        console.error('Demo delete error:', error);
-        showMessage('An error occurred while deleting demo.', 'danger');
     }
 }
 
