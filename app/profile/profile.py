@@ -1,24 +1,35 @@
-from app.aws.s3 import presigned_get_url
+from app.auth import User
 from app.profile.profile_database_manager import ProfileDatabaseManager
 
 
 def handle_profile(user):
     """
     Prepare profile data for display.
-    Returns dict with user info, demos with presigned URLs, etc.
+    Returns dict with user info, participated projects, etc.
     """
-    # Get user's demos with presigned URLs
-    demos = []
-    for demo in ProfileDatabaseManager.get_user_demos(user.id):
-        # Generate presigned URL
-        try:
-            url = presigned_get_url(demo.key, expires_in=3600)
-        except Exception:
-            url = None
-
-        demos.append(demo.to_dict(include_url=True, presigned_url=url))
-
-    return {"user": user, "demos": demos}
+    # Get projects the user has applied to (participated projects)
+    # Also include projects the user created
+    participated_projects = []
+    project_ids = set()
+    
+    # Add projects from applications
+    if hasattr(user, 'applications'):
+        for application in user.applications:
+            if application.project and application.project_id not in project_ids:
+                project_ids.add(application.project_id)
+                participated_projects.append(application.project)
+    
+    # Add projects the user created
+    if hasattr(user, 'projects'):
+        for project in user.projects:
+            if project.id not in project_ids:
+                project_ids.add(project.id)
+                participated_projects.append(project)
+    
+    return {
+        'user': user,
+        'participated_projects': participated_projects
+    }
 
 
 def handle_update_profile(user, data):
@@ -45,27 +56,6 @@ def handle_avatar_upload(user, s3_key):
         raise ValueError("S3 key is required")
 
     return ProfileDatabaseManager.update_avatar(user, s3_key)
-
-
-def handle_demo_upload(user, s3_key, title, mime_type):
-    """Business logic for demo upload"""
-    if not s3_key or not mime_type:
-        raise ValueError("Invalid demo data")
-
-    # Sanitize title
-    title = (title or "Untitled").strip()
-
-    return ProfileDatabaseManager.create_demo(user.id, s3_key, title, mime_type)
-
-
-def handle_demo_delete(user, demo_id):
-    """Business logic for demo deletion"""
-    demo = ProfileDatabaseManager.get_demo_by_id(demo_id, user.id)
-    if not demo:
-        raise ValueError("Demo not found or unauthorized")
-
-    ProfileDatabaseManager.delete_demo(demo)
-    return True
 
 
 def handle_skill_add(user, skill_name, level, years):
