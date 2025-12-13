@@ -74,8 +74,26 @@ body {
 
 /* General Elements */
 .theme-dark .login-background { background: var(--bg); }
-.theme-dark .content-section { background: transparent; }
-.theme-dark .section-title { color: var(--text); }
+.theme-dark .content-section { background: transparent; color: var(--text); }
+.theme-dark .content-section h1,
+.theme-dark .content-section h2,
+.theme-dark .content-section h3,
+.theme-dark .content-section h4,
+.theme-dark .content-section h5,
+.theme-dark .content-section h6 { color: var(--text) !important; }
+.theme-dark .section-title,
+.theme-dark .section-title.fw-bold { color: var(--text) !important; }
+.theme-dark #account-details,
+.theme-dark .account-grid { color: var(--text); }
+.theme-dark #account-details p:not(.profile-description):not(.demo-desc):not(.demo-meta),
+.theme-dark #account-details h1,
+.theme-dark #account-details h2:not(.section-title),
+.theme-dark #account-details h3,
+.theme-dark #account-details h4,
+.theme-dark #account-details h5,
+.theme-dark #account-details h6,
+.theme-dark #account-details strong { color: var(--text) !important; }
+.theme-dark #account-details .profile-description { color: var(--muted) !important; }
 
 /* Cards and Panels */
 .theme-dark .info-view,
@@ -96,6 +114,13 @@ body {
 .theme-dark .demo-desc,
 .theme-dark .dashboard-subtitle,
 .theme-dark .small-hint { color: var(--muted) !important; }
+.theme-dark .info-view p,
+.theme-dark .info-view h3,
+.theme-dark .info-view strong,
+.theme-dark .info-view h2,
+.theme-dark .info-view h1,
+.theme-dark .info-view { color: var(--text) !important; }
+.theme-dark .info-view .profile-description { color: var(--muted) !important; }
 
 /* Borders and Dividers */
 .theme-dark hr,
