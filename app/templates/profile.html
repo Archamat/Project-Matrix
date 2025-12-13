@@ -5,8 +5,7 @@
   <div class="content-area">
     <!-- ===== Header ===================================================== -->
     <div id="personal-info" class="content-section active">
-      <h2 class="fw-bold mb-4" style="font-size:2rem; text-align:left;">
-        Account Details: {{ user.username }}
+      <h2 class="page-title"> Account Details: {{ user.username }}
       </h2>
 
       <!-- ===== Grid: Left (Avatar + Info + Projects) | Right (Skills) === -->
@@ -21,7 +20,7 @@
 
         <!-- Info card + Participated Projects -->
         <div class="info-view">
-          <h3 class="mb-2">Profile Description</h3>
+          <h3 class="section-title mb-2">Profile Description</h3>
           <p class="profile-description" style="white-space:pre-line;">
             {{ user.bio or 'No description yet.' }}
           </p>
@@ -214,7 +213,7 @@
 
       <!-- Profile update -->
       <form method="POST"
-            action="{{ url_for('profile.update_profile') }}"
+            action="{{ url_for('profile_api.update_profile') }}"
             class="mt-4">
         <div class="form-group mb-2">
           <label for="username">Username</label>
