@@ -2,6 +2,7 @@
 import pytest
 from flask import url_for
 from app.auth.models import User
+from app.auth import models as auth_models
 from app.auth.auth import handle_login, handle_register, handle_logout
 from app.auth.auth_database_manager import AuthDatabaseManager
 from app.auth.forms import LoginForm, RegistrationForm
@@ -79,13 +80,12 @@ class TestUserModel:
 
     def test_avatar_presigned_property(self, app, monkeypatch):
         """Test avatar_presigned property."""
-        # Mock presigned_get_url at the source (app.aws.s3)
+        # Mock presigned_get_url in the models module where it's used
         def mock_presigned_url(key, expires_in=3600):
             return f'https://presigned-url.com/{key}'
         
-        # Patch both locations
-        monkeypatch.setattr('app.aws.s3.presigned_get_url', mock_presigned_url)
-        monkeypatch.setattr('app.auth.models.presigned_get_url', mock_presigned_url)
+        # Patch the imported function in the models module
+        monkeypatch.setattr(auth_models, 'presigned_get_url', mock_presigned_url)
         
         with app.app_context():
             user = User(username='testuser', email='test@example.com')
