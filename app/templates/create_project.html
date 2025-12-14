@@ -7,7 +7,7 @@
         <div id="message-container"></div>
         <form id="createProjectForm" method="POST" action="{{ url_for('project.create_project') }}">
             {{ form.hidden_tag() }}
-            
+
             <div class="form-group" id="name">
                 {{ form.name.label }}<br>
                 {{ form.name(class="form-control") }}

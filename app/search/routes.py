@@ -1,13 +1,12 @@
-from flask import Blueprint, render_template, request
+from flask import render_template, request
 from app.search import bp
-from flask_login import login_required
 from sqlalchemy import or_, func
-from app.search import bp
 from app.auth.models import User
 from app.profile.models import Skill, UserSkill
-from app.projects.models import Project  
+from app.projects.models import Project
 
-@bp.route('/', methods=['GET'])
+
+@bp.route("/", methods=["GET"])
 # --- USERS ---
 @bp.get("/users")
 def search_users():
@@ -19,23 +18,31 @@ def search_users():
     query = User.query
     if q:
         like = f"%{q}%"
-        query = query.filter(or_(
-            User.username.ilike(like),
-            User.email.ilike(like),
-            func.coalesce(User.bio, "").ilike(like),
-        ))
+        query = query.filter(
+            or_(
+                User.username.ilike(like),
+                User.email.ilike(like),
+                func.coalesce(User.bio, "").ilike(like),
+            )
+        )
     if skill:
-        query = (query.join(User.skills)
-                     .join(UserSkill.skill)
-                     .filter(Skill.name.ilike(skill)))
+        query = (
+            query.join(User.skills)
+            .join(UserSkill.skill)
+            .filter(Skill.name.ilike(skill))
+        )
 
     query = query.distinct(User.id).order_by(User.username.asc())
     pagination = query.paginate(page=page, per_page=per_page, error_out=False)
 
-    return render_template("search/users.html",
-                           users=pagination.items,
-                           pagination=pagination,
-                           q=q, skill=skill)
+    return render_template(
+        "search/users.html",
+        users=pagination.items,
+        pagination=pagination,
+        q=q,
+        skill=skill,
+    )
+
 
 # --- PROJECTS ---
 @bp.get("/projects")
@@ -47,18 +54,21 @@ def search_projects():
     query = Project.query
     if q:
         like = f"%{q}%"
-        query = query.filter(or_(
-            Project.name.ilike(like),
-            func.coalesce(Project.description, "").ilike(like),
-        ))
+        query = query.filter(
+            or_(
+                Project.name.ilike(like),
+                func.coalesce(Project.description, "").ilike(like),
+            )
+        )
 
-    pagination = query.order_by(Project.updated_at.desc()) \
-                      .paginate(page=page, per_page=per_page, error_out=False)
+    pagination = query.order_by(Project.updated_at.desc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
 
-    return render_template("search/projects.html",
-                           projects=pagination.items,
-                           pagination=pagination,
-                           q=q)
+    return render_template(
+        "search/projects.html", projects=pagination.items, pagination=pagination, q=q
+    )
+
 
 # --- SKILLS ---
 @bp.get("/skills")
@@ -72,12 +82,14 @@ def search_skills():
         like = f"%{q}%"
         query = query.filter(Skill.name.ilike(like))
 
-    pagination = query.order_by(Skill.name.asc()).paginate(page=page, per_page=per_page, error_out=False)
+    pagination = query.order_by(Skill.name.asc()).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
 
-    return render_template("search/skills.html",
-                           skills=pagination.items,
-                           pagination=pagination,
-                           q=q)
+    return render_template(
+        "search/skills.html", skills=pagination.items, pagination=pagination, q=q
+    )
+
 
 @bp.get("/all")
 def search_all():
@@ -86,9 +98,11 @@ def search_all():
         return render_template(
             "search/all.html",
             q="",
-            users=[], projects=[], skills=[],
+            users=[],
+            projects=[],
+            skills=[],
             counts={"users": 0, "projects": 0, "skills": 0},
-            preview_limit=5
+            preview_limit=5,
         )
 
     like = f"%{q}%"
@@ -103,7 +117,8 @@ def search_all():
 
     # Projects (no created_at)
     projects_q = Project.query.filter(
-        (Project.name.ilike(like)) | (func.coalesce(Project.description, "").ilike(like))
+        (Project.name.ilike(like))
+        | (func.coalesce(Project.description, "").ilike(like))
     )
     projects_preview = projects_q.order_by(Project.name.asc()).limit(PREVIEW).all()
     projects_count = projects_q.count()
@@ -119,8 +134,10 @@ def search_all():
         users=users_preview,
         projects=projects_preview,
         skills=skills_preview,
-        counts={"users": users_count, "projects": projects_count, "skills": skills_count},
+        counts={
+            "users": users_count,
+            "projects": projects_count,
+            "skills": skills_count,
+        },
         preview_limit=PREVIEW,
     )
-
-

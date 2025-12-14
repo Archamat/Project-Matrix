@@ -161,7 +161,7 @@
         flex-direction: column;
         gap: 2rem;
     }
-    
+
     .sidebar-column {
         position: static;
         max-width: none;

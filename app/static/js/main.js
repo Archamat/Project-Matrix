@@ -6,7 +6,7 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    
+
     // Attach logout handler
 const logoutLink = document.querySelector('a[href*="logout"]');
 if (logoutLink) {
@@ -81,7 +81,7 @@ function escapeHTML(str) {
  */
 function showMessage(text, type) {
     const container = document.getElementById('message-container');
-    
+
     // Create message element
     const messageDiv = document.createElement('div');
     messageDiv.innerHTML = `
@@ -95,10 +95,10 @@ function showMessage(text, type) {
             messageDiv.remove();
         });
     }
-    
+
     // Clear previous messages
     container.innerHTML = '';
-    
+
     // Add new message
     container.appendChild(messageDiv);
 }

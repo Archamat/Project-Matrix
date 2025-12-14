@@ -12,7 +12,7 @@
             <p><strong>Required Skills:</strong> {{ project.skills }}</p>
             <p><strong>People Needed:</strong> {{ project.people_count }}</p>
         </div>
-        
+
         <form id="apply_project_form" method="POST" data-project-id="{{ project.id }}">
             {{ form.hidden_tag() }}
             <div class="form-group">
@@ -22,7 +22,7 @@
                     <div class="text-danger">{{ form.information.errors[0] }}</div>
                 {% endif %}
             </div>
-            
+
             <div class="form-group">
                 {{ form.skills.label }}<br>
                 {{ form.skills(class="form-control") }}
@@ -30,17 +30,17 @@
                     <div class="text-danger">{{ form.skills.errors[0] }}</div>
                 {% endif %}
             </div>
-            
+
             <div class="form-group other-skill-field hidden" id="other-skill-field">
                 {{ form.other_skill.label }}<br>
                 {{ form.other_skill(class="form-control") }}
             </div>
-            
+
             <div class="form-group">
                 {{ form.contact_info.label }}<br>
                 {{ form.contact_info(class="form-control") }}
             </div>
-            
+
             {{ form.submit(class="btn btn-primary") }}
             <a href="{{ url_for('main.home') }}" class="btn btn-secondary">Cancel</a>
         </form>

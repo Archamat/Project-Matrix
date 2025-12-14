@@ -7,7 +7,7 @@
             <span class="section-label">Project Name</span>
             <h3 class="project-title">{{ project.name }}</h3>
         </div>
-        
+
         <div class="project-meta">
             <span class="section-label">People Needed</span>
             <span class="people-count">
@@ -15,14 +15,14 @@
                 {{ project.people_count }}
             </span>
         </div>
-        
+
         {% if project.description %}
         <div class="description-section">
             <span class="section-label">Description</span>
             <p class="project-description">{{ project.description[:150] }}...</p>
         </div>
         {% endif %}
-        
+
         <div class="skills-section">
             <span class="section-label">Required Skills</span>
             <div class="skills-list">
@@ -33,12 +33,12 @@
         </div>
         <div class="card-actions">
             <a href="{{ url_for('project.project_detail', project_id=project.id) }}" class="project-link">View Details</a>
-            <button class="gui-button" 
+            <button class="gui-button"
             onclick="window.location.href='{{ url_for('project.project_gui', project_id=project.id) }}'">Open GUI
             </button>
             {% if is_creator %}
                 <button onclick="showApplicants('{{ project.id }}')" class="applicant-button">Applicant List</button>
-                
+
                 <!-- Popup Modal -->
                 <div id="applicantModal{{ project.id }}" class="modal hidden">
                     <div class="modal-content">
@@ -59,7 +59,7 @@
                                             <span class="more-skills">+{{ application.skills.split(',')|length - 2 }}</span>
                                         {% endif %}
                                     </div>
-                                    <a href="{{ url_for('project.project_applicants', project_id=project.id) }}" 
+                                    <a href="{{ url_for('project.project_applicants', project_id=project.id) }}"
                                        class="view-details-btn">View Details</a>
                                 </div>
                                 {% endfor %}
@@ -83,44 +83,44 @@ function showApplicants(projectId) {
     const modalBackdrop = document.createElement('div');
     modalBackdrop.className = 'modal-backdrop';
     document.body.appendChild(modalBackdrop);
-    
+
     // Get card position
     const cardRect = card.getBoundingClientRect();
     const modalRect = modal.getBoundingClientRect();
-    
+
     // Position modal next to card
     modal.style.position = 'fixed';
     modal.style.top = `${cardRect.top}px`;
     modal.style.left = `${cardRect.right + 20}px`;
     modal.style.maxHeight = '40vh';
     modal.style.overflowY = 'auto';
-    
+
     // Show modal and backdrop
     modal.classList.remove('hidden');
     //modalBackdrop.style.display = "block";
-    
+
     // Add mouse move event listener to check buffer zone
     function handleMouseMove(event) {
         const mouseX = event.clientX;
         const mouseY = event.clientY;
-        
+
         // Define buffer zone
         const bufferSize = 2000; // 20px buffer
-        const isInBuffer = mouseX >= cardRect.right && 
+        const isInBuffer = mouseX >= cardRect.right &&
                           mouseX <= modalRect.left + bufferSize &&
-                          mouseY >= cardRect.top - bufferSize && 
+                          mouseY >= cardRect.top - bufferSize &&
                           mouseY <= cardRect.bottom + bufferSize;
-                          
-        const isOverCard = mouseX >= cardRect.left && 
-                          mouseX <= cardRect.right && 
-                          mouseY >= cardRect.top && 
+
+        const isOverCard = mouseX >= cardRect.left &&
+                          mouseX <= cardRect.right &&
+                          mouseY >= cardRect.top &&
                           mouseY <= cardRect.bottom;
-                          
-        const isOverModal = mouseX >= modalRect.left && 
-                           mouseX <= modalRect.right && 
-                           mouseY >= modalRect.top && 
+
+        const isOverModal = mouseX >= modalRect.left &&
+                           mouseX <= modalRect.right &&
+                           mouseY >= modalRect.top &&
                            mouseY <= modalRect.bottom;
-        
+
         if (!isOverCard && !isOverModal && !isInBuffer) {
             closeModal(projectId);
             card.style.transform = '';
@@ -130,7 +130,7 @@ function showApplicants(projectId) {
 
     // Add listener for mouse movement
     document.addEventListener('mousemove', handleMouseMove);
-    
+
     // Prevent project card hover effect while modal is open
     card.style.transform = 'none';
 }
@@ -138,11 +138,10 @@ function showApplicants(projectId) {
 function closeModal(projectId) {
     const modal = document.getElementById(`applicantModal${projectId}`);
     const modalBackdrop = document.querySelector('.modal-backdrop');
-    
+
     modal.classList.add('hidden');
     if (modalBackdrop) {
         modalBackdrop.remove();
     }
 }
 </script>
-
