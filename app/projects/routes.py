@@ -1,10 +1,8 @@
-from flask import Blueprint, render_template
+from flask import render_template
 from flask_login import login_required
+from . import project
 from .project import get_project_by_id, handle_project_gui, get_all_projects
-
 from .forms import ProjectCreationForm, ApplicationForm
-
-project = Blueprint("project", __name__)
 
 
 @project.route("/projects")

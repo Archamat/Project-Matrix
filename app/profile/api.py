@@ -1,6 +1,6 @@
-from flask import Blueprint, request, jsonify
+from flask import request, jsonify
 from flask_login import login_required, current_user
-
+from . import profile_api
 from app.profile.profile import (
     handle_update_profile,
     handle_avatar_upload,
@@ -25,8 +25,6 @@ AUDIO_MIME_ALLOW = {
     "audio/flac",
 }
 IMAGE_MIME_ALLOW = {"image/jpeg", "image/png", "image/webp", "image/gif"}
-
-profile_api = Blueprint("profile_api", __name__, url_prefix="/api/profile")
 
 
 # ==================== PROFILE UPDATE ====================
@@ -67,18 +65,24 @@ def upload_avatar():
         file = request.files.get("avatar_file")
 
         if not file or file.filename == "":
-            return jsonify({"success": False, "message": "No file provided"}), 400
+            return jsonify(
+                {"success": False, "message": "No file provided"}
+            ), 400
 
         if file.mimetype not in IMAGE_MIME_ALLOW:
             return jsonify(
                 {"success": False, "message": "Only JPG/PNG/WEBP/GIF allowed"}
             ), 400
 
-        result = upload_fileobj_private(file, prefix=f"avatars/{current_user.id}/")
+        result = upload_fileobj_private(
+            file, prefix=f"avatars/{current_user.id}/"
+        )
 
         updated_user = handle_avatar_upload(current_user, result["key"])
 
-        avatar_url = presigned_get_url(updated_user.avatar_url, expires_in=3600)
+        avatar_url = presigned_get_url(
+            updated_user.avatar_url, expires_in=3600
+        )
 
         return jsonify(
             {
@@ -102,12 +106,18 @@ def upload_demo():
         title = request.form.get("title", "").strip()
 
         if not file or file.filename == "":
-            return jsonify({"success": False, "message": "No file provided"}), 400
+            return jsonify(
+                {"success": False, "message": "No file provided"}
+            ), 400
 
         if file.mimetype not in AUDIO_MIME_ALLOW:
-            return jsonify({"success": False, "message": "Unsupported audio type"}), 400
+            return jsonify(
+                {"success": False, "message": "Unsupported audio type"}
+            ), 400
 
-        result = upload_fileobj_private(file, prefix=f"demos/{current_user.id}/")
+        result = upload_fileobj_private(
+            file, prefix=f"demos/{current_user.id}/"
+        )
 
         demo = handle_demo_upload(
             current_user, result["key"], title or file.filename, file.mimetype
@@ -117,7 +127,11 @@ def upload_demo():
             {
                 "success": True,
                 "message": "Demo uploaded successfully",
-                "demo": {"id": demo.id, "title": demo.title, "mime": demo.mime},
+                "demo": {
+                    "id": demo.id,
+                    "title": demo.title,
+                    "mime": demo.mime,
+                },
             }
         ), 201
 
@@ -132,7 +146,9 @@ def delete_demo(demo_id):
     try:
         handle_demo_delete(current_user, demo_id)
 
-        return jsonify({"success": True, "message": "Demo deleted successfully"}), 200
+        return jsonify(
+            {"success": True, "message": "Demo deleted successfully"}
+        ), 200
 
     except ValueError as e:
         return jsonify({"success": False, "message": str(e)}), 404
@@ -202,7 +218,9 @@ def delete_skill(skill_id):
     try:
         handle_skill_delete(current_user, skill_id)
 
-        return jsonify({"success": True, "message": "Skill removed successfully"}), 200
+        return jsonify(
+            {"success": True, "message": "Skill removed successfully"}
+        ), 200
 
     except ValueError as e:
         return jsonify({"success": False, "message": str(e)}), 404

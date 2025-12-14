@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
+from . import profile
 from app.auth.models import User
 from app.profile.profile import handle_profile
 from app.profile.profile_database_manager import ProfileDatabaseManager
@@ -18,9 +19,6 @@ AUDIO_MIME_ALLOW = {
     "audio/flac",
 }
 IMAGE_MIME_ALLOW = {"image/jpeg", "image/png", "image/webp", "image/gif"}
-
-
-profile = Blueprint("profile", __name__)
 
 # ==================== VIEW ROUTES (Render Templates) ====================
 
@@ -74,7 +72,9 @@ def upload_avatar():
         return redirect(url_for("profile.show_profile"))
 
     try:
-        result = upload_fileobj_private(file, prefix=f"avatars/{current_user.id}/")
+        result = upload_fileobj_private(
+            file, prefix=f"avatars/{current_user.id}/"
+        )
         current_user.avatar_url = result["key"]
         from app.extensions import db
 
@@ -122,7 +122,9 @@ def upload_demo():
         return redirect(url_for("profile.show_profile"))
 
     try:
-        result = upload_fileobj_private(file, prefix=f"demos/{current_user.id}/")
+        result = upload_fileobj_private(
+            file, prefix=f"demos/{current_user.id}/"
+        )
         handle_demo_upload(
             current_user, result["key"], title or file.filename, file.mimetype
         )

@@ -1,4 +1,6 @@
-from flask import Blueprint
+from flask import request, jsonify
+from flask_login import current_user, login_required
+from . import project_api
 from .project import (
     handle_project_create,
     handle_apply_project,
@@ -6,10 +8,6 @@ from .project import (
     get_project_by_id,
     get_all_projects,
 )
-from flask import request, jsonify
-from flask_login import current_user, login_required
-
-project_api = Blueprint("project_api", __name__)
 
 
 @project_api.route("/api/projects", methods=["GET"])

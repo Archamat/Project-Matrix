@@ -40,5 +40,5 @@ def create_app():
     def make_shell_context():
         return {"db": db, "User": User}  # Expose db and User model
 
-    _migrate = Migrate(app, db)
+    _migrate = Migrate(app, db)  # noqa: F841 - Initialize Flask-Migrate
     return app

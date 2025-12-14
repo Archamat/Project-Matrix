@@ -1,7 +1,5 @@
-from flask import Blueprint
+from . import dashboard  # Import blueprint from __init__.py
 from .dashboard import handle_dashboard
-
-dashboard = Blueprint("dashboard", __name__)
 
 
 @dashboard.route("/dashboard")
