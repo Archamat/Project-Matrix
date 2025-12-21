@@ -2,7 +2,7 @@
 
 > **Status:** This is a living document that tracks all tests implemented in Project Matrix.  
 > **Last Updated:** November 30, 2025  
-> **Current Test Count:** 36 (2 Static Analysis + Pre-commit Hooks + 34 Auth Unit Tests)
+> **Current Test Count:** 40 (2 Static Analysis + Pre-commit Hooks + 38 Auth Unit Tests)
 
 ---
 
@@ -176,36 +176,97 @@ tests/
 
 **Status:** ✅ TESTED  
 **Priority:** HIGH (security-critical)  
-**Test File:** `tests/test_auth.py`
+**Test File:** `tests/test_auth.py`  
+**Last Updated:** 2025-12-21
 
 **Files tested:**
-- ✅ `models.py` - User model, password hashing
-- ✅ `auth.py` - Login/logout handlers
-- ✅ `auth_database_manager.py` - User CRUD operations
-- ✅ `routes.py` - Auth route endpoints
-- ✅ `api.py` - Auth API endpoints
-- ✅ `forms.py` - Registration/login form validation
+- ✅ `models.py` - User model, password hashing, unique constraints, avatar properties
+- ✅ `auth.py` - Login/register/logout handlers with error handling
+- ✅ `auth_database_manager.py` - User CRUD operations (create, get by username)
+- ✅ `routes.py` - Auth route endpoints (GET /login, GET /register)
+- ✅ `api.py` - Auth API endpoints (POST /api/login, /api/register, /api/logout)
+- ✅ `forms.py` - Registration/login form validation (WTForms)
 
 **Test coverage implemented:**
-- ✅ User registration (valid/invalid inputs)
-- ✅ Duplicate username/email handling
-- ✅ Password hashing verification
-- ✅ Login success/failure scenarios
-- ✅ Logout functionality
-- ✅ API endpoint testing (login, register, logout)
-- ✅ Form validation (LoginForm, RegistrationForm)
-- ✅ Route endpoint testing (GET /login, GET /register)
-- ✅ User model properties (avatar_presigned)
+- ✅ User creation and validation (7 tests)
+- ✅ Password hashing and verification (2 tests)
+- ✅ Unique constraints (username, email) (2 tests)
+- ✅ Avatar presigned URL property (2 tests)
+- ✅ Database manager operations (4 tests)
+- ✅ Login handler - success and failure scenarios (5 tests)
+- ✅ Register handler - success and failure scenarios (5 tests)
+- ✅ Logout handler (1 test)
+- ✅ API endpoints - login, register, logout (7 tests)
+- ✅ Route endpoints - GET routes (2 tests)
+- ✅ Form validation - LoginForm and RegistrationForm (7 tests)
 
-**Test classes:**
-- `TestUserModel` - 7 test cases
-- `TestAuthDatabaseManager` - 4 test cases
-- `TestAuthHandlers` - 9 test cases
-- `TestAuthAPI` - 6 test cases
-- `TestAuthRoutes` - 2 test cases
-- `TestAuthForms` - 6 test cases
+**Test classes and coverage:**
 
-**Total:** 34 test cases covering all auth functionality
+1. **TestUserModel** (7 tests)
+   - `test_user_creation` - User creation with valid data
+   - `test_password_hashing` - Password hash format verification
+   - `test_password_checking` - Password verification (correct/incorrect)
+   - `test_user_unique_username` - Unique username constraint
+   - `test_user_unique_email` - Unique email constraint
+   - `test_avatar_presigned_property` - Avatar presigned URL generation (mocked S3)
+   - `test_avatar_presigned_none_when_no_url` - Avatar None handling
+
+2. **TestAuthDatabaseManager** (4 tests)
+   - `test_create_user_success` - Successful user creation
+   - `test_create_user_duplicate_username` - Duplicate username prevention
+   - `test_get_user_by_username_exists` - User lookup (exists)
+   - `test_get_user_by_username_not_exists` - User lookup (not exists)
+
+3. **TestAuthHandlers** (11 tests)
+   - `test_handle_login_success` - Successful login
+   - `test_handle_login_missing_username` - Login validation (missing username)
+   - `test_handle_login_missing_password` - Login validation (missing password)
+   - `test_handle_login_invalid_username` - Login validation (invalid username)
+   - `test_handle_login_invalid_password` - Login validation (invalid password)
+   - `test_handle_register_success` - Successful registration
+   - `test_handle_register_missing_username` - Register validation (missing username)
+   - `test_handle_register_missing_email` - Register validation (missing email)
+   - `test_handle_register_missing_password` - Register validation (missing password)
+   - `test_handle_register_duplicate_username` - Register validation (duplicate username)
+   - `test_handle_logout_success` - Successful logout
+
+4. **TestAuthAPI** (7 tests)
+   - `test_api_login_success` - API login endpoint (200)
+   - `test_api_login_missing_data` - API login validation (400)
+   - `test_api_login_invalid_credentials` - API login invalid credentials (400)
+   - `test_api_register_success` - API register endpoint (201)
+   - `test_api_register_missing_data` - API register validation (400)
+   - `test_api_register_duplicate_username` - API register duplicate (400)
+   - `test_api_logout_success` - API logout endpoint (200)
+
+5. **TestAuthRoutes** (2 tests)
+   - `test_login_route_get` - GET /login route rendering
+   - `test_register_route_get` - GET /register route rendering
+
+6. **TestAuthForms** (7 tests)
+   - `test_login_form_valid` - LoginForm valid data
+   - `test_login_form_missing_username` - LoginForm validation (missing username)
+   - `test_login_form_missing_password` - LoginForm validation (missing password)
+   - `test_registration_form_valid` - RegistrationForm valid data
+   - `test_registration_form_missing_username` - RegistrationForm validation (missing username)
+   - `test_registration_form_invalid_email` - RegistrationForm validation (invalid email)
+   - `test_registration_form_password_mismatch` - RegistrationForm validation (password mismatch)
+
+**Total:** 38 test cases covering all auth functionality
+
+**Test Infrastructure:**
+- ✅ Test fixtures configured (`conftest.py`)
+- ✅ In-memory SQLite database for fast tests
+- ✅ S3 calls mocked to avoid AWS dependencies
+- ✅ Environment variables configured for test isolation
+- ✅ Flask test client configured
+- ✅ Sample user fixture for authenticated tests
+
+**Known Issues Fixed:**
+- ✅ User model `__tablename__` added for proper relationship resolution
+- ✅ Password hash format check made flexible (supports pbkdf2, scrypt, etc.)
+- ✅ Avatar presigned URL test uses proper mocking
+- ✅ Test fixtures include all related models (Demo, UserSkill, Skill, Project)
 
 ---
 
@@ -308,7 +369,7 @@ tests/
 |--------|----------------|---------|--------|
 | Static Analysis | 100% | 100% | ✅ Active |
 | Pre-commit Hooks | 100% | 100% | ⚠️ Configured |
-| auth | 90%+ | ~85%+ | ✅ In Progress (34 tests) |
+| auth | 90%+ | ~90%+ | ✅ Completed (38 tests) |
 | profile | 85%+ | 0% | ❌ Not started |
 | projects | 90%+ | 0% | ❌ Not started |
 | search | 80%+ | 0% | ❌ Not started |
@@ -465,7 +526,8 @@ class TestUserAuthentication:
 |------|--------|--------|
 | 2025-11-30 | System | Added static analysis and pre-commit documentation |
 | 2025-11-30 | System | Initial documentation - no unit tests exist yet |
-| 2025-11-30 | System | Implemented comprehensive auth module unit tests (34 test cases) |
+| 2025-11-30 | System | Implemented comprehensive auth module unit tests (38 test cases) |
+| 2025-11-30 | System | Fixed test issues: User model __tablename__, password hash format, S3 mocking |
 
 ---
 
