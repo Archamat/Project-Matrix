@@ -14,9 +14,15 @@ from app.projects.api import project_api
 from app.search import bp as search_bp
 
 
-def create_app():
+def create_app(config=None):
     app = Flask(__name__)
+
+    # Load default config
     app.config.from_object(Config)
+
+    # Override with custom config if provided
+    if config:
+        app.config.update(config)
 
     # Initialize extensions
     db.init_app(app)
