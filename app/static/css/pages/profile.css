@@ -1,274 +1,70 @@
 /**** Profile Screen ****/
 
-/* Profile page container */
-.profile-container {
-  display: grid;
-  /* sidebar column scales between 16rem and 22rem, prefers ~20vw */
-  grid-template-columns: clamp(16rem, 20vw, 22rem) 1fr;
-  gap: clamp(0.75rem, 2vw, 2rem);
-  padding: clamp(1rem, 2vw, 2rem);
-  align-items: start;
-}
+/* === Layout container ======================================== */
 
+/* Root container for the profile screen */
+.profile-container {
+  min-height: 100vh;            /* full screen height */
+  display: flex;
+  justify-content: center;      /* horizontal centering */
+  align-items: center;          /* ⭐ VERTICAL CENTERING */
+  padding: clamp(1.5rem, 4vh, 3rem) clamp(1rem, 4vw, 2.5rem);
+}
+/* The inner content area */
+.content-area {
+  width: min(95%, 1400px);
+  margin: 0 auto;
+}
+/* Sections (tabs etc.) */
 .content-section {
-    display: none;  /* hide all sections by default */
+  display: none;
 }
 .content-section.active {
-    display: block;
+  display: block;
 }
 
-/* Avatar positioning */
+/* === Avatar =================================================== */
+
+.avatar-block {
+  grid-column: 1;
+  grid-row: 1 / span 2;       /* avatar spans info-view row too */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;    /* centers inside its huge cell */
+  align-items: center;
+}
+
+/* Single avatar rule (remove duplicates) */
 .avatar {
-  width: clamp(180px, 25vw, 300px);
-  height: clamp(180px, 25vw, 300px);
+  width: clamp(150px, 22vw, 260px);
+  height: auto;                 /* ⭐ no fixed height — scales with container */
+  max-height: 100%;             /* fills vertical avatar-block height */
+  aspect-ratio: 1;              /* stay circular */
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #eee;
+  border: 2px solid var(--border, #30363d);
+  box-shadow: 0 6px 24px hsl(220 20% 4% / 0.45);
 }
 
-/* Info card */
-.info-view {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 1.5rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  width: 100%;  /* fills remaining space */
-}
-
-.example-projects {
-    position: fixed;
-    top: 85%;
-    left: 30%;
-    width: 25vw;
-    padding: 2%;
-    background: #e4dddd;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1.2rem;
-}
-
-.demos-section {
-  color: var(--text);
-}
-
-.section-title{
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
-}
-
-.demo-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(280px, 1fr));
-  gap: 16px; /* space between the cards */
-  padding: 0; /* no need for padding inside the grid */
-}
-
-@media (max-width: 900px) {
-  .demo-grid { grid-template-columns: 1fr; }
-  .profile-container { grid-template-columns: 1fr; }
-}
-
-.demo-card {
-  background: var(--panel, #fdfdfd);
-  border: 2px solid var(--border, #30363d); /* thicker border for visibility */
-  border-radius: 8px;                       /* rounded corners */
-  padding: 16px;
-  box-shadow: none;                         /* remove drop shadow if you want clean look */
-}
-
-.demo-card:hover{
-  transform: translateY(-2px);
-  border-color: #3b82f6;
-}
-
-.demo-title{
-  display: inline-block;
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: var(--brand);
-  text-decoration: none;
-  margin-bottom: .35rem;
-}
-.demo-title:hover{ text-decoration: underline; }
-
-.demo-desc{
-  color: var(--muted);
-  margin-top: .5rem;
-  margin-bottom: .75rem;
-  line-height: 1.45;
-}
-
-.demo-badge{
-  display: inline-block;
-  font-size: .85rem;
-  color: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 2px 10px;
-}
-
-/* audio row */
-.demo-audio{
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 12px;
-  margin-top: .35rem;
-}
-
-.demo-play{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--brand-soft);
-  color: var(--text);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 8px 12px;
-  cursor: pointer;
-  transition: background .15s ease, border-color .15s ease;
-}
-
-.demo-play:hover{ border-color: #3b82f6; }
-
-.demo-play .icon-pause{ display: none; }
-.demo-play.is-playing .icon-play{ display: none; }
-.demo-play.is-playing .icon-pause{ display: inline; }
-
-.demo-time{
-  font-variant-numeric: tabular-nums;
-  font-size: .9rem;
-  color: var(--text);
-}
-
-/* progress */
-.demo-progress{
-  position: relative;
-  height: 8px;
-  background: #161b22;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  cursor: pointer;
-}
-.demo-progress-bar{
-  position: absolute;
-  height: 100%;
-  width: 0%;
-  background: #3b82f6;
-  border-radius: inherit;
-  transition: width .1s linear;
-}
-
-/* Hide the native audio element but keep it accessible to screen readers */
-.demo-audio audio{
-  position: absolute;
-  width: 1px; height: 1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-}
-
-/* --- Skills Section --- */
-.skills-section {
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    color: var(--text);
-    padding: 1.5rem;
-}
-
-.skills-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 0 0 12px 0;
-}
-
-/* Skills list */
-.skills-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 10px;
-}
-.skill-item {
-  border: 1px solid var(--border, #30363d);
-  border-radius: 10px;
-  padding: 10px 12px;
-  background: #0f141b;
-}
-.skill-row {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 6px;
-}
-.skill-name {
-  font-weight: 600;
-}
-.skill-meta {
-  font-size: .9rem;
-  opacity: .9;
-}
-
-/* progress bar */
-.skill-bar {
-  position: relative;
-  height: 8px;
-  background: #161b22;
-  border: 1px solid var(--border, #30363d);
-  border-radius: 999px;
-  overflow: hidden;
-}
-.skill-bar > span {
-  position: absolute;
-  inset: 0 0 0 auto;
-  width: var(--w, 0%);
-  background: #3b82f6;
-}
-
-/* remove button */
-.skill-remove {
-  background: transparent;
-  border: 1px solid var(--border, #30363d);
-  border-radius: 8px;
-  padding: 6px 10px;
-  color: inherit;
-  cursor: pointer;
-}
-.skill-remove:hover {
-  border-color: #ef4444;
-  color: #ef4444;
-}
+/* === Main grid (avatar + info + participated + skills) ======= */
 
 .account-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;   /* left | right */
-    grid-template-rows: auto auto;   /* top | bottom */
-    gap: 5rem;
-    margin-left: 0px;  /* keep space for sidebar */
-    padding: 20px;
-    max-width: 1200px;
+  display: grid;
+  grid-template-columns: minmax(260px, 32%) 1fr; /* bigger left column */
+  gap: clamp(2rem, 3vw, 3rem);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  width: min(95%, 1400px); /* MUCH wider max width */
+  margin: 0 auto;
+  align-items: stretch;
 }
 
-/* Assign cells */
-.avatar-block { grid-column: 1; grid-row: 1; }
-.info-view    { grid-column: 1; grid-row: 2; }
-.demos-section{ grid-column: 2; grid-row: 1; }
-.skills-section{ grid-column: 2; grid-row: 2; }
+/* Positions in the grid */
+.avatar-block    { grid-column: 1; grid-row: 1; }
+.info-view       { grid-column: 1; grid-row: 2; }
+.demos-section   { grid-column: 2; grid-row: 1; }  /* Participated projects */
+.skills-section  { grid-column: 2; grid-row: 2; }
 
-/* Avatar responsive size */
-.avatar {
-  width: clamp(200px, 35vw, 500px);
-  height: clamp(200px, 35vw, 500px);
-  object-fit: cover;
-  border-radius: 50%;
-  border: 2px solid #eee;
-}
-
-/* Responsive stacking */
+/* Responsive stacking on small screens */
 @media (max-width: 900px) {
   .account-grid {
     grid-template-columns: 1fr;
@@ -283,182 +79,254 @@
   }
 }
 
-/* ===== Profile polish (safe overrides) =============================== */
+/* === Info card =============================================== */
 
-/* Konteyner genişliği ve ritim */
-.profile-container .content-area{
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: clamp(12px, 2vw, 24px);
-}
-
-/* Başlık: biraz daha ağırlık ve aralık */
-.profile-container h2.fw-bold{
-  letter-spacing: .2px;
-  margin-bottom: 1rem;
-  color: var(--brand);
-}
-
-/* Grid hizalama ve nefes */
-.account-grid{
-  max-width: 1100px;
-  margin: 0 auto;
-  gap: clamp(1rem, 2.5vw, 2.25rem);
-}
-
-/* Avatar kartı: hafif çerçeve + gölge */
-.avatar-block{
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-}
-.avatar{
-  border: 1px solid var(--border);
-  box-shadow: 0 6px 24px hsl(220 20% 4% / .45);
-}
-
-/* Bilgi kartı tipografi ve aralıklar */
-.info-view{
+.info-view {
+  border: 1px solid var(--border, #30363d);
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  width: 100%;
+  background: var(--panel, #040711);
+  color: var(--text);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
 }
-.info-view p{
-  margin: .35rem 0;
+.info-view p {
+  margin: 0.35rem 0;
+  color: var(--text);
 }
-.info-view .profile-description{
-  margin-bottom: .75rem;
+.info-view h3 {
+  font-size: var(--header-size, 1.25rem);
+  font-weight: var(--header-weight, 700);
+  color: var(--text);
+  margin: 0 0 0.75rem 0;
+}
+.info-view strong {
+  color: var(--text);
+}
+.info-view .profile-description {
+  margin-bottom: 0.75rem;
   color: var(--muted);
 }
 
-/* Bölüm başlıkları */
-.section-title,
-.skills-title{
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 0 0 .75rem 0;
-  color: var(--brand);
+/* === Participated Projects (reusing demos-section classes) ==== */
+
+.demos-section {
+  grid-column: 2;
+  grid-row: 1;
 }
 
-/* Demo kartı dokunuşları */
-.demo-card{
-  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
-  border-radius: 10px;
+/* Main page title (Account Details) */
+.page-title {
+  font-size: var(--page-title-size, 2rem);
+  font-weight: var(--header-weight, 700);
+  margin: 0 0 1rem 0;
+  color: var(--text);
 }
-.demo-card:hover{
+
+/* Section titles (Profile Description, Participated Projects, Skills) */
+.section-title {
+  font-size: var(--header-size, 1.5rem);
+  font-weight: var(--header-weight, 700);
+  margin: 0 0 0.75rem 0;
+  color: var(--text);
+}
+
+/* Grid of project cards (was demo-grid) */
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  padding: 0;
+}
+
+/* Individual project card */
+.demo-card {
+  background: var(--panel, #050810);
+  border: 1px solid var(--border, #30363d);
+  border-radius: 10px;
+  padding: 0.9rem 1rem;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.demo-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px hsl(220 20% 2% / .45);
+  border-color: #3b82f6;
+  box-shadow: 0 10px 28px hsl(220 20% 2% / 0.45);
 }
 
-/* Demo oynatıcı butonu */
-.demo-play{
+.demo-title {
+  display: inline-block;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--brand);
+  text-decoration: none;
+  margin-bottom: 0.35rem;
+}
+.demo-title:hover {
+  text-decoration: underline;
+}
+
+.demo-desc {
+  color: var(--muted);
+  margin-top: 0.25rem;
+  margin-bottom: 0.6rem;
+  line-height: 1.45;
+}
+
+.demo-meta {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.demo-badge {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: var(--muted);
+  border: 1px solid var(--border);
   border-radius: 999px;
-  padding: 8px 12px;
-  background: var(--brand-200);
+  padding: 2px 10px;
 }
 
-/* Yükleme formu görünür olduğunda kart boşlukları */
-#demo-upload-form{
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
-}
+/* === Skills Section ========================================== */
 
-/* Skills kutusu kartlaşsın */
-.skills-section{
+.skills-section {
   border-radius: 12px;
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+  border: 1px solid var(--border, #30363d);
+  color: var(--text);
+  padding: 1.25rem 1.5rem;
+  background: var(--panel);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
 }
 
-/* Skills form elemanları: koyu temaya uyum */
-.skills-section select,
-.skills-section input[type="number"]{
-  background: var(--panel-2);
-  border: 1px solid var(--border);
+.skills-title {
+  font-size: var(--header-size, 1.25rem);
+  font-weight: var(--header-weight, 700);
+  margin: 0 0 0.75rem 0;
+  color: var(--text);
+}
+
+/* Skills list */
+.skills-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+.skill-item {
+  border: 1px solid var(--border, #30363d);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  background: var(--panel-2, #0f141b);
+  color: var(--text);
+}
+.skill-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+.skill-name {
+  font-weight: 600;
+  color: var(--text);
+}
+.skill-meta {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  color: var(--muted);
+}
+
+/* progress bar */
+.skill-bar {
+  position: relative;
+  height: 8px;
+  background: var(--panel-2, #161b22);
+  border: 1px solid var(--border, #30363d);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.skill-bar > span {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: var(--w, 0%);
+  background: var(--brand, #3b82f6);
+}
+
+/* remove button */
+.skill-remove {
+  background: transparent;
+  border: 1px solid var(--border, #30363d);
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: inherit;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+.skill-remove:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
+
+/* Add Skill form (hidden toggle) */
+.skill-form {
+  margin-top: 0.75rem;
+}
+.skill-form select,
+.skill-form input[type="number"] {
+  background: var(--panel-2, #050810);
+  border: 1px solid var(--border, #30363d);
   color: var(--text);
   border-radius: 10px;
-  padding: 10px 12px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
 }
-.skills-section select:focus,
-.skills-section input[type="number"]:focus{
+.skill-form select:focus,
+.skill-form input[type="number"]:focus {
   outline: none;
   border-color: var(--brand);
-  box-shadow: 0 0 0 3px var(--brand-200);
+  box-shadow: 0 0 0 3px var(--brand-200, rgba(59,130,246,0.35));
 }
 
-/* Skill chip/row */
-.skill-item{
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-.skill-name{ color: var(--text); }
+/* === Edit panel ================================================= */
 
-/* Düzenleme modu paneli */
-#info-edit{
-  background: var(--panel);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
+#info-edit {
+  background: var(--panel, #040711);
+  border: 1px solid var(--border, #30363d);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
   border-radius: 12px;
-  padding: 16px;
+  padding: 1rem 1.25rem;
   max-width: 820px;
   margin: 0 auto;
 }
-#info-edit .form-group{ margin-bottom: .75rem; }
-#info-edit .form-control{
-  background: var(--panel-2);
-  border: 1px solid var(--border);
+#info-edit .form-group {
+  margin-bottom: 0.75rem;
+}
+#info-edit .form-control {
+  background: var(--panel-2, #050810);
+  border: 1px solid var(--border, #30363d);
   color: var(--text);
 }
-#info-edit .form-control:focus{
+#info-edit .form-control:focus {
   outline: none;
   border-color: var(--brand);
-  box-shadow: 0 0 0 3px var(--brand-200);
+  box-shadow: 0 0 0 3px var(--brand-200, rgba(59,130,246,0.35));
 }
 
-/* Küçük ekran dokunuşları */
-@media (max-width: 900px){
-  .profile-container .content-area{ padding: 12px; }
-  .avatar{ width: clamp(160px, 38vw, 260px); height: clamp(160px, 38vw, 260px); }
-}
-
-/* Avatar boyutu optimize - Final override */
-.avatar {
-  width: clamp(120px, 22vw, 180px);  /* min 120px, normalde ekranın %22'si, max 180px */
-  height: clamp(120px, 22vw, 180px);
-  border-radius: 50%;
-  object-fit: cover;  /* resim çerçeveye tam otursun */
-  margin: 0 auto;     /* ortalansın */
-}
-
-/* Profile page inline style replacements */
-.profile-container h2.fw-bold {
-  font-size: 2rem;
-  text-align: left;
-}
-
-.profile-description {
-  white-space: pre-line;
-}
-
-/* Edit mode visibility */
-#info-edit.hidden {
-  display: none;
-}
-
-/* Demo upload form visibility */
-#demo-upload-form.hidden {
-  display: none;
-}
-
-/* Form buttons flex layout */
-.form-buttons {
-  display: flex;
-  gap: 0.5rem;
-}
-
-/* Skill bar width utility */
-.skill-bar > span {
-  width: var(--w, 0%);
+/* Small screen tweaks */
+@media (max-width: 900px) {
+  .profile-container {
+    padding: 1rem;
+  }
+  .profile-container .content-area {
+    gap: 1.25rem;
+  }
+  .avatar {
+    width: clamp(140px, 36vw, 200px);
+    height: clamp(140px, 36vw, 200px);
+  }
 }

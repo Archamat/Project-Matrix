@@ -17,6 +17,11 @@ body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, 
   /* Text */
   --text: hsl(222 20% 16%);  /* main text */
   --muted: hsl(222 12% 40%); /* secondary text */
+  
+  /* Typography */
+  --header-size: 1.5rem;     /* standard header font size */
+  --header-weight: 700;       /* standard header font weight */
+  --page-title-size: 2rem;    /* main page title font size */
 
   /* Lines & Shadows */
   --border: hsl(222 14% 88%);

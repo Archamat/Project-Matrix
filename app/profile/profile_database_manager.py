@@ -1,7 +1,6 @@
 from app.extensions import db
 from app.auth.models import User
-from app.profile.models import Demo, Skill, UserSkill
-from app.aws.s3 import s3_client, S3_BUCKET
+from app.profile.models import Skill, UserSkill
 from sqlalchemy.exc import IntegrityError
 
 
@@ -62,48 +61,6 @@ class ProfileDatabaseManager:
             db.session.rollback()
             raise e
 
-    # ==================== DEMOS ====================
-    @staticmethod
-    def create_demo(user_id, s3_key, title, mime_type):
-        """Create a new demo entry"""
-        try:
-            demo = Demo(
-                user_id=user_id, key=s3_key, title=title, mime=mime_type
-            )
-            db.session.add(demo)
-            db.session.commit()
-            return demo
-        except Exception as e:
-            db.session.rollback()
-            raise e
-
-    @staticmethod
-    def get_user_demos(user_id, limit=None):
-        """Get all demos for a user"""
-        query = Demo.query.filter_by(user_id=user_id).order_by(
-            Demo.updated_at.desc()
-        )
-        if limit:
-            query = query.limit(limit)
-        return query.all()
-
-    @staticmethod
-    def get_demo_by_id(demo_id, user_id):
-        """Get a specific demo owned by user"""
-        return Demo.query.filter_by(id=demo_id, user_id=user_id).first()
-
-    @staticmethod
-    def delete_demo(demo):
-        """Delete demo from DB and S3"""
-        try:
-            # Delete from S3
-            s3_client.delete_object(Bucket=S3_BUCKET, Key=demo.key)
-            # Delete from DB
-            db.session.delete(demo)
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            raise e
 
     # ==================== SKILLS ====================
     @staticmethod
