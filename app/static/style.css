@@ -17,6 +17,7 @@
 @import url('./css/pages/project_gui.css');
 @import url('./css/pages/dashboard.css');
 @import url('./css/pages/create.css');
+@import url('./css/pages/search.css');
 
 /* Theme overrides */
 @import url('./css/themes/dark.css');

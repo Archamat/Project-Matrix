@@ -78,6 +78,40 @@
                 }
             });
         })();
+    
+        document.addEventListener('submit', function (e) {
+            const form = e.target;
+
+            // Only handle forms that actually have a search input
+            const input = form.querySelector('input[name="q"], input[name="query"]');
+            if (!input) return;
+
+            const val = (input.value || '').trim();
+            if (val) return; // allow normal navigation
+
+            // Block navigation *before* it happens
+            e.preventDefault();
+            e.stopPropagation();
+            if (typeof e.stopImmediatePropagation === 'function') e.stopImmediatePropagation();
+
+            // Show (or reuse) an inline warning just below the form
+            let warn = form.nextElementSibling;
+            if (!warn || !warn.classList || !warn.classList.contains('search-inline-warn')) {
+                warn = document.createElement('div');
+                warn.className = 'search-inline-warn alert alert-warning mt-2 mb-0';
+                warn.setAttribute('role', 'alert');
+                form.insertAdjacentElement('afterend', warn);
+            }
+            warn.textContent = 'Please type something to search!';
+            warn.style.display = 'block';
+
+            input.focus();
+
+            // Auto-hide after 2.2s (reset timer if user tries repeatedly)
+            clearTimeout(warn._t);
+            warn._t = setTimeout(() => { warn.style.display = 'none'; }, 2200);
+            }, true); // <-- capture phase so we run before any bubbling handlers
+            
     </script>
  {% block scripts %}{% endblock %}
 </body>
