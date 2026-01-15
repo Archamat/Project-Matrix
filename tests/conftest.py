@@ -17,8 +17,12 @@ from app.projects.models import (
     ProjectNote,
 )
 
-# Set environment variable BEFORE importing app
+# Set environment variables BEFORE importing app
 os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+os.environ.setdefault("S3_BUCKET", "test-bucket")
+os.environ.setdefault("AWS_REGION", "us-east-1")
+os.environ.setdefault("AWS_ACCESS_KEY_ID", "test-key")
+os.environ.setdefault("AWS_SECRET_ACCESS_KEY", "test-secret")
 
 
 @pytest.fixture(scope="function")
@@ -234,4 +238,16 @@ def user(test_user):
 
 @pytest.fixture(scope="function")
 def skill(test_skill):
+    """Alias for test_skill."""
     return test_skill
+
+
+@pytest.fixture(scope="function")
+def sample_user(app, db):
+    """Create a sample user for auth tests (alias for test_user with different password)."""
+    user = User(username="sampleuser", email="sample@example.com")
+    user.set_password("testpass123")
+    db.session.add(user)
+    db.session.commit()
+    db.session.refresh(user)
+    return user
