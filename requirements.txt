@@ -21,3 +21,6 @@ boto3==1.40.30
 
 # Development tools
 pre-commit==3.6.0
+
+#Dockerized environment
+gunicorn==20.1.0
