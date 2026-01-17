@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, jsonify
 from app.projects.models import Project
 from flask_login import current_user
 from . import main
@@ -13,3 +13,9 @@ def home():
         projects=projects,
         current_user=current_user,
     )
+
+
+@main.get("/health")
+def health():
+    # Keep it lightweight and fast for ALB health checks.
+    return jsonify(status="ok"), 200
