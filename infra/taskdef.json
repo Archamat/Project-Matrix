@@ -1,0 +1,32 @@
+{
+  "family": "project-matrix-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::710504359695:role/project-matrix-ecsTaskExecutionRole",
+  "containerDefinitions": [
+    {
+      "name": "project-matrix",
+      "image": "710504359695.dkr.ecr.eu-north-1.amazonaws.com/project-matrix:latest",
+      "essential": true,
+      "portMappings": [
+        { "containerPort": 8000, "protocol": "tcp" }
+      ],
+      "environment": [
+        { "name": "SECRET_KEY", "value": "CHANGE_ME_LATER" }
+      ],
+      "secrets": [
+        { "name": "DATABASE_URL", "valueFrom": "arn:aws:secretsmanager:eu-north-1:710504359695:secret:project-matrix/rds-jAs2HS:database_url::" }
+      ],
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/project-matrix",
+          "awslogs-region": "eu-north-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
