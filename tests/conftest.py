@@ -237,6 +237,12 @@ def user(test_user):
 
 
 @pytest.fixture(scope="function")
+def test_user2(test_user_2):
+    """Alias for test_user_2 (without underscore)."""
+    return test_user_2
+
+
+@pytest.fixture(scope="function")
 def skill(test_skill):
     """Alias for test_skill."""
     return test_skill
@@ -244,8 +250,8 @@ def skill(test_skill):
 
 @pytest.fixture(scope="function")
 def sample_user(app, db):
-    """Create a sample user for auth tests (alias for test_user with different password)."""
-    user = User(username="sampleuser", email="sample@example.com")
+    """Create a sample user for auth tests."""
+    user = User(username="testuser", email="test@example.com")
     user.set_password("testpass123")
     db.session.add(user)
     db.session.commit()
