@@ -1,4 +1,3 @@
-from app.auth import User
 from app.profile.profile_database_manager import ProfileDatabaseManager
 
 
@@ -11,25 +10,25 @@ def handle_profile(user):
     # Also include projects the user created
     participated_projects = []
     project_ids = set()
-    
+
     # Add projects from applications
-    if hasattr(user, 'applications'):
+    if hasattr(user, "applications"):
         for application in user.applications:
-            if application.project and application.project_id not in project_ids:
+            if (
+                application.project
+                and application.project_id not in project_ids
+            ):
                 project_ids.add(application.project_id)
                 participated_projects.append(application.project)
-    
+
     # Add projects the user created
-    if hasattr(user, 'projects'):
+    if hasattr(user, "projects"):
         for project in user.projects:
             if project.id not in project_ids:
                 project_ids.add(project.id)
                 participated_projects.append(project)
-    
-    return {
-        'user': user,
-        'participated_projects': participated_projects
-    }
+
+    return {"user": user, "participated_projects": participated_projects}
 
 
 def handle_update_profile(user, data):
@@ -72,12 +71,15 @@ def handle_skill_add(user, skill_name, level, years):
     # Validate years
     try:
         years = int(years)
-        if years < 0 or years > 50:
-            raise ValueError("Years must be between 0 and 50")
-    except (ValueError, TypeError):
+    except (TypeError, ValueError):
         raise ValueError("Invalid years value")
 
-    return ProfileDatabaseManager.add_user_skill(user.id, skill_name, level, years)
+    if years < 0 or years > 50:
+        raise ValueError("Years must be between 0 and 50")
+
+    return ProfileDatabaseManager.add_user_skill(
+        user.id, skill_name, level, years
+    )
 
 
 def handle_skill_delete(user, user_skill_id):

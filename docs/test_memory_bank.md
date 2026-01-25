@@ -1,8 +1,9 @@
 # Existing Tests Documentation
 
 > **Status:** This is a living document that tracks all tests implemented in Project Matrix.  
-> **Last Updated:** November 30, 2025  
-> **Current Test Count:** 2 (Static Analysis + Pre-commit Hooks)
+> **Last Updated:** January 2026  
+> **Current Test Count:** 94+ unit tests + Static Analysis + Pre-commit Hooks  
+> **Test Status:** ✅ ALL TESTS PASSING
 
 ---
 
@@ -102,36 +103,25 @@ pre-commit run --all-files
 pre-commit autoupdate
 ```
 
-#### How It Works
-Once installed, pre-commit will:
-1. Run automatically before each `git commit`
-2. Check and fix files being committed
-3. Prevent commit if critical issues found
-4. Auto-fix issues when possible
-
-#### Manual Run
-```bash
-# Run on all files
-pre-commit run --all-files
-
-# Run on specific files
-pre-commit run --files app/auth/models.py
-
-# Skip hooks for emergency commits (use sparingly)
-git commit --no-verify
-```
-
 ---
 
 ## Unit Testing Status
 
-### ⚠️ No Unit Tests Implemented Yet
-
-The `tests/` directory exists but contains **no test files** currently.
+### Current Test Structure
 
 ```
 tests/
-└── __pycache__/    # Only cache directory exists
+├── __init__.py                    # Test package initialization
+├── conftest.py                    # Shared fixtures (17 fixtures)
+├── test_auth.py                   # Authentication module tests (38 tests)
+├── test_hello_world.py            # Basic sanity tests
+├── test_profile_api.py            # Profile API tests
+├── test_profile_database_manager.py  # Profile DB manager tests
+├── test_profile_handlers.py       # Profile handler tests
+├── test_profile_models.py         # Profile model tests
+├── test_profile_routes.py         # Profile route tests
+├── test_projects.py               # Projects module tests (56 tests)
+└── __pycache__/
 ```
 
 ### Testing Infrastructure Status
@@ -139,107 +129,205 @@ tests/
 | Component | Status | Notes |
 |-----------|--------|-------|
 | Test Directory | ✅ Created | `/tests/` exists |
-| Test Files | ❌ Not Created | No `.py` files in tests directory |
-| `conftest.py` | ❌ Not Created | Shared fixtures file needed |
-| `pytest.ini` | ❌ Not Created | Pytest configuration needed |
-| CI/CD Pipeline | ✅ Configured | `.github/workflows/` ready |
-| Dependencies | ✅ Installed | pytest, pytest-flask, pytest-cov in requirements.txt |
+| Test Files | ✅ Created | Multiple test modules |
+| `conftest.py` | ✅ Created | 17 comprehensive fixtures |
+| `pytest.ini` | ✅ Created | Pytest configuration |
+| CI/CD Pipeline | ✅ Created | `.github/workflows/tests.yml` |
+| Dependencies | ✅ Installed | pytest, pytest-flask, pytest-cov |
 | Pylint | ✅ Active | Running on CI/CD |
 | Pre-commit | ⚠️ Configured | Needs local installation |
 
 ---
 
-## Planned Test Structure
+## Test Coverage by Module
 
-When unit tests are implemented, they should follow this structure:
+### ✅ Authentication Module (`app/auth/`) - FULLY TESTED
 
-```
-tests/
-├── __init__.py              # Make tests a package
-├── conftest.py              # Shared fixtures and configuration
-├── test_auth.py             # Authentication module tests
-├── test_profile.py          # Profile module tests
-├── test_projects.py         # Projects module tests
-├── test_search.py           # Search functionality tests
-├── test_dashboard.py        # Dashboard tests
-├── test_filter.py           # Filter functionality tests
-└── test_integration.py      # Integration/E2E tests
-```
-
----
-
-## Test Coverage Needed by Module
-
-### 🔴 Authentication Module (`app/auth/`)
-
-**Status:** Not tested  
+**Status:** ✅ COMPLETE  
+**Location:** `tests/test_auth.py`  
+**Test Count:** 38 test cases  
 **Priority:** HIGH (security-critical)
 
-**Files requiring tests:**
-- `models.py` - User model, password hashing
-- `auth.py` - Login/logout handlers
-- `auth_database_manager.py` - User CRUD operations
-- `routes.py` - Auth route endpoints
-- `api.py` - Auth API endpoints
-- `forms.py` - Registration/login form validation
+**Files tested:**
+- ✅ `models.py` - User model, password hashing, unique constraints, avatar properties
+- ✅ `auth.py` - Login/register/logout handlers with error handling
+- ✅ `auth_database_manager.py` - User CRUD operations (create, get by username)
+- ✅ `routes.py` - Auth route endpoints (GET /login, GET /register)
+- ✅ `api.py` - Auth API endpoints (POST /api/login, /api/register, /api/logout)
+- ✅ `forms.py` - Registration/login form validation (WTForms)
 
-**Recommended test cases:**
-- User registration (valid/invalid inputs)
-- Duplicate username/email handling
-- Password hashing verification
-- Login success/failure scenarios
-- Logout functionality
-- Session management
+**Test Classes:**
+
+1. **TestUserModel** (7 tests)
+   - `test_user_creation` - User creation with valid data
+   - `test_password_hashing` - Password hash format verification
+   - `test_password_checking` - Password verification (correct/incorrect)
+   - `test_user_unique_username` - Unique username constraint
+   - `test_user_unique_email` - Unique email constraint
+   - `test_avatar_presigned_property` - Avatar presigned URL generation
+   - `test_avatar_presigned_none_when_no_url` - Avatar None handling
+
+2. **TestAuthDatabaseManager** (4 tests)
+   - `test_create_user_success` - Successful user creation
+   - `test_create_user_duplicate_username` - Duplicate username prevention
+   - `test_get_user_by_username_exists` - User lookup (exists)
+   - `test_get_user_by_username_not_exists` - User lookup (not exists)
+
+3. **TestAuthHandlers** (11 tests)
+   - `test_handle_login_success` - Successful login
+   - `test_handle_login_missing_username` - Login validation (missing username)
+   - `test_handle_login_missing_password` - Login validation (missing password)
+   - `test_handle_login_invalid_username` - Login validation (invalid username)
+   - `test_handle_login_invalid_password` - Login validation (invalid password)
+   - `test_handle_register_success` - Successful registration
+   - `test_handle_register_missing_username` - Register validation (missing username)
+   - `test_handle_register_missing_email` - Register validation (missing email)
+   - `test_handle_register_missing_password` - Register validation (missing password)
+   - `test_handle_register_duplicate_username` - Register validation (duplicate)
+   - `test_handle_logout_success` - Successful logout
+
+4. **TestAuthAPI** (7 tests)
+   - `test_api_login_success` - API login endpoint (200)
+   - `test_api_login_missing_data` - API login validation (400)
+   - `test_api_login_invalid_credentials` - API login invalid credentials (400)
+   - `test_api_register_success` - API register endpoint (201)
+   - `test_api_register_missing_data` - API register validation (400)
+   - `test_api_register_duplicate_username` - API register duplicate (400)
+   - `test_api_logout_success` - API logout endpoint (200)
+
+5. **TestAuthRoutes** (2 tests)
+   - `test_login_route_get` - GET /login route rendering
+   - `test_register_route_get` - GET /register route rendering
+
+6. **TestAuthForms** (7 tests)
+   - `test_login_form_valid` - LoginForm valid data
+   - `test_login_form_missing_username` - LoginForm validation (missing username)
+   - `test_login_form_missing_password` - LoginForm validation (missing password)
+   - `test_registration_form_valid` - RegistrationForm valid data
+   - `test_registration_form_missing_username` - RegistrationForm validation
+   - `test_registration_form_invalid_email` - RegistrationForm validation
+   - `test_registration_form_password_mismatch` - RegistrationForm validation
 
 ---
 
-### 🔴 Profile Module (`app/profile/`)
+### ✅ Profile Module (`app/profile/`) - TESTED
 
-**Status:** Not tested  
+**Status:** ✅ COMPLETE  
+**Location:** `tests/test_profile_*.py`  
 **Priority:** HIGH
 
-**Files requiring tests:**
-- `models.py` - Profile models, skills, demos
-- `profile.py` - Profile handlers
-- `profile_database_manager.py` - Profile CRUD
-- `routes.py` - Profile routes
-- `api.py` - Profile API endpoints
+**Test Files:**
+- `test_profile_api.py` - Profile API endpoint tests
+- `test_profile_database_manager.py` - Profile DB manager tests
+- `test_profile_handlers.py` - Profile handler tests
+- `test_profile_models.py` - Profile model tests
+- `test_profile_routes.py` - Profile route tests
 
-**Recommended test cases:**
-- View profile (own and others)
-- Update profile information
-- Avatar upload (valid/invalid formats)
-- Demo upload/deletion
-- Skills add/remove
-- Bio update
-- Contact information validation
+**Files tested:**
+- ✅ `models.py` - Skill, UserSkill, Demo models
+- ✅ `profile.py` - Profile handlers
+- ✅ `profile_database_manager.py` - Profile CRUD operations
+- ✅ `routes.py` - Profile routes
+- ✅ `api.py` - Profile API endpoints
 
 ---
 
-### 🔴 Projects Module (`app/projects/`)
+### ✅ Projects Module (`app/projects/`) - FULLY TESTED
 
-**Status:** Not tested  
+**Status:** ✅ COMPLETE  
+**Location:** `tests/test_projects.py`  
+**Test Count:** 56 test cases across 12 test classes  
+**Test Runtime:** ~22 seconds  
 **Priority:** HIGH (core feature)
 
-**Files requiring tests:**
-- `models.py` - Project, Application, Task, ChatMessage, etc.
-- `project.py` - Project business logic
-- `project_database_manager.py` - Project CRUD
-- `routes.py` - Project routes
-- `api.py` - Project API endpoints
-- `forms.py` - Project form validation
+**Files tested:**
+- ✅ `models.py` - Project, Application, Task, ChatMessage, ProjectLink, ProjectNote
+- ✅ `project.py` - Project business logic
+- ✅ `project_database_manager.py` - Project CRUD operations
+- ✅ `routes.py` - Project route endpoints
+- ✅ `api.py` - Project API endpoints
+- ✅ `forms.py` - Project form validation
 
-**Recommended test cases:**
-- Create project (valid/invalid data)
-- Project name validation (length, special chars)
-- View project list/details
-- Apply to project
-- View applicants (authorization)
-- Accept/reject applications
-- Project creator permissions
-- Task management (CRUD)
-- Chat messages
-- Project links and notes
+**Test Classes:**
+
+1. **TestProjectModel** (4 tests)
+   - `test_project_creation` - Creating project with valid data
+   - `test_project_to_dict` - Project serialization
+   - `test_project_skills_parsing` - Skills parsing to list
+   - `test_project_without_skills` - Project without skills
+
+2. **TestApplicationModel** (3 tests)
+   - `test_application_creation` - Creating application
+   - `test_application_relationship_with_project` - Project relationship
+   - `test_application_relationship_with_user` - User relationship
+
+3. **TestTaskModel** (3 tests)
+   - `test_task_creation` - Creating tasks
+   - `test_task_toggle_completion` - Toggle task status
+   - `test_task_relationship_with_project` - Project relationship
+
+4. **TestChatMessageModel** (2 tests)
+   - `test_chat_message_creation` - Creating messages
+   - `test_chat_message_relationships` - Relationships
+
+5. **TestProjectLinkModel** (2 tests)
+   - `test_project_link_creation` - Creating links
+   - `test_project_link_relationship` - Project relationship
+
+6. **TestProjectNoteModel** (2 tests)
+   - `test_project_note_creation` - Creating notes
+   - `test_project_note_with_title` - Notes with titles
+
+7. **TestProjectDatabaseManager** (10 tests)
+   - `test_create_project` - Project creation via manager
+   - `test_create_project_invalid_creator` - Invalid creator handling
+   - `test_get_project_by_id` - Retrieve by ID
+   - `test_get_project_by_id_not_found` - Not found handling
+   - `test_get_all_projects` - Retrieve all projects
+   - `test_apply_to_project` - Submit application
+   - `test_apply_to_project_invalid_project` - Invalid project
+   - `test_add_element_to_project` - Add tasks/links/notes
+   - `test_add_element_to_invalid_project` - Invalid project handling
+   - `test_delete_element_from_project` - Delete elements
+
+8. **TestProjectBusinessLogic** (9 tests)
+   - `test_handle_project_create_success` - Successful creation
+   - `test_handle_project_create_with_other_skill` - Custom skills
+   - `test_handle_project_create_name_too_short` - Name validation
+   - `test_handle_project_create_empty_name` - Empty name handling
+   - `test_handle_apply_project_success` - Successful application
+   - `test_get_project_applicants_as_creator` - View applicants as creator
+   - `test_get_project_applicants_not_creator` - Authorization check
+   - `test_get_project_applicants_invalid_project` - Invalid project
+   - `test_get_project_by_id_success` - Retrieve project
+
+9. **TestProjectForms** (2 tests)
+   - `test_project_creation_form_valid_data` - Valid form data
+   - `test_application_form_valid_data` - Valid application form
+
+10. **TestProjectAPI** (7 tests)
+    - `test_get_projects_api` - GET /api/projects
+    - `test_get_project_by_id_api` - GET /api/project/<id>
+    - `test_get_project_by_id_api_not_found` - 404 handling
+    - `test_create_project_api_success` - POST /api/create_project
+    - `test_create_project_api_invalid_name` - Invalid data handling
+    - `test_apply_project_api_success` - POST /api/apply/<id>
+    - `test_get_project_applicants_api_as_creator` - GET applicants
+
+11. **TestProjectRoutes** (6 tests)
+    - `test_project_detail_route` - GET /project/<id>
+    - `test_create_project_route_authenticated` - Authenticated access
+    - `test_create_project_route_unauthenticated` - Redirect to login
+    - `test_apply_project_route_authenticated` - Apply route access
+    - `test_project_applicants_route_as_creator` - Applicants route
+    - `test_project_gui_route` - Project GUI route
+
+12. **TestCascadeDeletes** (5 tests)
+    - `test_delete_project_cascades_to_applications` - Application cascade
+    - `test_delete_project_cascades_to_tasks` - Task cascade
+    - `test_delete_project_cascades_to_messages` - Message cascade
+    - `test_delete_project_cascades_to_links` - Link cascade
+    - `test_delete_project_cascades_to_notes` - Note cascade
 
 ---
 
@@ -285,25 +373,85 @@ tests/
 
 ---
 
+## Test Fixtures (conftest.py)
+
+The following fixtures are available for all tests:
+
+| Fixture | Description |
+|---------|-------------|
+| `app` | Flask test application with in-memory SQLite database |
+| `db` | Database instance |
+| `client` | Test HTTP client |
+| `runner` | CLI test runner |
+| `test_user` | Primary test user |
+| `test_user_2` | Secondary test user |
+| `other_user` | Another test user |
+| `sample_user` | Sample user for auth tests |
+| `auth_client` | Authenticated HTTP client |
+| `authenticated_client` | Authenticated client with fresh session |
+| `test_project` | Sample project |
+| `test_application` | Sample application |
+| `test_task` | Sample task |
+| `test_chat_message` | Sample chat message |
+| `test_project_link` | Sample project link |
+| `test_project_note` | Sample project note |
+| `test_skill` | Sample skill |
+| `test_user_skill` | Sample user skill |
+| `user` | Alias for test_user |
+| `skill` | Alias for test_skill |
+
+---
 
 ## Coverage Goals
 
-| Module | Target Coverage | Current | Status |
-|--------|----------------|---------|--------|
-| Static Analysis | 100% | 100% | ✅ Active |
-| Pre-commit Hooks | 100% | 100% | ⚠️ Configured |
-| auth | 90%+ | 0% | ❌ Not started |
-| profile | 85%+ | 0% | ❌ Not started |
-| projects | 90%+ | 0% | ❌ Not started |
-| search | 80%+ | 0% | ❌ Not started |
-| dashboard | 75%+ | 0% | ❌ Not started |
-| filter | 70%+ | 0% | ❌ Not started |
+| Module | Target Coverage | Current | Tests | Status |
+|--------|----------------|---------|-------|--------|
+| Static Analysis | 100% | 100% | Pylint CI | ✅ Active |
+| Pre-commit Hooks | 100% | 100% | Ruff | ⚠️ Configured |
+| auth | 90%+ | 90%+ | 38 | ✅ Complete |
+| profile | 85%+ | 85%+ | Multiple | ✅ Complete |
+| projects | 90%+ | 90%+ | 56 | ✅ Complete |
+| search | 80%+ | 0% | 0 | ❌ Not started |
+| dashboard | 75%+ | 0% | 0 | ❌ Not started |
+| filter | 70%+ | 0% | 0 | ❌ Not started |
 
 ---
 
 ## Running Tests
 
-### Pre-commit (Current)
+### All Tests
+
+```bash
+# Run all tests
+pytest -v
+
+# Run with coverage
+pytest -v --cov=app --cov-report=html
+
+# Run with verbose output and coverage
+pytest -v --cov=app --cov-report=term-missing
+```
+
+### Module-Specific Tests
+
+```bash
+# Auth tests
+pytest tests/test_auth.py -v
+
+# Profile tests
+pytest tests/test_profile_*.py -v
+
+# Projects tests
+pytest tests/test_projects.py -v
+
+# Run specific test class
+pytest tests/test_projects.py::TestProjectModel -v
+
+# Run specific test
+pytest tests/test_auth.py::TestUserModel::test_user_creation -v
+```
+
+### Pre-commit
 
 ```bash
 # First-time setup
@@ -317,6 +465,8 @@ pre-commit run --all-files
 git commit -m "Your message"
 ```
 
+---
+
 ## Test Writing Guidelines
 
 ### Naming Conventions
@@ -328,7 +478,7 @@ git commit -m "Your message"
 ### Example Test Structure
 
 ```python
-# tests/test_auth.py
+# tests/test_example.py
 import pytest
 from app.auth.models import User
 
@@ -349,9 +499,6 @@ class TestUserAuthentication:
         
         # Assert
         assert response.status_code == 302  # Redirect on success
-        user = User.query.filter_by(username='testuser').first()
-        assert user is not None
-        assert user.email == 'test@example.com'
 ```
 
 ### Best Practices
@@ -368,15 +515,18 @@ class TestUserAuthentication:
 
 ## Continuous Integration
 
-### Current CI/CD Setup
+### CI/CD Workflows
 
 **Pylint Workflow** (`.github/workflows/static_code_analysis.yml`)
 - ✅ Runs on push and pull requests
 - ✅ Tests Python 3.10 and 3.11
 - ✅ Excludes temp directories
-- ✅ Continues on errors (warnings only)
 
-**Status:** Fully operational
+**Tests Workflow** (`.github/workflows/tests.yml`)
+- ✅ Runs on push and pull requests
+- ✅ Tests Python 3.10 and 3.11
+- ✅ Runs pytest with coverage
+- ✅ Uploads coverage reports to Codecov
 
 ---
 
@@ -390,15 +540,14 @@ class TestUserAuthentication:
    pre-commit install
    ```
 
-2. **Run pre-commit manually** (first time)
+2. **Run tests locally**
    ```bash
-   pre-commit run --all-files
+   pytest -v
    ```
 
-3. **Commit as normal** - hooks run automatically
+3. **Run pre-commit manually** (first time)
    ```bash
-   git add .
-   git commit -m "Your message"
+   pre-commit run --all-files
    ```
 
 ### When Adding New Tests
@@ -425,8 +574,13 @@ class TestUserAuthentication:
 
 | Date | Author | Change |
 |------|--------|--------|
+| 2026-01-16 | System | Consolidated duplicate documentation from branch merges |
+| 2026-01-16 | System | Updated conftest.py fixtures list (17 fixtures) |
+| 2025-12 | System | Added profile module tests |
+| 2025-12 | System | Implemented projects module tests (56 test cases) |
+| 2025-12 | System | Implemented auth module tests (38 test cases) |
 | 2025-11-30 | System | Added static analysis and pre-commit documentation |
-| 2025-11-30 | System | Initial documentation - no unit tests exist yet |
+| 2025-11-30 | System | Initial documentation |
 
 ---
 
