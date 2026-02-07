@@ -5,13 +5,24 @@ from app.aws.s3 import presigned_get_url
 
 
 class User(db.Model, UserMixin):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(150), unique=True, nullable=False)
     email = db.Column(db.String(150), unique=True, nullable=False)
     password = db.Column(db.String(256), nullable=False)
     contact_info = db.Column(db.String(256), nullable=True)
     avatar_url = db.Column(db.String(256), nullable=True)
-    skills = db.relationship("UserSkill", back_populates="user", cascade="all, delete-orphan")
+    demos = db.relationship(
+        "Demo",
+        back_populates="user",
+        lazy="dynamic",
+        cascade="all, delete-orphan",
+        order_by="desc(Demo.updated_at)",
+    )
+    skills = db.relationship(
+        "UserSkill", back_populates="user", cascade="all, delete-orphan"
+    )
+
     @property
     def avatar_presigned(self):
         if not self.avatar_url:
