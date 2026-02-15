@@ -9,7 +9,6 @@ from app.profile.profile import (
 )
 from app.aws import upload_fileobj_private
 from app.aws.s3 import presigned_get_url
-from app.profile.profile_database_manager import ProfileDatabaseManager
 
 IMAGE_MIME_ALLOW = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 
@@ -20,7 +19,7 @@ IMAGE_MIME_ALLOW = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 def update_profile():
     """API endpoint for updating profile info"""
     try:
-        data = request.get_json() or request.form.to_dict()
+        data = request.get_json(silent=True) or request.form.to_dict()
 
         updated_user = handle_update_profile(current_user, data)
 
@@ -83,15 +82,13 @@ def upload_avatar():
         return jsonify({"success": False, "message": str(e)}), 500
 
 
-
-
 # ==================== SKILLS MANAGEMENT ====================
 @profile_api.route("/skills", methods=["POST"])
 @login_required
 def add_skill():
     """API endpoint for adding a skill"""
     try:
-        data = request.get_json() or request.form.to_dict()
+        data = request.get_json(silent=True) or request.form.to_dict()
 
         skill_name = data.get("instrument", "").strip()
         level = data.get("level")
