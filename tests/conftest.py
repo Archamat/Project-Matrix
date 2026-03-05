@@ -20,7 +20,7 @@ from app.projects.models import (
     ProjectLink,
     ProjectNote,
 )
-from app.profile.models import Demo, Skill, UserSkill  # noqa: F401
+from app.profile.models import Skill, UserSkill  # noqa: F401
 
 # Set environment variables BEFORE app creation to avoid S3/DB errors
 os.environ.setdefault("DATABASE_URL", "sqlite:///:memory:")
